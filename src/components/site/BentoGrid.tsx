@@ -1,20 +1,18 @@
-import { useState, type MouseEvent, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { TiltSurface } from "./TiltSurface";
+import { Button } from "@/components/ui/button";
 import { motion } from "motion/react";
 import { Bot, GitBranch, LayoutGrid, Workflow } from "lucide-react";
 import { spring, tap } from "./motion";
 
 function Tile({ children, className = "" }: { children: ReactNode; className?: string }) {
-  const onMove = (e: MouseEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
-    e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
-  };
   return (
-    <motion.div onMouseMove={onMove} whileTap={tap} transition={spring}
+    <motion.div whileTap={tap} transition={spring}
       initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
-      className={`group glass relative overflow-hidden rounded-[2rem] p-6 ${className}`}>
-      <div className="spotlight pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      className={`group ${className}`}>
+      <TiltSurface className="glass overflow-hidden rounded-[2rem] p-6">
       <div className="relative flex h-full flex-col">{children}</div>
+      </TiltSurface>
     </motion.div>
   );
 }
@@ -45,10 +43,10 @@ export function BentoGrid() {
                 {[0, 1, 2].map((k) => <div key={k} className="h-10 rounded-lg bg-foreground/10" />)}
               </motion.div>
             </div>
-            <button aria-label="Toggle preview" onClick={() => setOn(!on)}
+            <Button variant="ghost" aria-pressed={on} aria-label="Toggle preview" onClick={() => setOn(!on)}
               className={`flex h-8 w-14 shrink-0 items-center rounded-full p-1 transition-colors ${on ? "bg-emerald" : "bg-foreground/20"}`}>
               <motion.span layout transition={spring} className={`h-6 w-6 rounded-full bg-foreground shadow ${on ? "ml-auto" : ""}`} />
-            </button>
+            </Button>
           </div>
           <Head icon={<LayoutGrid className="h-5 w-5" />} title="Full-Stack SaaS & Web" sub="Production apps from schema to pixel, shipped on the edge." />
         </Tile>
