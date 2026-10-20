@@ -16,7 +16,7 @@ export function TiltSurface({ children, className = "" }: { children: ReactNode;
     el.style.setProperty("--tilt-y", `${(x - 0.5) * 7}deg`);
     el.style.setProperty("--sheen-x", `${x * 100}%`);
     el.style.setProperty("--sheen-y", `${y * 100}%`);
-    el.dataset.active = "true";
+    el.dataset['active'] = "true";
   };
 
   const reset = () => {
@@ -24,7 +24,7 @@ export function TiltSurface({ children, className = "" }: { children: ReactNode;
     if (!el) return;
     el.style.setProperty("--tilt-x", "0deg");
     el.style.setProperty("--tilt-y", "0deg");
-    el.dataset.active = "false";
+    el.dataset['active'] = "false";
   };
 
   return (
