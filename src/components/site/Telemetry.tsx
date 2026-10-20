@@ -21,7 +21,7 @@ export function Telemetry() {
     let id = 0;
     const iv = setInterval(() => {
       id++;
-      setLog((l) => [{ id, t: EVENTS[id % EVENTS.length] }, ...l].slice(0, 4));
+      setLog((l) => [{ id, t: EVENTS[id % EVENTS.length]! }, ...l].slice(0, 4));
       setBars((b) => [...b.slice(1), 20 + Math.random() * 75]);
       setLat(30 + Math.round(Math.random() * 14));
     }, 1400);

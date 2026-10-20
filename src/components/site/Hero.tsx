@@ -35,11 +35,11 @@ export function Hero() {
     if (!img) return;
     const { width: cw, height: ch } = canvas;
     // cover + slight overscan to hide edge watermark
-    const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * 1.08;
+    const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * 1.16;
     const w = img.naturalWidth * s;
     const h = img.naturalHeight * s;
     ctx.clearRect(0, 0, cw, ch);
-    ctx.drawImage(img, (cw - w) / 2 - (w - cw) * 0.1, (ch - h) / 2 - (h - ch) * 0.1, w, h);
+    ctx.drawImage(img, -(w - cw) * 0.3, -(h - ch) * 0.3, w, h);
   };
 
   useEffect(() => {
