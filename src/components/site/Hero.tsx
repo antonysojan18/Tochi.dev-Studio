@@ -3,7 +3,6 @@ import { motion, useMotionValueEvent, useScroll, useTransform } from "motion/rea
 import { ArrowRight, Sparkles } from "lucide-react";
 import wordmark from "@/assets/tochi-wordmark.png.asset.json";
 import { spring, tap } from "./motion";
-import { Telemetry } from "./Telemetry";
 
 const SETS = {
   web: { count: 210, path: "/hero/web/" },
@@ -85,8 +84,6 @@ export function Hero() {
   const logoBlur = useTransform(scrollYProgress, [0.08, 0.2], ["blur(0px)", "blur(12px)"]);
   const copyOpacity = useTransform(scrollYProgress, [0.22, 0.34, 0.9, 1], [0, 1, 1, 0.9]);
   const copyY = useTransform(scrollYProgress, [0.22, 0.36], [40, 0]);
-  const cardOpacity = useTransform(scrollYProgress, [0.42, 0.55], [0, 1]);
-  const cardY = useTransform(scrollYProgress, [0.42, 0.58], [60, 0]);
   const hintOpacity = useTransform(scrollYProgress, [0, 0.06], [1, 0]);
 
   return (
@@ -133,10 +130,6 @@ export function Hero() {
                 View selected work
               </motion.a>
             </div>
-          </motion.div>
-
-          <motion.div style={{ opacity: cardOpacity, y: cardY }} className="hidden w-full max-w-sm sm:block">
-            <Telemetry />
           </motion.div>
         </div>
       </div>
