@@ -1,5 +1,5 @@
 # Visual additions
-- [ ] Add restrained amber light leaks.
-- [ ] Add interactive card tilt and holographic sheen with reduced-motion support.
-- [ ] Replace project wireframes with custom device mockups.
-- [ ] Verify presentation and interactions.
+- [x] Add restrained amber light leaks.
+- [x] Add interactive card tilt and holographic sheen with reduced-motion support.
+- [x] Replace project wireframes with custom device mockups.
+- [x] Verify presentation and interactions.
