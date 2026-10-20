@@ -1,4 +1,6 @@
 import { useRef } from "react";
+import { TiltSurface } from "./TiltSurface";
+import { DeviceMockup } from "./DeviceMockup";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 
 const projects = [
@@ -18,8 +20,8 @@ function Card({ p, i, total, progress }: { p: (typeof projects)[number]; i: numb
   return (
     <div className="md:sticky md:top-28" style={{ zIndex: i }}>
       <motion.article style={{ scale, opacity, filter }}
-        className="glass glass-sheen mb-6 origin-top overflow-hidden rounded-[2rem] p-5 md:mb-[12vh] md:p-8">
-        <div className="grid gap-6 md:grid-cols-[1fr_1.3fr] md:gap-10">
+        className="mb-6 origin-top md:mb-[12vh]">
+        <TiltSurface className="glass glass-sheen rounded-[2rem] p-5 md:p-8"><div className="grid gap-6 md:grid-cols-[1fr_1.3fr] md:gap-10">
           <div className="flex flex-col">
             <span className="caps">0{i + 1} / {p.cat}</span>
             <h3 className="mt-3 text-3xl font-semibold tracking-[-0.03em] md:text-4xl">{p.title}</h3>
@@ -37,26 +39,8 @@ function Card({ p, i, total, progress }: { p: (typeof projects)[number]; i: numb
               ))}
             </div>
           </div>
-          <div className={`relative aspect-[16/10] overflow-hidden rounded-2xl border border-hairline bg-linear-to-br ${p.hue} to-transparent`}>
-            <div className="absolute inset-x-0 top-0 flex h-8 items-center gap-1.5 border-b border-hairline px-3">
-              {[0, 1, 2].map((d) => <span key={d} className="h-2 w-2 rounded-full bg-foreground/20" />)}
-              <span className="ml-3 h-4 flex-1 rounded-full bg-foreground/5" />
-            </div>
-            <div className="absolute inset-0 top-8 grid grid-cols-[30%_1fr] gap-3 p-3">
-              <div className="space-y-2 rounded-xl bg-foreground/5 p-3">
-                {[70, 50, 85, 40, 60].map((w, k) => <div key={k} className="h-2 rounded-full bg-foreground/15" style={{ width: `${w}%` }} />)}
-              </div>
-              <div className="grid grid-rows-[auto_1fr] gap-3">
-                <div className="grid grid-cols-3 gap-3">
-                  {[0, 1, 2].map((k) => <div key={k} className="h-12 rounded-xl border border-hairline bg-foreground/5" />)}
-                </div>
-                <div className="flex items-end gap-1.5 rounded-xl border border-hairline bg-foreground/5 p-3">
-                  {[40, 65, 50, 80, 55, 90, 70, 95, 60, 85].map((h, k) => <div key={k} className="flex-1 rounded-t bg-foreground/25" style={{ height: `${h}%` }} />)}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+          <DeviceMockup title={p.title} index={i} />
+        </div></TiltSurface>
       </motion.article>
     </div>
   );

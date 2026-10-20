@@ -91,6 +91,7 @@ export function Hero() {
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
         <canvas ref={canvasRef} className={`absolute inset-0 h-full w-full transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"}`} />
         <div className="hero-fade pointer-events-none absolute inset-0" />
+        <div aria-hidden="true" className="light-leak light-leak-hero pointer-events-none absolute inset-0" />
 
         {/* Brand mark */}
         <motion.div style={{ opacity: logoOpacity, scale: logoScale, filter: logoBlur }} className="absolute inset-0 flex flex-col items-center justify-center px-6">

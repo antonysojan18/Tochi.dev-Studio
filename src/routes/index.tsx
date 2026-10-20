@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main>
+    <main className="studio-atmosphere relative isolate">
       <Navbar />
       <Hero />
       <ScrollStack />
