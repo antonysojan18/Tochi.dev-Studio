@@ -224,12 +224,8 @@ export function ScrollStack() {
           </svg>
         </div>
 
-        {/* Section body with solid background */}
-        <section
-          id="work"
-          ref={sectionRef}
-          className="bg-background pt-4 pb-24 md:pb-32 px-5 scroll-mt-24"
-        >
+        {/* Section body with transparent background allowing Silk to flow through */}
+        <section id="work" ref={sectionRef} className="pt-4 pb-24 md:pb-32 px-5 scroll-mt-24">
           <div className="mx-auto max-w-6xl">
             <div className="mb-12 flex items-end justify-between gap-6">
               <div>
