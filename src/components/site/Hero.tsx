@@ -89,9 +89,23 @@ export function Hero() {
   const logoOpacity = useTransform(scrollYProgress, [0, 0.12, 0.2], [1, 1, 0]);
   const logoScale = useTransform(scrollYProgress, [0, 0.2], [1, 0.85]);
   const logoBlur = useTransform(scrollYProgress, [0.08, 0.2], ["blur(0px)", "blur(12px)"]);
-  const copyOpacity = useTransform(scrollYProgress, [0.22, 0.34, 0.9, 1], [0, 1, 1, 0.9]);
-  const copyY = useTransform(scrollYProgress, [0.22, 0.36], [40, 0]);
   const hintOpacity = useTransform(scrollYProgress, [0, 0.06], [1, 0]);
+
+  // Staggered scroll reveals
+  // 1. Headline reveals first
+  const headlineOpacity = useTransform(scrollYProgress, [0.18, 0.3, 0.9, 1], [0, 1, 1, 0.9]);
+  const headlineY = useTransform(scrollYProgress, [0.18, 0.3], [44, 0]);
+  const headlineBlur = useTransform(scrollYProgress, [0.18, 0.3], ["blur(8px)", "blur(0px)"]);
+
+  // 2. Subheading reveals next
+  const subheadOpacity = useTransform(scrollYProgress, [0.26, 0.38, 0.9, 1], [0, 1, 1, 0.9]);
+  const subheadY = useTransform(scrollYProgress, [0.26, 0.38], [32, 0]);
+  const subheadBlur = useTransform(scrollYProgress, [0.26, 0.38], ["blur(6px)", "blur(0px)"]);
+
+  // 3. At last, the action buttons appear
+  const ctaOpacity = useTransform(scrollYProgress, [0.36, 0.48, 0.9, 1], [0, 1, 1, 0.9]);
+  const ctaY = useTransform(scrollYProgress, [0.36, 0.48], [28, 0]);
+  const ctaScale = useTransform(scrollYProgress, [0.36, 0.48], [0.94, 1]);
 
   return (
     <section id="top" ref={sectionRef} className="relative h-[420vh]">
@@ -130,38 +144,48 @@ export function Hero() {
 
         {/* Copy */}
         <div className="absolute inset-0 mx-auto flex max-w-6xl flex-col justify-center gap-10 px-5 pt-20 lg:flex-row lg:items-center lg:justify-between">
-          <motion.div style={{ opacity: copyOpacity, y: copyY }} className="relative max-w-xl">
+          <div className="relative max-w-2xl">
             <div
               aria-hidden="true"
               className="hero-scrim pointer-events-none absolute -inset-x-12 -inset-y-20 -z-10 sm:-inset-x-10 sm:-inset-y-14"
             />
-            <h1 className="hero-copy text-5xl font-semibold tracking-[-0.035em] md:text-7xl">
-              Software crafted with discipline.
-            </h1>
-            <p className="hero-copy mt-5 text-base leading-relaxed tracking-[-0.01em] text-foreground/90 md:text-lg">
-              Bespoke web applications, internal operational tools, and intelligent systems. No
-              agency friction. Direct access to your principal engineer.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <motion.h1
+              style={{ opacity: headlineOpacity, y: headlineY, filter: headlineBlur }}
+              className="hero-copy text-5xl font-semibold tracking-[-0.035em] md:text-7xl"
+            >
+              Modern software infused with Obsessive craft.
+            </motion.h1>
+            <motion.p
+              style={{ opacity: subheadOpacity, y: subheadY, filter: subheadBlur }}
+              className="hero-copy mt-6 text-base leading-relaxed tracking-[-0.01em] text-foreground/90 md:text-xl"
+            >
+              An independent engineering studio crafting modern web interfaces and high-leverage
+              internal platforms.
+            </motion.p>
+            <motion.div
+              style={{ opacity: ctaOpacity, y: ctaY, scale: ctaScale }}
+              className="mt-8 flex flex-wrap gap-3"
+            >
               <motion.a
                 href="#intake"
                 whileTap={tap}
                 whileHover={{ scale: 1.02 }}
                 transition={spring}
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground shadow-[0_8px_24px_oklch(var(--primary)/25%)]"
               >
                 Start a Build <ArrowRight className="h-4 w-4" />
               </motion.a>
               <motion.a
                 href="#work"
                 whileTap={tap}
+                whileHover={{ scale: 1.02 }}
                 transition={spring}
-                className="glass inline-flex items-center rounded-full px-6 py-3 text-sm font-medium"
+                className="glass inline-flex items-center rounded-full px-6 py-3.5 text-sm font-medium hover:border-primary/40"
               >
                 View selected work
               </motion.a>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>

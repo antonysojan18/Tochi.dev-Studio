@@ -9,16 +9,17 @@ import { IntakeSheet } from "@/components/site/IntakeSheet";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "TOCHI (.dev studio) — Software crafted with discipline" },
+      { title: "TOCHI (.dev studio) — Modern software infused with Obsessive craft" },
       {
         name: "description",
         content:
-          "Bespoke web apps, internal tools and intelligent systems. Direct access to your principal engineer.",
+          "An independent engineering studio crafting modern web interfaces and high-leverage internal platforms.",
       },
       { property: "og:title", content: "TOCHI (.dev studio)" },
       {
         property: "og:description",
-        content: "Bespoke web apps, internal tools and intelligent systems. No agency friction.",
+        content:
+          "An independent engineering studio crafting modern web interfaces and high-leverage internal platforms.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
