@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import { ArrowRight, Sparkles } from "lucide-react";
-import wordmark from "@/assets/tochi-wordmark.png.asset.json";
+import heroImg from "@/assets/IMG_1048.PNG";
 import { spring, tap } from "./motion";
 
 const SETS = {
@@ -112,7 +112,7 @@ export function Hero() {
           className="absolute inset-0 flex flex-col items-center justify-center px-6"
         >
           <motion.img
-            src={wordmark.url}
+            src={heroImg}
             alt="TOCHI .dev studio"
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}

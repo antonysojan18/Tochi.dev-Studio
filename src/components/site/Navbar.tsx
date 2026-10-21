@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X } from "lucide-react";
-import headerLogo from "@/assets/tochi-header-dark.png.asset.json";
+import headerLogo from "@/assets/Tochi .dev Studio.png";
 import { spring, tap } from "./motion";
 
 const links = [
@@ -35,7 +35,7 @@ export function Navbar() {
     >
       <a href="#top" aria-label="TOCHI .dev studio — back to top" className="shrink-0">
         <motion.img
-          src={headerLogo.url}
+          src={headerLogo}
           alt="TOCHI .dev studio"
           draggable={false}
           initial={{ opacity: 0, y: 6 }}
