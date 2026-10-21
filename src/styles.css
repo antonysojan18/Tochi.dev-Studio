@@ -109,10 +109,9 @@
   html {
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
-    background-color: var(--background);
   }
   body {
-    background-color: var(--background);
+    background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;

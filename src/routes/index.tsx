@@ -5,7 +5,6 @@ import { ScrollStack } from "@/components/site/ScrollStack";
 import { BentoGrid } from "@/components/site/BentoGrid";
 import { Process } from "@/components/site/Process";
 import { IntakeSheet } from "@/components/site/IntakeSheet";
-import Silk from "@/components/site/Silk";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -34,38 +33,10 @@ function Index() {
     <main className="studio-atmosphere relative isolate">
       <Navbar />
       <Hero />
-      <div className="relative isolate">
-        {/* Silk flowing background from the second section onwards */}
-        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="sticky top-0 h-[100svh] w-full">
-            <Silk
-              color="#3c0e24"
-              sheenColor="#020002"
-              speed={5}
-              scale={1}
-              rotation={0}
-              sheen={0.5}
-              depth={0.25}
-              glow={0.3}
-              noiseIntensity={1.5}
-              mouseInteraction
-              clickRipple
-              intro
-              ripple={1}
-              wave={1}
-              variation={0}
-              interactionStrength={1}
-              fade={0}
-              lightMode={false}
-            />
-          </div>
-        </div>
-
-        <ScrollStack />
-        <BentoGrid />
-        <Process />
-        <IntakeSheet />
-      </div>
+      <ScrollStack />
+      <BentoGrid />
+      <Process />
+      <IntakeSheet />
     </main>
   );
 }
