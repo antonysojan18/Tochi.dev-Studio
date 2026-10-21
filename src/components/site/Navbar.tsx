@@ -41,7 +41,7 @@ export function Navbar() {
           transition={{ ...spring, delay: 0.35 }}
           whileHover={{ scale: 1.04 }}
           whileTap={tap}
-          className="h-8 w-auto select-none object-contain brightness-110 drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)] md:h-9"
+          className="h-6 w-auto select-none object-contain brightness-110 drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)] md:h-7"
         />
       </a>
 
