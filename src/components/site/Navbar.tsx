@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X } from "lucide-react";
-import headerLogo from "@/assets/tochi-header.png.asset.json";
+import headerLogo from "@/assets/tochi-header-dark.png.asset.json";
 import { spring, tap } from "./motion";
 
 const links = [
@@ -43,7 +43,7 @@ export function Navbar() {
           transition={{ ...spring, delay: 0.35 }}
           whileHover={{ scale: 1.04 }}
           whileTap={tap}
-          className="h-6 w-auto select-none object-contain brightness-[0.22] saturate-[1.5] md:h-7"
+          className="h-6 w-auto select-none object-contain md:h-7"
         />
       </a>
 
