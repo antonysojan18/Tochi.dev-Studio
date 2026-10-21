@@ -111,11 +111,12 @@ export function Hero() {
 
         {/* Copy */}
         <div className="absolute inset-0 mx-auto flex max-w-6xl flex-col justify-center gap-10 px-5 pt-20 lg:flex-row lg:items-center lg:justify-between">
-          <motion.div style={{ opacity: copyOpacity, y: copyY }} className="max-w-xl">
-            <h1 className="text-5xl font-semibold tracking-[-0.035em] md:text-7xl">
+          <motion.div style={{ opacity: copyOpacity, y: copyY }} className="relative max-w-xl">
+            <div aria-hidden="true" className="hero-scrim pointer-events-none absolute -inset-x-10 -inset-y-14 -z-10" />
+            <h1 className="hero-copy text-5xl font-semibold tracking-[-0.035em] md:text-7xl">
               Software crafted with discipline.
             </h1>
-            <p className="mt-5 text-base leading-relaxed tracking-[-0.01em] text-foreground/70 md:text-lg">
+            <p className="hero-copy mt-5 text-base leading-relaxed tracking-[-0.01em] text-foreground/90 md:text-lg">
               Bespoke web applications, internal operational tools, and intelligent systems. No agency friction. Direct access to your principal engineer.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
