@@ -112,7 +112,7 @@ export function Hero() {
         {/* Copy */}
         <div className="absolute inset-0 mx-auto flex max-w-6xl flex-col justify-center gap-10 px-5 pt-20 lg:flex-row lg:items-center lg:justify-between">
           <motion.div style={{ opacity: copyOpacity, y: copyY }} className="relative max-w-xl">
-            <div aria-hidden="true" className="hero-scrim pointer-events-none absolute -inset-x-10 -inset-y-14 -z-10" />
+            <div aria-hidden="true" className="hero-scrim pointer-events-none absolute -inset-x-12 -inset-y-20 -z-10 sm:-inset-x-10 sm:-inset-y-14" />
             <h1 className="hero-copy text-5xl font-semibold tracking-[-0.035em] md:text-7xl">
               Software crafted with discipline.
             </h1>

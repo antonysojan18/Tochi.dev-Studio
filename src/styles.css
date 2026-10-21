@@ -151,12 +151,12 @@
 }
 
 @utility hero-scrim {
-  background: radial-gradient(72% 58% at 30% 46%, oklch(0.13 0.05 355 / 90%) 0%, oklch(0.13 0.05 355 / 70%) 40%, oklch(0.13 0.05 355 / 26%) 68%, oklch(0.13 0.05 355 / 0%) 100%);
-  filter: blur(28px);
+  background: radial-gradient(88% 68% at 34% 44%, oklch(0.13 0.05 355 / 94%) 0%, oklch(0.13 0.05 355 / 82%) 44%, oklch(0.13 0.05 355 / 40%) 72%, oklch(0.13 0.05 355 / 0%) 100%);
+  filter: blur(30px);
 }
 
 @utility hero-copy {
-  text-shadow: 0 1px 2px oklch(0.12 0.05 355 / 75%), 0 6px 28px oklch(0.12 0.05 355 / 55%);
+  text-shadow: 0 0 1px oklch(0.12 0.05 355 / 90%), 0 1px 2px oklch(0.12 0.05 355 / 75%), 0 6px 28px oklch(0.12 0.05 355 / 55%);
 }
 
 @keyframes led { 0%,100% { box-shadow: 0 0 0 0 oklch(0.73 0.19 148 / 60%); } 50% { box-shadow: 0 0 0 6px oklch(0.73 0.19 148 / 0%); } }
