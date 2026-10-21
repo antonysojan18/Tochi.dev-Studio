@@ -109,11 +109,37 @@ function Card({
 }
 
 export function ScrollStack() {
+  const sectionRef = useRef<HTMLElement>(null);
   const ref = useRef<HTMLDivElement>(null);
+
+  // Entrance transition from Hero section
+  const { scrollYProgress: enterProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "start 30%"],
+  });
+
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
+  // Butter-smooth Zero Drop Shadow animation as section meets the Hero
+  const sectionY = useTransform(enterProgress, [0, 1], [40, 0]);
+  const sectionOpacity = useTransform(enterProgress, [0, 0.5], [0, 1]);
+  const sectionFilter = useTransform(
+    enterProgress,
+    [0, 0.45, 1],
+    [
+      "drop-shadow(0 0 35px oklch(0 0 0 / 70%))",
+      "drop-shadow(0 0 15px oklch(0 0 0 / 30%))",
+      "drop-shadow(0 0 0px oklch(0 0 0 / 0%))",
+    ],
+  );
+
   return (
-    <section id="work" className="mx-auto max-w-6xl px-5 py-24 md:py-32">
+    <motion.section
+      id="work"
+      ref={sectionRef}
+      style={{ y: sectionY, opacity: sectionOpacity, filter: sectionFilter }}
+      className="relative z-10 mx-auto max-w-6xl px-5 py-24 md:py-32"
+    >
       <div className="mb-12 flex items-end justify-between gap-6">
         <div>
           <span className="caps">Selected Works</span>
@@ -128,6 +154,6 @@ export function ScrollStack() {
           <Card key={p.title} p={p} i={i} total={projects.length} progress={scrollYProgress} />
         ))}
       </div>
-    </section>
+    </motion.section>
   );
 }

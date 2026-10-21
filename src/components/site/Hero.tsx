@@ -91,25 +91,40 @@ export function Hero() {
   const logoBlur = useTransform(scrollYProgress, [0.08, 0.2], ["blur(0px)", "blur(12px)"]);
   const hintOpacity = useTransform(scrollYProgress, [0, 0.06], [1, 0]);
 
-  // Staggered scroll reveals
+  // Staggered scroll reveals with smooth exit as next section approaches
   // 1. Headline reveals first
-  const headlineOpacity = useTransform(scrollYProgress, [0.18, 0.3, 0.9, 1], [0, 1, 1, 0.9]);
-  const headlineY = useTransform(scrollYProgress, [0.18, 0.3], [44, 0]);
-  const headlineBlur = useTransform(scrollYProgress, [0.18, 0.3], ["blur(8px)", "blur(0px)"]);
+  const headlineOpacity = useTransform(scrollYProgress, [0.18, 0.3, 0.85, 0.96], [0, 1, 1, 0]);
+  const headlineY = useTransform(scrollYProgress, [0.18, 0.3, 0.85, 0.96], [44, 0, 0, -25]);
+  const headlineBlur = useTransform(
+    scrollYProgress,
+    [0.18, 0.3, 0.85, 0.96],
+    ["blur(8px)", "blur(0px)", "blur(0px)", "blur(6px)"],
+  );
 
   // 2. Subheading reveals next
-  const subheadOpacity = useTransform(scrollYProgress, [0.26, 0.38, 0.9, 1], [0, 1, 1, 0.9]);
-  const subheadY = useTransform(scrollYProgress, [0.26, 0.38], [32, 0]);
-  const subheadBlur = useTransform(scrollYProgress, [0.26, 0.38], ["blur(6px)", "blur(0px)"]);
+  const subheadOpacity = useTransform(scrollYProgress, [0.26, 0.38, 0.85, 0.96], [0, 1, 1, 0]);
+  const subheadY = useTransform(scrollYProgress, [0.26, 0.38, 0.85, 0.96], [32, 0, 0, -20]);
+  const subheadBlur = useTransform(
+    scrollYProgress,
+    [0.26, 0.38, 0.85, 0.96],
+    ["blur(6px)", "blur(0px)", "blur(0px)", "blur(5px)"],
+  );
 
   // 3. At last, the action buttons appear
-  const ctaOpacity = useTransform(scrollYProgress, [0.36, 0.48, 0.9, 1], [0, 1, 1, 0.9]);
-  const ctaY = useTransform(scrollYProgress, [0.36, 0.48], [28, 0]);
+  const ctaOpacity = useTransform(scrollYProgress, [0.36, 0.48, 0.85, 0.96], [0, 1, 1, 0]);
+  const ctaY = useTransform(scrollYProgress, [0.36, 0.48, 0.85, 0.96], [28, 0, 0, -15]);
   const ctaScale = useTransform(scrollYProgress, [0.36, 0.48], [0.94, 1]);
+
+  // Transition to next section: dynamic zero-offset drop shadow and ambient elevation veil
+  const transitionShadowOpacity = useTransform(scrollYProgress, [0.78, 0.92, 1], [0, 1, 1]);
+  const heroExitScale = useTransform(scrollYProgress, [0.88, 1], [1, 0.98]);
 
   return (
     <section id="top" ref={sectionRef} className="relative h-[420vh]">
-      <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
+      <motion.div
+        style={{ scale: heroExitScale }}
+        className="sticky top-0 h-[100svh] w-full overflow-hidden origin-bottom"
+      >
         <canvas
           ref={canvasRef}
           className={`absolute inset-0 h-full w-full transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"}`}
@@ -187,7 +202,15 @@ export function Hero() {
             </motion.div>
           </div>
         </div>
-      </div>
+
+        {/* Butter-smooth Zero Drop Shadow Ambient Transition Veil */}
+        <motion.div
+          style={{ opacity: transitionShadowOpacity }}
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-background via-background/60 to-transparent"
+        >
+          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-hairline/30 to-transparent shadow-[0_0_60px_30px_oklch(0_0_0/90%)]" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
