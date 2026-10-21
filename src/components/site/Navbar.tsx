@@ -35,7 +35,6 @@ export function Navbar() {
         <motion.img
           src={headerLogo.url}
           alt="TOCHI .dev studio"
-          width={headerLogo.size ? undefined : undefined}
           draggable={false}
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
