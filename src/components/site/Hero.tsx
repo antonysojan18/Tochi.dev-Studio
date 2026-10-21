@@ -92,32 +92,25 @@ export function Hero() {
   const hintOpacity = useTransform(scrollYProgress, [0, 0.06], [1, 0]);
 
   // Staggered scroll reveals with a calmer, slower pacing
-  // 1. Headline reveals gracefully across a wider, slower scroll range
-  const headlineOpacity = useTransform(scrollYProgress, [0.12, 0.38, 0.7, 0.84], [0, 1, 1, 0]);
-  const headlineY = useTransform(scrollYProgress, [0.12, 0.38, 0.7, 0.84], [40, 0, 0, -22]);
-  const headlineBlur = useTransform(
-    scrollYProgress,
-    [0.12, 0.38, 0.7, 0.84],
-    ["blur(10px)", "blur(0px)", "blur(0px)", "blur(6px)"],
-  );
+  // 1. Headline reveals gracefully across a wider, slower scroll range (no fade off)
+  const headlineOpacity = useTransform(scrollYProgress, [0.12, 0.38], [0, 1]);
+  const headlineEntryY = useTransform(scrollYProgress, [0.12, 0.38], [36, 0]);
+  const headlineBlur = useTransform(scrollYProgress, [0.12, 0.38], ["blur(10px)", "blur(0px)"]);
 
-  // 2. Subheading reveals slowly next
-  const subheadOpacity = useTransform(scrollYProgress, [0.24, 0.52, 0.7, 0.84], [0, 1, 1, 0]);
-  const subheadY = useTransform(scrollYProgress, [0.24, 0.52, 0.7, 0.84], [30, 0, 0, -18]);
-  const subheadBlur = useTransform(
-    scrollYProgress,
-    [0.24, 0.52, 0.7, 0.84],
-    ["blur(8px)", "blur(0px)", "blur(0px)", "blur(5px)"],
-  );
+  // 2. Subheading reveals slowly next (no fade off)
+  const subheadOpacity = useTransform(scrollYProgress, [0.24, 0.52], [0, 1]);
+  const subheadEntryY = useTransform(scrollYProgress, [0.24, 0.52], [26, 0]);
+  const subheadBlur = useTransform(scrollYProgress, [0.24, 0.52], ["blur(8px)", "blur(0px)"]);
 
-  // 3. At last, the action buttons appear with a relaxed ease
-  const ctaOpacity = useTransform(scrollYProgress, [0.42, 0.68, 0.7, 0.84], [0, 1, 1, 0]);
-  const ctaY = useTransform(scrollYProgress, [0.42, 0.68, 0.7, 0.84], [24, 0, 0, -14]);
+  // 3. At last, the action buttons appear with a relaxed ease (no fade off)
+  const ctaOpacity = useTransform(scrollYProgress, [0.42, 0.68], [0, 1]);
+  const ctaEntryY = useTransform(scrollYProgress, [0.42, 0.68], [18, 0]);
   const ctaScale = useTransform(scrollYProgress, [0.42, 0.68], [0.92, 1]);
 
-  // Transition to next section: dynamic zero-offset drop shadow and ambient elevation veil
-  const transitionShadowOpacity = useTransform(scrollYProgress, [0.68, 0.84, 1], [0, 1, 1]);
-  const heroExitScale = useTransform(scrollYProgress, [0.78, 1], [1, 0.98]);
+  // As the next section scrolls up, the hero copy moves up normally with the scroll
+  const copyExitY = useTransform(scrollYProgress, [0.65, 0.95], [0, -360]);
+
+  const heroExitScale = useTransform(scrollYProgress, [0.82, 1], [1, 0.98]);
 
   return (
     <section id="top" ref={sectionRef} className="relative h-[420vh]">
@@ -157,28 +150,28 @@ export function Hero() {
           Scroll to enter
         </motion.div>
 
-        {/* Copy */}
-        <div className="absolute inset-0 mx-auto flex max-w-6xl flex-col justify-center gap-10 px-5 pt-20 lg:flex-row lg:items-center lg:justify-between">
-          <div className="relative max-w-2xl">
+        {/* Copy - moves up normally with scroll */}
+        <div className="absolute inset-0 mx-auto flex max-w-6xl flex-col justify-center gap-10 px-5 pt-20 lg:flex-row lg:items-center lg:justify-between pointer-events-none">
+          <motion.div style={{ y: copyExitY }} className="relative max-w-2xl pointer-events-auto">
             <div
               aria-hidden="true"
               className="hero-scrim pointer-events-none absolute -inset-x-12 -inset-y-20 -z-10 sm:-inset-x-10 sm:-inset-y-14"
             />
             <motion.h1
-              style={{ opacity: headlineOpacity, y: headlineY, filter: headlineBlur }}
+              style={{ opacity: headlineOpacity, y: headlineEntryY, filter: headlineBlur }}
               className="hero-copy text-5xl font-semibold tracking-[-0.035em] md:text-7xl"
             >
               Modern software infused with Obsessive craft.
             </motion.h1>
             <motion.p
-              style={{ opacity: subheadOpacity, y: subheadY, filter: subheadBlur }}
+              style={{ opacity: subheadOpacity, y: subheadEntryY, filter: subheadBlur }}
               className="hero-copy mt-6 text-base leading-relaxed tracking-[-0.01em] text-foreground/90 md:text-xl"
             >
               An independent engineering studio crafting modern web interfaces and high-leverage
               internal platforms.
             </motion.p>
             <motion.div
-              style={{ opacity: ctaOpacity, y: ctaY, scale: ctaScale }}
+              style={{ opacity: ctaOpacity, y: ctaEntryY, scale: ctaScale }}
               className="mt-8 flex flex-wrap gap-3"
             >
               <motion.a
@@ -200,16 +193,8 @@ export function Hero() {
                 View selected work
               </motion.a>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
-
-        {/* Butter-smooth Zero Drop Shadow Ambient Transition Veil */}
-        <motion.div
-          style={{ opacity: transitionShadowOpacity }}
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-background via-background/60 to-transparent"
-        >
-          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-hairline/30 to-transparent shadow-[0_0_60px_30px_oklch(0_0_0/90%)]" />
-        </motion.div>
       </motion.div>
     </section>
   );

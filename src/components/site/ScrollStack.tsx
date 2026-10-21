@@ -1,7 +1,13 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { TiltSurface } from "./TiltSurface";
 import { DeviceMockup } from "./DeviceMockup";
-import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValueEvent,
+  type MotionValue,
+} from "motion/react";
 
 const projects = [
   {
@@ -113,20 +119,28 @@ export function ScrollStack() {
   const sectionRef = useRef<HTMLElement>(null);
   const ref = useRef<HTMLDivElement>(null);
 
+  const pathRef = useRef<SVGPathElement>(null);
+  const haloRef = useRef<SVGPathElement>(null);
+  const rimRef = useRef<SVGPathElement>(null);
+
   // Entrance transition from Hero section: starts rising smoothly before Hero scroll finishes
   const { scrollYProgress: enterProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "start 20%"],
+    offset: ["start end", "start 10%"],
   });
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
-  // Circular top bend fade-up & buttery zero drop shadow animation
-  const archY = useTransform(enterProgress, [0, 1], [70, 0]);
-  const archOpacity = useTransform(enterProgress, [0, 0.35], [0, 1]);
+  // 1. Straight first, then bends with the scroll
+  // enterProgress 0.02 -> 0.55: bend morphs from 0 (straight line) to 1 (circular dome)
+  const bendProgress = useTransform(enterProgress, [0.02, 0.55], [0, 1]);
+
+  // Zero drop shadow animation:
+  // Starts with elevation shadow as straight edge enters,
+  // softens as it curves, and settles to zero drop shadow as it fills the portion!
   const archFilter = useTransform(
     enterProgress,
-    [0, 0.5, 1],
+    [0, 0.45, 0.85],
     [
       "drop-shadow(0 -36px 54px oklch(0 0 0 / 95%)) drop-shadow(0 0 30px oklch(0 0 0 / 75%))",
       "drop-shadow(0 -16px 24px oklch(0 0 0 / 45%)) drop-shadow(0 0 10px oklch(0 0 0 / 25%))",
@@ -134,20 +148,38 @@ export function ScrollStack() {
     ],
   );
 
+  const glowOpacity = useTransform(bendProgress, [0, 1], [0.2, 1]);
+
+  const updateCurve = (bend: number) => {
+    const b = Math.max(0, Math.min(1, bend));
+    // When b = 0 -> cy = 200 (completely straight horizontal line across viewBox)
+    // When b = 1 -> cy = -220 (pronounced circular dome apex at y = -10)
+    const cy = 200 - b * 420;
+    const dFill = `M 0,200 Q 720,${cy.toFixed(1)} 1440,200 L 1440,200 L 0,200 Z`;
+    const dStroke = `M 0,200 Q 720,${cy.toFixed(1)} 1440,200`;
+    if (pathRef.current) pathRef.current.setAttribute("d", dFill);
+    if (haloRef.current) haloRef.current.setAttribute("d", dStroke);
+    if (rimRef.current) rimRef.current.setAttribute("d", dStroke);
+  };
+
+  useMotionValueEvent(bendProgress, "change", updateCurve);
+
+  useEffect(() => {
+    updateCurve(bendProgress.get());
+  }, [bendProgress]);
+
   return (
     <div ref={containerRef} className="relative z-20 -mt-[45vh] md:-mt-[55vh] w-full">
       {/* Circle top bend with zero drop shadow animation */}
-      <motion.div
-        style={{ y: archY, opacity: archOpacity, filter: archFilter }}
-        className="relative w-full"
-      >
+      <motion.div style={{ filter: archFilter }} className="relative w-full">
         {/* Ambient atmospheric backlight behind the circular arc */}
-        <div
+        <motion.div
           aria-hidden="true"
+          style={{ opacity: glowOpacity }}
           className="pointer-events-none absolute -top-20 left-1/2 h-44 w-[75vw] max-w-4xl -translate-x-1/2 rounded-full bg-amber/20 blur-3xl"
         />
 
-        {/* Circular dome crest SVG */}
+        {/* Circular dome crest SVG: straight first, then bends with scroll */}
         <div className="relative w-full overflow-hidden leading-none pointer-events-none">
           <svg
             viewBox="0 0 1440 200"
@@ -165,10 +197,15 @@ export function ScrollStack() {
               </linearGradient>
             </defs>
             {/* Solid dome fill uniting with background */}
-            <path d="M 0,200 Q 720,0 1440,200 L 1440,200 L 0,200 Z" className="fill-background" />
+            <path
+              ref={pathRef}
+              d="M 0,200 Q 720,200 1440,200 L 1440,200 L 0,200 Z"
+              className="fill-background"
+            />
             {/* Soft luminous halo */}
             <path
-              d="M 0,200 Q 720,0 1440,200"
+              ref={haloRef}
+              d="M 0,200 Q 720,200 1440,200"
               fill="none"
               stroke="var(--amber)"
               strokeWidth="4"
@@ -177,7 +214,8 @@ export function ScrollStack() {
             />
             {/* Luminous circular arc edge */}
             <path
-              d="M 0,200 Q 720,0 1440,200"
+              ref={rimRef}
+              d="M 0,200 Q 720,200 1440,200"
               fill="none"
               stroke="url(#circle-arc-glow)"
               strokeWidth="2"
