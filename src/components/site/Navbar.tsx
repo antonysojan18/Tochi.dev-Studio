@@ -80,7 +80,7 @@ export function Navbar() {
           transition={spring}
           className="rounded-full bg-header-ink px-3.5 py-1.5 text-sm font-medium text-header-cream"
         >
-          Start
+          Build
         </motion.a>
       </div>
 
