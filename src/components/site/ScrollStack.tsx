@@ -109,51 +109,113 @@ function Card({
 }
 
 export function ScrollStack() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Entrance transition from Hero section
+  // Entrance transition from Hero section: starts rising smoothly before Hero scroll finishes
   const { scrollYProgress: enterProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "start 30%"],
+    target: containerRef,
+    offset: ["start end", "start 20%"],
   });
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
-  // Butter-smooth Zero Drop Shadow animation as section meets the Hero
-  const sectionY = useTransform(enterProgress, [0, 1], [40, 0]);
-  const sectionOpacity = useTransform(enterProgress, [0, 0.5], [0, 1]);
-  const sectionFilter = useTransform(
+  // Circular top bend fade-up & buttery zero drop shadow animation
+  const archY = useTransform(enterProgress, [0, 1], [70, 0]);
+  const archOpacity = useTransform(enterProgress, [0, 0.35], [0, 1]);
+  const archFilter = useTransform(
     enterProgress,
-    [0, 0.45, 1],
+    [0, 0.5, 1],
     [
-      "drop-shadow(0 0 35px oklch(0 0 0 / 70%))",
-      "drop-shadow(0 0 15px oklch(0 0 0 / 30%))",
+      "drop-shadow(0 -36px 54px oklch(0 0 0 / 95%)) drop-shadow(0 0 30px oklch(0 0 0 / 75%))",
+      "drop-shadow(0 -16px 24px oklch(0 0 0 / 45%)) drop-shadow(0 0 10px oklch(0 0 0 / 25%))",
       "drop-shadow(0 0 0px oklch(0 0 0 / 0%))",
     ],
   );
 
   return (
-    <motion.section
-      id="work"
-      ref={sectionRef}
-      style={{ y: sectionY, opacity: sectionOpacity, filter: sectionFilter }}
-      className="relative z-10 mx-auto max-w-6xl px-5 py-24 md:py-32"
-    >
-      <div className="mb-12 flex items-end justify-between gap-6">
-        <div>
-          <span className="caps">Selected Works</span>
-          <h2 className="mt-3 text-2xl font-semibold tracking-[-0.025em] md:text-3xl">
-            Systems in production.
-          </h2>
+    <div ref={containerRef} className="relative z-20 -mt-[45vh] md:-mt-[55vh] w-full">
+      {/* Circle top bend with zero drop shadow animation */}
+      <motion.div
+        style={{ y: archY, opacity: archOpacity, filter: archFilter }}
+        className="relative w-full"
+      >
+        {/* Ambient atmospheric backlight behind the circular arc */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-20 left-1/2 h-44 w-[75vw] max-w-4xl -translate-x-1/2 rounded-full bg-amber/20 blur-3xl"
+        />
+
+        {/* Circular dome crest SVG */}
+        <div className="relative w-full overflow-hidden leading-none pointer-events-none">
+          <svg
+            viewBox="0 0 1440 200"
+            fill="none"
+            preserveAspectRatio="none"
+            className="w-full h-20 sm:h-28 md:h-40 lg:h-52 -mb-[2px] block overflow-visible"
+          >
+            <defs>
+              <linearGradient id="circle-arc-glow" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="var(--amber)" stopOpacity="0" />
+                <stop offset="20%" stopColor="var(--amber)" stopOpacity="0.45" />
+                <stop offset="50%" stopColor="#ffffff" stopOpacity="0.9" />
+                <stop offset="80%" stopColor="var(--amber)" stopOpacity="0.45" />
+                <stop offset="100%" stopColor="var(--amber)" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            {/* Solid dome fill uniting with background */}
+            <path d="M 0,200 Q 720,0 1440,200 L 1440,200 L 0,200 Z" className="fill-background" />
+            {/* Soft luminous halo */}
+            <path
+              d="M 0,200 Q 720,0 1440,200"
+              fill="none"
+              stroke="var(--amber)"
+              strokeWidth="4"
+              strokeOpacity="0.25"
+              className="blur-[2px]"
+            />
+            {/* Luminous circular arc edge */}
+            <path
+              d="M 0,200 Q 720,0 1440,200"
+              fill="none"
+              stroke="url(#circle-arc-glow)"
+              strokeWidth="2"
+              className="opacity-95"
+            />
+          </svg>
         </div>
-        <span className="caps hidden md:block">2024 — 2026</span>
-      </div>
-      <div ref={ref}>
-        {projects.map((p, i) => (
-          <Card key={p.title} p={p} i={i} total={projects.length} progress={scrollYProgress} />
-        ))}
-      </div>
-    </motion.section>
+
+        {/* Section body with solid background */}
+        <section
+          id="work"
+          ref={sectionRef}
+          className="bg-background pt-4 pb-24 md:pb-32 px-5 scroll-mt-24"
+        >
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-12 flex items-end justify-between gap-6">
+              <div>
+                <span className="caps">Selected Works</span>
+                <h2 className="mt-3 text-2xl font-semibold tracking-[-0.025em] md:text-3xl">
+                  Systems in production.
+                </h2>
+              </div>
+              <span className="caps hidden md:block">2024 — 2026</span>
+            </div>
+            <div ref={ref}>
+              {projects.map((p, i) => (
+                <Card
+                  key={p.title}
+                  p={p}
+                  i={i}
+                  total={projects.length}
+                  progress={scrollYProgress}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      </motion.div>
+    </div>
   );
 }

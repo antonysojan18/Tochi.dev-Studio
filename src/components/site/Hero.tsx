@@ -91,33 +91,33 @@ export function Hero() {
   const logoBlur = useTransform(scrollYProgress, [0.08, 0.2], ["blur(0px)", "blur(12px)"]);
   const hintOpacity = useTransform(scrollYProgress, [0, 0.06], [1, 0]);
 
-  // Staggered scroll reveals with smooth exit as next section approaches
-  // 1. Headline reveals first
-  const headlineOpacity = useTransform(scrollYProgress, [0.18, 0.3, 0.85, 0.96], [0, 1, 1, 0]);
-  const headlineY = useTransform(scrollYProgress, [0.18, 0.3, 0.85, 0.96], [44, 0, 0, -25]);
+  // Staggered scroll reveals with a calmer, slower pacing
+  // 1. Headline reveals gracefully across a wider, slower scroll range
+  const headlineOpacity = useTransform(scrollYProgress, [0.12, 0.38, 0.7, 0.84], [0, 1, 1, 0]);
+  const headlineY = useTransform(scrollYProgress, [0.12, 0.38, 0.7, 0.84], [40, 0, 0, -22]);
   const headlineBlur = useTransform(
     scrollYProgress,
-    [0.18, 0.3, 0.85, 0.96],
-    ["blur(8px)", "blur(0px)", "blur(0px)", "blur(6px)"],
+    [0.12, 0.38, 0.7, 0.84],
+    ["blur(10px)", "blur(0px)", "blur(0px)", "blur(6px)"],
   );
 
-  // 2. Subheading reveals next
-  const subheadOpacity = useTransform(scrollYProgress, [0.26, 0.38, 0.85, 0.96], [0, 1, 1, 0]);
-  const subheadY = useTransform(scrollYProgress, [0.26, 0.38, 0.85, 0.96], [32, 0, 0, -20]);
+  // 2. Subheading reveals slowly next
+  const subheadOpacity = useTransform(scrollYProgress, [0.24, 0.52, 0.7, 0.84], [0, 1, 1, 0]);
+  const subheadY = useTransform(scrollYProgress, [0.24, 0.52, 0.7, 0.84], [30, 0, 0, -18]);
   const subheadBlur = useTransform(
     scrollYProgress,
-    [0.26, 0.38, 0.85, 0.96],
-    ["blur(6px)", "blur(0px)", "blur(0px)", "blur(5px)"],
+    [0.24, 0.52, 0.7, 0.84],
+    ["blur(8px)", "blur(0px)", "blur(0px)", "blur(5px)"],
   );
 
-  // 3. At last, the action buttons appear
-  const ctaOpacity = useTransform(scrollYProgress, [0.36, 0.48, 0.85, 0.96], [0, 1, 1, 0]);
-  const ctaY = useTransform(scrollYProgress, [0.36, 0.48, 0.85, 0.96], [28, 0, 0, -15]);
-  const ctaScale = useTransform(scrollYProgress, [0.36, 0.48], [0.94, 1]);
+  // 3. At last, the action buttons appear with a relaxed ease
+  const ctaOpacity = useTransform(scrollYProgress, [0.42, 0.68, 0.7, 0.84], [0, 1, 1, 0]);
+  const ctaY = useTransform(scrollYProgress, [0.42, 0.68, 0.7, 0.84], [24, 0, 0, -14]);
+  const ctaScale = useTransform(scrollYProgress, [0.42, 0.68], [0.92, 1]);
 
   // Transition to next section: dynamic zero-offset drop shadow and ambient elevation veil
-  const transitionShadowOpacity = useTransform(scrollYProgress, [0.78, 0.92, 1], [0, 1, 1]);
-  const heroExitScale = useTransform(scrollYProgress, [0.88, 1], [1, 0.98]);
+  const transitionShadowOpacity = useTransform(scrollYProgress, [0.68, 0.84, 1], [0, 1, 1]);
+  const heroExitScale = useTransform(scrollYProgress, [0.78, 1], [1, 0.98]);
 
   return (
     <section id="top" ref={sectionRef} className="relative h-[420vh]">
