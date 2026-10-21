@@ -116,10 +116,10 @@ function Card({
 
 export function ScrollStack() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const crestRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const ref = useRef<HTMLDivElement>(null);
 
+  const pathRef = useRef<SVGPathElement>(null);
   const haloRef = useRef<SVGPathElement>(null);
   const rimRef = useRef<SVGPathElement>(null);
 
@@ -155,32 +155,21 @@ export function ScrollStack() {
     // When b = 0 -> cy = 200 (completely straight horizontal line across viewBox)
     // When b = 1 -> cy = -220 (pronounced circular dome apex at y = -10)
     const cy = 200 - b * 420;
+    const dFill = `M 0,200 Q 720,${cy.toFixed(1)} 1440,200 L 1440,200 L 0,200 Z`;
     const dStroke = `M 0,200 Q 720,${cy.toFixed(1)} 1440,200`;
+    if (pathRef.current) pathRef.current.setAttribute("d", dFill);
     if (haloRef.current) haloRef.current.setAttribute("d", dStroke);
     if (rimRef.current) rimRef.current.setAttribute("d", dStroke);
-
-    // Update clipPath for Silk background so it flows directly inside the circular dome
-    const clipEl = document.getElementById("silk-clip-path");
-    if (clipEl) {
-      const W = window.innerWidth || 1440;
-      const H = crestRef.current?.offsetHeight || 160;
-      const clipCy = H - b * (H * 1.5);
-      const dClip = `M 0,${H} Q ${(W / 2).toFixed(1)},${clipCy.toFixed(1)} ${W},${H} L ${W},99999 L 0,99999 Z`;
-      clipEl.setAttribute("d", dClip);
-    }
   };
 
   useMotionValueEvent(bendProgress, "change", updateCurve);
 
   useEffect(() => {
     updateCurve(bendProgress.get());
-    const handleResize = () => updateCurve(bendProgress.get());
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, [bendProgress]);
 
   return (
-    <div ref={containerRef} className="relative z-20 w-full">
+    <div ref={containerRef} className="relative z-20 -mt-[45vh] md:-mt-[55vh] w-full">
       {/* Circle top bend with zero drop shadow animation */}
       <motion.div style={{ filter: archFilter }} className="relative w-full">
         {/* Ambient atmospheric backlight behind the circular arc */}
@@ -191,10 +180,7 @@ export function ScrollStack() {
         />
 
         {/* Circular dome crest SVG: straight first, then bends with scroll */}
-        <div
-          ref={crestRef}
-          className="relative w-full overflow-hidden leading-none pointer-events-none"
-        >
+        <div className="relative w-full overflow-hidden leading-none pointer-events-none">
           <svg
             viewBox="0 0 1440 200"
             fill="none"
@@ -210,6 +196,12 @@ export function ScrollStack() {
                 <stop offset="100%" stopColor="var(--amber)" stopOpacity="0" />
               </linearGradient>
             </defs>
+            {/* Solid dome fill uniting with background */}
+            <path
+              ref={pathRef}
+              d="M 0,200 Q 720,200 1440,200 L 1440,200 L 0,200 Z"
+              className="fill-background"
+            />
             {/* Soft luminous halo */}
             <path
               ref={haloRef}
