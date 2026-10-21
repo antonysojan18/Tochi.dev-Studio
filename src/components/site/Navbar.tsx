@@ -55,7 +55,11 @@ export function Navbar() {
             className={`relative rounded-full px-3.5 py-1.5 text-sm transition-colors ${active === l.id ? "text-header-cream" : "text-header-ink-muted hover:text-header-ink"}`}
           >
             {active === l.id && (
-              <motion.span layoutId="nav-pill" transition={spring} className="absolute inset-0 rounded-full bg-header-ink" />
+              <motion.span
+                layoutId="nav-pill"
+                transition={spring}
+                className="absolute inset-0 rounded-full bg-header-ink"
+              />
             )}
             <span className="relative">{l.label}</span>
           </a>

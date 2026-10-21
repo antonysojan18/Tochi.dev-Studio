@@ -48,7 +48,8 @@
   --color-device-selection: var(--device-selection);
   --color-device-close: var(--device-close);
   --shadow-device: var(--device-shadow);
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
   --font-mono: "SF Mono", ui-monospace, Menlo, monospace;
 }
 
@@ -94,7 +95,7 @@
   --device-line: oklch(0.86 0.008 280);
   --device-accent: oklch(0.51 0.11 170);
   --device-accent-ink: oklch(0.99 0 0);
-  --device-selection: oklch(0.90 0.026 170);
+  --device-selection: oklch(0.9 0.026 170);
   --device-close: oklch(0.67 0.19 25);
   --device-metal: oklch(0.76 0.008 280);
   --device-metal-light: oklch(0.93 0.005 280);
@@ -102,22 +103,32 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
-  ::selection { background: var(--foreground); color: var(--background); }
+  ::selection {
+    background: var(--foreground);
+    color: var(--background);
+  }
 }
 
 @utility glass-ivory {
   background: oklch(0.955 0.018 88 / 78%);
   backdrop-filter: blur(24px) saturate(150%);
   border: 1px solid oklch(0.24 0.06 355 / 10%);
-  box-shadow: inset 0 1px 0 0 oklch(1 0 0 / 55%), 0 8px 32px oklch(0 0 0 / 22%);
+  box-shadow:
+    inset 0 1px 0 0 oklch(1 0 0 / 55%),
+    0 8px 32px oklch(0 0 0 / 22%);
   color: var(--header-ink);
 }
 
@@ -125,7 +136,9 @@
   background: oklch(0.24 0.065 355 / 55%);
   backdrop-filter: blur(32px) saturate(190%);
   border: 1px solid var(--hairline);
-  box-shadow: inset 0 1px 0 0 oklch(0.97 0.025 88 / 20%), 0 20px 60px oklch(0 0 0 / 35%);
+  box-shadow:
+    inset 0 1px 0 0 oklch(0.97 0.025 88 / 20%),
+    0 20px 60px oklch(0 0 0 / 35%);
 }
 
 @utility glass-sheen {
@@ -135,7 +148,11 @@
 }
 
 @utility spotlight {
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), oklch(0.97 0.025 88 / 10%), transparent 45%);
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    oklch(0.97 0.025 88 / 10%),
+    transparent 45%
+  );
 }
 
 @utility caps {
@@ -147,23 +164,55 @@
 }
 
 @utility hero-fade {
-  background: linear-gradient(180deg, oklch(0.2 0.06 355 / 40%) 0%, transparent 30%, transparent 60%, var(--background) 100%);
+  background: linear-gradient(
+    180deg,
+    oklch(0.2 0.06 355 / 40%) 0%,
+    transparent 30%,
+    transparent 60%,
+    var(--background) 100%
+  );
 }
 
 @utility hero-scrim {
-  background: radial-gradient(88% 68% at 34% 44%, oklch(0.13 0.05 355 / 94%) 0%, oklch(0.13 0.05 355 / 82%) 44%, oklch(0.13 0.05 355 / 40%) 72%, oklch(0.13 0.05 355 / 0%) 100%);
+  background: radial-gradient(
+    88% 68% at 34% 44%,
+    oklch(0.13 0.05 355 / 94%) 0%,
+    oklch(0.13 0.05 355 / 82%) 44%,
+    oklch(0.13 0.05 355 / 40%) 72%,
+    oklch(0.13 0.05 355 / 0%) 100%
+  );
   filter: blur(30px);
 }
 
 @utility hero-copy {
-  text-shadow: 0 0 1px oklch(0.12 0.05 355 / 90%), 0 1px 2px oklch(0.12 0.05 355 / 75%), 0 6px 28px oklch(0.12 0.05 355 / 55%);
+  text-shadow:
+    0 0 1px oklch(0.12 0.05 355 / 90%),
+    0 1px 2px oklch(0.12 0.05 355 / 75%),
+    0 6px 28px oklch(0.12 0.05 355 / 55%);
 }
 
-@keyframes led { 0%,100% { box-shadow: 0 0 0 0 oklch(0.73 0.19 148 / 60%); } 50% { box-shadow: 0 0 0 6px oklch(0.73 0.19 148 / 0%); } }
-@utility led { animation: led 1.8s ease-in-out infinite; }
+@keyframes led {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 oklch(0.73 0.19 148 / 60%);
+  }
+  50% {
+    box-shadow: 0 0 0 6px oklch(0.73 0.19 148 / 0%);
+  }
+}
+@utility led {
+  animation: led 1.8s ease-in-out infinite;
+}
 
-@keyframes flow { to { stroke-dashoffset: -40; } }
-@utility flow { stroke-dasharray: 6 6; animation: flow 1.6s linear infinite; }
+@keyframes flow {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+@utility flow {
+  stroke-dasharray: 6 6;
+  animation: flow 1.6s linear infinite;
+}
 
 .studio-atmosphere::before {
   content: "";
@@ -171,17 +220,33 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: linear-gradient(112deg, transparent 43%, var(--leak-warm) 49%, transparent 58%) 0 34% / 100% 32% no-repeat,
+  background:
+    linear-gradient(112deg, transparent 43%, var(--leak-warm) 49%, transparent 58%) 0 34% / 100% 32%
+      no-repeat,
     linear-gradient(75deg, var(--leak-rose), transparent 38%) 0 82% / 100% 28% no-repeat;
 }
 .light-leak {
-  background: linear-gradient(115deg, transparent 64%, var(--leak-warm) 84%, transparent 100%),
+  background:
+    linear-gradient(115deg, transparent 64%, var(--leak-warm) 84%, transparent 100%),
     linear-gradient(25deg, var(--leak-rose), transparent 38%);
   mix-blend-mode: screen;
 }
-.light-leak-hero { animation: light-drift 14s ease-in-out infinite alternate; }
-@keyframes light-drift { from { opacity: .35; transform: translateX(3%); } to { opacity: .8; transform: translateX(-3%); } }
-.tilt-perspective { perspective: 1200px; }
+.light-leak-hero {
+  animation: light-drift 14s ease-in-out infinite alternate;
+}
+@keyframes light-drift {
+  from {
+    opacity: 0.35;
+    transform: translateX(3%);
+  }
+  to {
+    opacity: 0.8;
+    transform: translateX(-3%);
+  }
+}
+.tilt-perspective {
+  perspective: 1200px;
+}
 .tilt-surface {
   transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
   transition: transform 350ms var(--spring);
@@ -189,26 +254,81 @@
 }
 .holographic-sheen {
   opacity: 0;
-  background: linear-gradient(115deg, transparent 15%, var(--sheen-cool) 30%, var(--sheen-pearl) 43%, var(--sheen-pink) 55%, transparent 72%);
+  background: linear-gradient(
+    115deg,
+    transparent 15%,
+    var(--sheen-cool) 30%,
+    var(--sheen-pearl) 43%,
+    var(--sheen-pink) 55%,
+    transparent 72%
+  );
   background-size: 220% 220%;
   background-position: var(--sheen-x, 50%) var(--sheen-y, 50%);
   mix-blend-mode: screen;
   transition: opacity 400ms ease;
   z-index: 2;
 }
-.tilt-surface[data-active="true"] > .holographic-sheen { opacity: 1; }
-.device-stage { background: linear-gradient(145deg, var(--accent), transparent 65%); }
-.device-laptop { transform: rotate(-2deg); }
-.device-with-phone { width: 85%; margin-right: 6%; transform: rotate(-4deg); }
-.device-menubar { background: var(--device-metal-light); }
-.device-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
-.device-base { background: linear-gradient(var(--device-metal-light), var(--device-metal)); box-shadow: var(--device-shadow); }
-.device-notch { background: var(--device-metal); }
-.device-chart { background: repeating-linear-gradient(to top, transparent 0, transparent 19px, var(--device-line) 20px); }
-.device-map { background: repeating-linear-gradient(0deg, transparent 0 14px, var(--device-line) 14px 16px), repeating-linear-gradient(90deg, var(--device-selection) 0 17px, var(--device-surface) 17px 20px); }
-@media (prefers-reduced-motion: reduce) {
-  .light-leak-hero { animation: none; }
-  .tilt-surface { transform: none; transition: none; }
-  .holographic-sheen { display: none; }
+.tilt-surface[data-active="true"] > .holographic-sheen {
+  opacity: 1;
 }
-@media (hover: none) { .holographic-sheen { display: none; } }
+.device-stage {
+  background: linear-gradient(145deg, var(--accent), transparent 65%);
+}
+.device-laptop {
+  transform: rotate(-2deg);
+}
+.device-with-phone {
+  width: 85%;
+  margin-right: 6%;
+  transform: rotate(-4deg);
+}
+.device-menubar {
+  background: var(--device-metal-light);
+}
+.device-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.device-base {
+  background: linear-gradient(var(--device-metal-light), var(--device-metal));
+  box-shadow: var(--device-shadow);
+}
+.device-notch {
+  background: var(--device-metal);
+}
+.device-chart {
+  background: repeating-linear-gradient(
+    to top,
+    transparent 0,
+    transparent 19px,
+    var(--device-line) 20px
+  );
+}
+.device-map {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 14px, var(--device-line) 14px 16px),
+    repeating-linear-gradient(
+      90deg,
+      var(--device-selection) 0 17px,
+      var(--device-surface) 17px 20px
+    );
+}
+@media (prefers-reduced-motion: reduce) {
+  .light-leak-hero {
+    animation: none;
+  }
+  .tilt-surface {
+    transform: none;
+    transition: none;
+  }
+  .holographic-sheen {
+    display: none;
+  }
+}
+@media (hover: none) {
+  .holographic-sheen {
+    display: none;
+  }
+}

@@ -49,8 +49,15 @@ export function Hero() {
       const img = new Image();
       img.decoding = "async";
       img.src = src(set.path, i);
-      if (i === 0) img.onload = () => { setReady(true); draw(0); };
-      else img.onload = () => { if (Math.abs(i - currentRef.current) < 3) draw(currentRef.current); };
+      if (i === 0)
+        img.onload = () => {
+          setReady(true);
+          draw(0);
+        };
+      else
+        img.onload = () => {
+          if (Math.abs(i - currentRef.current) < 3) draw(currentRef.current);
+        };
       imgs.push(img);
     }
     framesRef.current = imgs;
@@ -89,12 +96,21 @@ export function Hero() {
   return (
     <section id="top" ref={sectionRef} className="relative h-[420vh]">
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
-        <canvas ref={canvasRef} className={`absolute inset-0 h-full w-full transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"}`} />
+        <canvas
+          ref={canvasRef}
+          className={`absolute inset-0 h-full w-full transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"}`}
+        />
         <div className="hero-fade pointer-events-none absolute inset-0" />
-        <div aria-hidden="true" className="light-leak light-leak-hero pointer-events-none absolute inset-0" />
+        <div
+          aria-hidden="true"
+          className="light-leak light-leak-hero pointer-events-none absolute inset-0"
+        />
 
         {/* Brand mark */}
-        <motion.div style={{ opacity: logoOpacity, scale: logoScale, filter: logoBlur }} className="absolute inset-0 flex flex-col items-center justify-center px-6">
+        <motion.div
+          style={{ opacity: logoOpacity, scale: logoScale, filter: logoBlur }}
+          className="absolute inset-0 flex flex-col items-center justify-center px-6"
+        >
           <motion.img
             src={wordmark.url}
             alt="TOCHI .dev studio"
@@ -105,27 +121,43 @@ export function Hero() {
           />
         </motion.div>
 
-        <motion.div style={{ opacity: hintOpacity }} className="caps absolute bottom-8 left-1/2 -translate-x-1/2">
+        <motion.div
+          style={{ opacity: hintOpacity }}
+          className="caps absolute bottom-8 left-1/2 -translate-x-1/2"
+        >
           Scroll to enter
         </motion.div>
 
         {/* Copy */}
         <div className="absolute inset-0 mx-auto flex max-w-6xl flex-col justify-center gap-10 px-5 pt-20 lg:flex-row lg:items-center lg:justify-between">
           <motion.div style={{ opacity: copyOpacity, y: copyY }} className="relative max-w-xl">
-            <div aria-hidden="true" className="hero-scrim pointer-events-none absolute -inset-x-12 -inset-y-20 -z-10 sm:-inset-x-10 sm:-inset-y-14" />
+            <div
+              aria-hidden="true"
+              className="hero-scrim pointer-events-none absolute -inset-x-12 -inset-y-20 -z-10 sm:-inset-x-10 sm:-inset-y-14"
+            />
             <h1 className="hero-copy text-5xl font-semibold tracking-[-0.035em] md:text-7xl">
               Software crafted with discipline.
             </h1>
             <p className="hero-copy mt-5 text-base leading-relaxed tracking-[-0.01em] text-foreground/90 md:text-lg">
-              Bespoke web applications, internal operational tools, and intelligent systems. No agency friction. Direct access to your principal engineer.
+              Bespoke web applications, internal operational tools, and intelligent systems. No
+              agency friction. Direct access to your principal engineer.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <motion.a href="#intake" whileTap={tap} whileHover={{ scale: 1.02 }} transition={spring}
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground">
+              <motion.a
+                href="#intake"
+                whileTap={tap}
+                whileHover={{ scale: 1.02 }}
+                transition={spring}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground"
+              >
                 Start a Build <ArrowRight className="h-4 w-4" />
               </motion.a>
-              <motion.a href="#work" whileTap={tap} transition={spring}
-                className="glass inline-flex items-center rounded-full px-6 py-3 text-sm font-medium">
+              <motion.a
+                href="#work"
+                whileTap={tap}
+                transition={spring}
+                className="glass inline-flex items-center rounded-full px-6 py-3 text-sm font-medium"
+              >
                 View selected work
               </motion.a>
             </div>

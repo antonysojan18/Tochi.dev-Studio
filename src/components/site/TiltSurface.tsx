@@ -1,7 +1,13 @@
 import { useRef, type PointerEvent, type ReactNode } from "react";
 import { useReducedMotion } from "motion/react";
 
-export function TiltSurface({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function TiltSurface({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
 
@@ -16,7 +22,7 @@ export function TiltSurface({ children, className = "" }: { children: ReactNode;
     el.style.setProperty("--tilt-y", `${(x - 0.5) * 7}deg`);
     el.style.setProperty("--sheen-x", `${x * 100}%`);
     el.style.setProperty("--sheen-y", `${y * 100}%`);
-    el.dataset['active'] = "true";
+    el.dataset["active"] = "true";
   };
 
   const reset = () => {
@@ -24,14 +30,22 @@ export function TiltSurface({ children, className = "" }: { children: ReactNode;
     if (!el) return;
     el.style.setProperty("--tilt-x", "0deg");
     el.style.setProperty("--tilt-y", "0deg");
-    el.dataset['active'] = "false";
+    el.dataset["active"] = "false";
   };
 
   return (
-    <div className="tilt-perspective h-full" onPointerMove={move} onPointerLeave={reset} onPointerCancel={reset}>
+    <div
+      className="tilt-perspective h-full"
+      onPointerMove={move}
+      onPointerLeave={reset}
+      onPointerCancel={reset}
+    >
       <div ref={ref} className={`tilt-surface relative h-full ${className}`}>
         {children}
-        <div aria-hidden="true" className="holographic-sheen pointer-events-none absolute inset-0 rounded-[inherit]" />
+        <div
+          aria-hidden="true"
+          className="holographic-sheen pointer-events-none absolute inset-0 rounded-[inherit]"
+        />
       </div>
     </div>
   );

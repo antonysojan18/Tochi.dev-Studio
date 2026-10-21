@@ -10,9 +10,16 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "TOCHI (.dev studio) — Software crafted with discipline" },
-      { name: "description", content: "Bespoke web apps, internal tools and intelligent systems. Direct access to your principal engineer." },
+      {
+        name: "description",
+        content:
+          "Bespoke web apps, internal tools and intelligent systems. Direct access to your principal engineer.",
+      },
       { property: "og:title", content: "TOCHI (.dev studio)" },
-      { property: "og:description", content: "Bespoke web apps, internal tools and intelligent systems. No agency friction." },
+      {
+        property: "og:description",
+        content: "Bespoke web apps, internal tools and intelligent systems. No agency friction.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
