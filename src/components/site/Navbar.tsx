@@ -31,9 +31,13 @@ export function Navbar() {
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ ...spring, delay: 0.2 }}
-      className="glass-ivory fixed top-4 left-1/2 z-50 flex w-[calc(100%-1.5rem)] max-w-3xl -translate-x-1/2 items-center justify-between gap-2 rounded-full py-1.5 pr-1.5 pl-2.5 md:top-6"
+      className="glass-ivory fixed top-4 left-1/2 z-50 flex w-[calc(100%-1.5rem)] max-w-3xl -translate-x-1/2 items-center justify-between gap-2 rounded-full py-1.5 pr-1.5 pl-3 md:top-6 md:py-2 md:pr-2 md:pl-4"
     >
-      <a href="#top" aria-label="TOCHI .dev studio — back to top" className="shrink-0">
+      <a
+        href="#top"
+        aria-label="TOCHI .dev studio — back to top"
+        className="shrink-0 flex items-center"
+      >
         <motion.img
           src={headerLogo}
           alt="TOCHI .dev studio"
@@ -43,7 +47,7 @@ export function Navbar() {
           transition={{ ...spring, delay: 0.35 }}
           whileHover={{ scale: 1.04 }}
           whileTap={tap}
-          className="h-6 w-auto select-none object-contain md:h-7"
+          className="h-8 w-auto select-none object-contain md:h-9"
         />
       </a>
 
