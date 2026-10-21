@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import headerLogo from "@/assets/tochi-header.png.asset.json";
 import { spring, tap } from "./motion";
 
 const links = [
@@ -28,11 +29,21 @@ export function Navbar() {
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ ...spring, delay: 0.2 }}
-      className="glass-thin fixed top-4 left-1/2 z-50 flex w-[calc(100%-1.5rem)] max-w-3xl -translate-x-1/2 items-center justify-between gap-2 rounded-full py-1.5 pr-1.5 pl-4 md:top-6"
+      className="glass-thin fixed top-4 left-1/2 z-50 flex w-[calc(100%-1.5rem)] max-w-3xl -translate-x-1/2 items-center justify-between gap-2 rounded-full py-1.5 pr-1.5 pl-2.5 md:top-6"
     >
-      <a href="#top" className="flex items-baseline gap-1.5">
-        <span className="text-sm font-bold tracking-[0.12em]">TOCHI</span>
-        <span className="hidden font-mono text-[10px] text-tertiary sm:inline">.dev studio</span>
+      <a href="#top" aria-label="TOCHI .dev studio — back to top" className="shrink-0">
+        <motion.img
+          src={headerLogo.url}
+          alt="TOCHI .dev studio"
+          width={headerLogo.size ? undefined : undefined}
+          draggable={false}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ ...spring, delay: 0.35 }}
+          whileHover={{ scale: 1.04 }}
+          whileTap={tap}
+          className="h-8 w-auto select-none object-contain brightness-110 drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)] md:h-9"
+        />
       </a>
 
       <nav className="hidden items-center md:flex">
@@ -50,19 +61,15 @@ export function Navbar() {
         ))}
       </nav>
 
-      <div className="flex items-center gap-2">
-        <span className="hidden items-center gap-2 rounded-full border border-hairline px-3 py-1 font-mono text-[11px] text-muted-foreground lg:flex">
-          <span className="led h-1.5 w-1.5 rounded-full bg-emerald" /> Open for Q4
-        </span>
-        <motion.a
-          href="#intake"
-          whileTap={tap}
-          transition={spring}
-          className="rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground transition-transform hover:scale-[0.98]"
-        >
-          Start a Build
-        </motion.a>
-      </div>
+      <motion.a
+        href="#intake"
+        whileTap={tap}
+        whileHover={{ scale: 1.03 }}
+        transition={spring}
+        className="shrink-0 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground"
+      >
+        Start a Build
+      </motion.a>
     </motion.header>
   );
 }
