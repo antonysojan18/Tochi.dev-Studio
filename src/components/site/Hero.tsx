@@ -112,10 +112,7 @@ export function Hero() {
         {/* Copy */}
         <div className="absolute inset-0 mx-auto flex max-w-6xl flex-col justify-center gap-10 px-5 pt-20 lg:flex-row lg:items-center lg:justify-between">
           <motion.div style={{ opacity: copyOpacity, y: copyY }} className="max-w-xl">
-            <span className="caps inline-flex items-center gap-2 rounded-full border border-hairline bg-muted px-3 py-1 backdrop-blur-md">
-              <Sparkles className="h-3 w-3" /> iOS-Grade Precision • High-Velocity Systems
-            </span>
-            <h1 className="mt-5 text-5xl font-semibold tracking-[-0.035em] md:text-7xl">
+            <h1 className="text-5xl font-semibold tracking-[-0.035em] md:text-7xl">
               Software crafted with discipline.
             </h1>
             <p className="mt-5 text-base leading-relaxed tracking-[-0.01em] text-foreground/70 md:text-lg">
