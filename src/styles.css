@@ -80,8 +80,8 @@
   --spring: cubic-bezier(0.32, 0.72, 0, 1);
   --leak-warm: oklch(0.79 0.17 66 / 16%);
   --leak-rose: oklch(0.65 0.12 20 / 10%);
-  --header-ink: oklch(0.24 0.06 355);
-  --header-ink-muted: oklch(0.24 0.06 355 / 55%);
+  --header-ink: oklch(0.185 0.06 355);
+  --header-ink-muted: oklch(0.185 0.06 355 / 78%);
   --header-cream: oklch(0.955 0.018 88);
   --sheen-cool: oklch(0.85 0.09 190 / 9%);
   --sheen-pink: oklch(0.82 0.09 350 / 8%);
