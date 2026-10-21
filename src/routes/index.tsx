@@ -34,9 +34,30 @@ function Index() {
     <main className="studio-atmosphere relative isolate">
       <Navbar />
       <Hero />
-      <div className="relative isolate">
-        {/* Silk flowing background from the second section onwards */}
-        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div className="relative isolate -mt-[45vh] md:-mt-[55vh]">
+        {/* Clip path definition for the circular dome top */}
+        <svg
+          width="0"
+          height="0"
+          className="absolute pointer-events-none"
+          style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}
+          aria-hidden="true"
+        >
+          <defs>
+            <clipPath id="silk-dome-clip" clipPathUnits="userSpaceOnUse">
+              <path id="silk-clip-path" d="M 0,200 Q 720,200 1440,200 L 1440,99999 L 0,99999 Z" />
+            </clipPath>
+          </defs>
+        </svg>
+
+        {/* Silk flowing background from the second section onwards, clipped into the circular dome at the top */}
+        <div
+          className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+          style={{
+            clipPath: "url(#silk-dome-clip)",
+            WebkitClipPath: "url(#silk-dome-clip)",
+          }}
+        >
           <div className="sticky top-0 h-[100svh] w-full">
             <Silk
               color="#3c0e24"
