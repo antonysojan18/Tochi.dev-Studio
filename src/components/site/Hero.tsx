@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll, useTransform } from "motion/react";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
 import heroImg from "@/assets/IMG_1048.PNG";
 import { spring, tap } from "./motion";
 
@@ -184,13 +184,15 @@ export function Hero() {
                 Start a Build <ArrowRight className="h-4 w-4" />
               </motion.a>
               <motion.a
-                href="#work"
+                href="https://antonysojan.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileTap={tap}
                 whileHover={{ scale: 1.02 }}
                 transition={spring}
-                className="glass inline-flex items-center rounded-full px-6 py-3.5 text-sm font-medium hover:border-primary/40"
+                className="glass inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium hover:border-primary/40"
               >
-                View selected work
+                Meet Developer <ArrowUpRight className="h-4 w-4" />
               </motion.a>
             </motion.div>
           </motion.div>
