@@ -49,7 +49,9 @@
   --color-device-close: var(--device-close);
   --shadow-device: var(--device-shadow);
   --font-sans:
-    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+    "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  --font-heading: "Outfit", "Inter", sans-serif;
+  --font-display: "Outfit", "Inter", sans-serif;
   --font-mono: "SF Mono", ui-monospace, Menlo, monospace;
 }
 
@@ -116,6 +118,14 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+  }
   ::selection {
     background: var(--foreground);
     color: var(--background);
@@ -156,6 +166,14 @@
   );
 }
 
+@utility font-heading {
+  font-family: var(--font-heading);
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+}
+
 @utility caps {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -175,14 +193,13 @@
 }
 
 @utility hero-scrim {
-  background: radial-gradient(
-    88% 68% at 34% 44%,
-    oklch(0.13 0.05 355 / 94%) 0%,
-    oklch(0.13 0.05 355 / 82%) 44%,
-    oklch(0.13 0.05 355 / 40%) 72%,
-    oklch(0.13 0.05 355 / 0%) 100%
+  background: linear-gradient(
+    90deg,
+    oklch(0.13 0.05 355 / 90%) 0%,
+    oklch(0.13 0.05 355 / 75%) 40%,
+    oklch(0.13 0.05 355 / 35%) 75%,
+    transparent 100%
   );
-  filter: blur(30px);
 }
 
 @utility hero-copy {

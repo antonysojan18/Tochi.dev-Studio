@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Navbar } from "@/components/site/Navbar";
 import { Hero } from "@/components/site/Hero";
+import { Mission } from "@/components/site/Mission";
+import { Services } from "@/components/site/Services";
 import { ScrollStack } from "@/components/site/ScrollStack";
-import { BentoGrid } from "@/components/site/BentoGrid";
 import { Process } from "@/components/site/Process";
 import { IntakeSheet } from "@/components/site/IntakeSheet";
 
@@ -33,8 +34,9 @@ function Index() {
     <main className="studio-atmosphere relative isolate">
       <Navbar />
       <Hero />
+      <Mission />
+      <Services />
       <ScrollStack />
-      <BentoGrid />
       <Process />
       <IntakeSheet />
     </main>

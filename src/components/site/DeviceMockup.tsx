@@ -37,7 +37,7 @@ export function DeviceMockup({ title, index }: { title: string; index: number })
             </div>
             <PanelLeft className="size-2.5 text-device-muted" />
           </div>
-          <div className="grid min-h-[180px] grid-cols-[25%_1fr] md:min-h-[230px]">
+          <div className="grid min-h-[140px] sm:min-h-[180px] grid-cols-[25%_1fr] md:min-h-[230px]">
             <aside className="border-r border-device-line bg-device-toolbar p-2 md:p-3">
               <div className="mb-4 flex items-center gap-1.5 text-[9px] font-semibold text-device-ink">
                 <span className="flex size-4 items-center justify-center rounded bg-device-accent text-device-accent-ink">

@@ -1,21 +1,10 @@
 import { useState, type FormEvent } from "react";
 import { motion } from "motion/react";
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight, Check, Github, Linkedin, Instagram } from "lucide-react";
 import { spring, tap } from "./motion";
 
 const field =
   "w-full rounded-2xl border border-input bg-primary-foreground/[0.04] px-4 py-3.5 text-[15px] text-primary-foreground placeholder:text-primary-foreground/40 outline-none transition focus:border-primary-foreground focus:ring-4 focus:ring-ring/15";
-
-const GitHub = () => (
-  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-    <path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z" />
-  </svg>
-);
-const LinkedIn = () => (
-  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
-    <path d="M20.4 20.5h-3.6v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9v5.7H9.3V9h3.4v1.6c.5-.9 1.6-1.8 3.4-1.8 3.6 0 4.3 2.4 4.3 5.5v6.2zM5.3 7.4a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2zM7.1 20.5H3.5V9h3.6v11.5zM22.2 0H1.8C.8 0 0 .8 0 1.7v20.6c0 .9.8 1.7 1.8 1.7h20.4c1 0 1.8-.8 1.8-1.7V1.7C24 .8 23.2 0 22.2 0z" />
-  </svg>
-);
 
 export function IntakeSheet() {
   const [sent, setSent] = useState(false);
@@ -23,7 +12,7 @@ export function IntakeSheet() {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     const body = `${f.get("message")}\n\n— ${f.get("name")} (${f.get("email")})`;
-    window.location.href = `mailto:antony@tochistudio.com?subject=${encodeURIComponent("New build — " + f.get("name"))}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:tochi.devstudio@gmail.com?subject=${encodeURIComponent("New build — " + f.get("name"))}&body=${encodeURIComponent(body)}`;
     setSent(true);
   };
 
@@ -63,7 +52,7 @@ export function IntakeSheet() {
               whileTap={tap}
               transition={spring}
               type="submit"
-              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary-foreground py-4 text-[15px] font-medium text-primary"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary-foreground py-4 text-[15px] font-medium text-primary cursor-pointer transition hover:opacity-95"
             >
               {sent ? (
                 <>
@@ -78,21 +67,71 @@ export function IntakeSheet() {
           </form>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-primary-foreground/10 pt-6 text-sm sm:flex-row sm:items-center sm:justify-between">
-          <a href="mailto:antony@tochistudio.com" className="font-medium hover:opacity-70">
-            antony@tochistudio.com
-          </a>
-          <div className="flex items-center gap-4">
-            <a href="https://github.com" aria-label="GitHub" className="hover:opacity-70">
-              <GitHub />
+        {/* Contact & Social Links */}
+        <div className="mt-12 flex flex-col gap-6 border-t border-primary-foreground/10 pt-6 text-sm">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <a
+              href="mailto:tochi.devstudio@gmail.com"
+              className="text-base font-medium tracking-tight text-primary-foreground transition-opacity hover:opacity-75"
+            >
+              tochi.devstudio@gmail.com
             </a>
-            <a href="https://linkedin.com" aria-label="LinkedIn" className="hover:opacity-70">
-              <LinkedIn />
-            </a>
+
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+              <a
+                href="https://github.com/antonysojan18"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="GitHub"
+                className="flex items-center gap-2 rounded-full border border-primary-foreground/15 bg-primary-foreground/[0.06] px-3.5 py-1.5 text-xs font-medium text-primary-foreground transition-all hover:bg-primary-foreground/15 hover:scale-105"
+              >
+                <Github className="h-3.5 w-3.5" />
+                <span>GitHub</span>
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/antonysojan"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="LinkedIn"
+                className="flex items-center gap-2 rounded-full border border-primary-foreground/15 bg-primary-foreground/[0.06] px-3.5 py-1.5 text-xs font-medium text-primary-foreground transition-all hover:bg-primary-foreground/15 hover:scale-105"
+              >
+                <Linkedin className="h-3.5 w-3.5" />
+                <span>LinkedIn</span>
+              </a>
+
+              <a
+                href="https://www.linkedin.com/company/tochi-studio"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="Company LinkedIn"
+                className="flex items-center gap-2 rounded-full border border-primary-foreground/15 bg-primary-foreground/[0.06] px-3.5 py-1.5 text-xs font-medium text-primary-foreground transition-all hover:bg-primary-foreground/15 hover:scale-105"
+              >
+                <Linkedin className="h-3.5 w-3.5" />
+                <span>Company LinkedIn</span>
+              </a>
+
+              <a
+                href="https://www.instagram.com/antonysojan18/"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="Instagram"
+                className="flex items-center gap-2 rounded-full border border-primary-foreground/15 bg-primary-foreground/[0.06] px-3.5 py-1.5 text-xs font-medium text-primary-foreground transition-all hover:bg-primary-foreground/15 hover:scale-105"
+              >
+                <Instagram className="h-3.5 w-3.5" />
+                <span>Instagram</span>
+              </a>
+            </div>
           </div>
-          <span className="font-mono text-[11px] text-primary-foreground/50">
-            TOCHI (.dev studio) © 2026. All rights reserved.
-          </span>
+
+          <div className="flex flex-col gap-2 border-t border-primary-foreground/5 pt-4 sm:flex-row sm:items-center sm:justify-between">
+            <span className="font-mono text-[11px] text-primary-foreground/50">
+              TOCHI (.dev studio) © 2026. All rights reserved.
+            </span>
+            <span className="font-mono text-[11px] text-primary-foreground/50">
+              Direct Engineering • High-Craft Systems
+            </span>
+          </div>
         </div>
       </motion.div>
     </section>

@@ -125,6 +125,10 @@ export function Hero() {
         <div className="hero-fade pointer-events-none absolute inset-0" />
         <div
           aria-hidden="true"
+          className="hero-scrim pointer-events-none absolute inset-y-0 left-0 w-full md:w-[75%] lg:w-[58%]"
+        />
+        <div
+          aria-hidden="true"
           className="light-leak light-leak-hero pointer-events-none absolute inset-0"
         />
 
@@ -153,10 +157,6 @@ export function Hero() {
         {/* Copy - moves up normally with scroll */}
         <div className="absolute inset-0 mx-auto flex max-w-6xl flex-col justify-center gap-10 px-5 pt-20 lg:flex-row lg:items-center lg:justify-between pointer-events-none">
           <motion.div style={{ y: copyExitY }} className="relative max-w-2xl pointer-events-auto">
-            <div
-              aria-hidden="true"
-              className="hero-scrim pointer-events-none absolute -inset-x-12 -inset-y-20 -z-10 sm:-inset-x-10 sm:-inset-y-14"
-            />
             <motion.h1
               style={{ opacity: headlineOpacity, y: headlineEntryY, filter: headlineBlur }}
               className="hero-copy text-5xl font-semibold tracking-[-0.035em] md:text-7xl"

@@ -1,13 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { TiltSurface } from "./TiltSurface";
 import { DeviceMockup } from "./DeviceMockup";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValueEvent,
-  type MotionValue,
-} from "motion/react";
+import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 
 const projects = [
   {
@@ -75,33 +69,33 @@ function Card({
 
   return (
     <div className="md:sticky md:top-28" style={{ zIndex: i }}>
-      <motion.article style={{ scale, opacity, filter }} className="mb-6 origin-top md:mb-[12vh]">
-        <TiltSurface className="glass glass-sheen rounded-[2rem] p-5 md:p-8">
-          <div className="grid gap-6 md:grid-cols-[1fr_1.3fr] md:gap-10">
+      <motion.article style={{ scale, opacity, filter }} className="mb-4 sm:mb-6 origin-top md:mb-[12vh]">
+        <TiltSurface className="glass glass-sheen rounded-2xl sm:rounded-3xl md:rounded-[2rem] p-3.5 sm:p-5 md:p-8">
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-[1fr_1.3fr] md:gap-10">
             <div className="flex flex-col">
-              <span className="caps">
+              <span className="caps text-[9px] sm:text-[11px]">
                 0{i + 1} / {p.cat}
               </span>
-              <h3 className="mt-3 text-3xl font-semibold tracking-[-0.03em] md:text-4xl">
+              <h3 className="mt-1.5 sm:mt-3 text-xl sm:text-2xl md:text-4xl font-semibold tracking-tight">
                 {p.title}
               </h3>
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-2.5 sm:mt-4 flex flex-wrap gap-1.5 sm:gap-2">
                 {p.tags.map((t) => (
                   <span
                     key={t}
-                    className="rounded-full border border-hairline bg-muted px-3 py-1 font-mono text-[11px] text-muted-foreground"
+                    className="rounded-full border border-hairline bg-muted px-2 sm:px-3 py-0.5 font-mono text-[9px] sm:text-[11px] text-muted-foreground"
                   >
                     {t}
                   </span>
                 ))}
               </div>
-              <div className="mt-auto grid grid-cols-2 gap-4 pt-8">
+              <div className="mt-4 sm:mt-6 md:mt-auto grid grid-cols-2 gap-3 sm:gap-4 pt-3 sm:pt-5 md:pt-8 border-t border-hairline/40 md:border-0">
                 {p.m.map(([v, k]) => (
                   <div key={k}>
-                    <div className="text-4xl font-semibold tracking-[-0.04em] tabular-nums md:text-5xl">
+                    <div className="text-2xl sm:text-3xl md:text-5xl font-semibold tracking-tight tabular-nums">
                       {v}
                     </div>
-                    <div className="caps mt-1">{k}</div>
+                    <div className="caps mt-0.5 text-[8px] sm:text-[10px]">{k}</div>
                   </div>
                 ))}
               </div>
@@ -115,145 +109,35 @@ function Card({
 }
 
 export function ScrollStack() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
   const ref = useRef<HTMLDivElement>(null);
-
-  const pathRef = useRef<SVGPathElement>(null);
-  const haloRef = useRef<SVGPathElement>(null);
-  const rimRef = useRef<SVGPathElement>(null);
-
-  // Entrance transition from Hero section: starts rising smoothly before Hero scroll finishes
-  const { scrollYProgress: enterProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "start 10%"],
-  });
-
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
-  // 1. Straight first, then bends with the scroll
-  // enterProgress 0.02 -> 0.55: bend morphs from 0 (straight line) to 1 (circular dome)
-  const bendProgress = useTransform(enterProgress, [0.02, 0.55], [0, 1]);
-
-  // Zero drop shadow animation:
-  // Starts with elevation shadow as straight edge enters,
-  // softens as it curves, and settles to zero drop shadow as it fills the portion!
-  const archFilter = useTransform(
-    enterProgress,
-    [0, 0.45, 0.85],
-    [
-      "drop-shadow(0 -36px 54px oklch(0 0 0 / 95%)) drop-shadow(0 0 30px oklch(0 0 0 / 75%))",
-      "drop-shadow(0 -16px 24px oklch(0 0 0 / 45%)) drop-shadow(0 0 10px oklch(0 0 0 / 25%))",
-      "drop-shadow(0 0 0px oklch(0 0 0 / 0%))",
-    ],
-  );
-
-  const glowOpacity = useTransform(bendProgress, [0, 1], [0.2, 1]);
-
-  const updateCurve = (bend: number) => {
-    const b = Math.max(0, Math.min(1, bend));
-    // When b = 0 -> cy = 200 (completely straight horizontal line across viewBox)
-    // When b = 1 -> cy = -220 (pronounced circular dome apex at y = -10)
-    const cy = 200 - b * 420;
-    const dFill = `M 0,200 Q 720,${cy.toFixed(1)} 1440,200 L 1440,200 L 0,200 Z`;
-    const dStroke = `M 0,200 Q 720,${cy.toFixed(1)} 1440,200`;
-    if (pathRef.current) pathRef.current.setAttribute("d", dFill);
-    if (haloRef.current) haloRef.current.setAttribute("d", dStroke);
-    if (rimRef.current) rimRef.current.setAttribute("d", dStroke);
-  };
-
-  useMotionValueEvent(bendProgress, "change", updateCurve);
-
-  useEffect(() => {
-    updateCurve(bendProgress.get());
-  }, [bendProgress]);
-
   return (
-    <div ref={containerRef} className="relative z-20 -mt-[45vh] md:-mt-[55vh] w-full">
-      {/* Circle top bend with zero drop shadow animation */}
-      <motion.div style={{ filter: archFilter }} className="relative w-full">
-        {/* Ambient atmospheric backlight behind the circular arc */}
-        <motion.div
-          aria-hidden="true"
-          style={{ opacity: glowOpacity }}
-          className="pointer-events-none absolute -top-20 left-1/2 h-44 w-[75vw] max-w-4xl -translate-x-1/2 rounded-full bg-amber/20 blur-3xl"
-        />
-
-        {/* Circular dome crest SVG: straight first, then bends with scroll */}
-        <div className="relative w-full overflow-hidden leading-none pointer-events-none">
-          <svg
-            viewBox="0 0 1440 200"
-            fill="none"
-            preserveAspectRatio="none"
-            className="w-full h-20 sm:h-28 md:h-40 lg:h-52 -mb-[2px] block overflow-visible"
-          >
-            <defs>
-              <linearGradient id="circle-arc-glow" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="var(--amber)" stopOpacity="0" />
-                <stop offset="20%" stopColor="var(--amber)" stopOpacity="0.45" />
-                <stop offset="50%" stopColor="#ffffff" stopOpacity="0.9" />
-                <stop offset="80%" stopColor="var(--amber)" stopOpacity="0.45" />
-                <stop offset="100%" stopColor="var(--amber)" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            {/* Solid dome fill uniting with background */}
-            <path
-              ref={pathRef}
-              d="M 0,200 Q 720,200 1440,200 L 1440,200 L 0,200 Z"
-              className="fill-background"
-            />
-            {/* Soft luminous halo */}
-            <path
-              ref={haloRef}
-              d="M 0,200 Q 720,200 1440,200"
-              fill="none"
-              stroke="var(--amber)"
-              strokeWidth="4"
-              strokeOpacity="0.25"
-              className="blur-[2px]"
-            />
-            {/* Luminous circular arc edge */}
-            <path
-              ref={rimRef}
-              d="M 0,200 Q 720,200 1440,200"
-              fill="none"
-              stroke="url(#circle-arc-glow)"
-              strokeWidth="2"
-              className="opacity-95"
-            />
-          </svg>
-        </div>
-
-        {/* Section body with solid background */}
-        <section
-          id="work"
-          ref={sectionRef}
-          className="bg-background pt-4 pb-24 md:pb-32 px-5 scroll-mt-24"
-        >
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-12 flex items-end justify-between gap-6">
-              <div>
-                <span className="caps">Selected Works</span>
-                <h2 className="mt-3 text-2xl font-semibold tracking-[-0.025em] md:text-3xl">
-                  Systems in production.
-                </h2>
-              </div>
-              <span className="caps hidden md:block">2024 — 2026</span>
-            </div>
-            <div ref={ref}>
-              {projects.map((p, i) => (
-                <Card
-                  key={p.title}
-                  p={p}
-                  i={i}
-                  total={projects.length}
-                  progress={scrollYProgress}
-                />
-              ))}
-            </div>
+    <section id="work" className="bg-background py-14 sm:py-20 md:py-32 px-3 sm:px-5 scroll-mt-24">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-6 sm:mb-10 md:mb-12 flex items-end justify-between gap-6">
+          <div>
+            <span className="font-heading text-xs font-semibold uppercase tracking-widest text-header-cream/80">
+              Portfolio
+            </span>
+            <h2 className="font-heading mt-3 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground">
+              Selected Works
+            </h2>
           </div>
-        </section>
-      </motion.div>
-    </div>
+          <span className="font-mono text-xs text-muted-foreground hidden md:block">2024 — 2026</span>
+        </div>
+        <div ref={ref}>
+          {projects.map((p, i) => (
+            <Card
+              key={p.title}
+              p={p}
+              i={i}
+              total={projects.length}
+              progress={scrollYProgress}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
