@@ -13,3 +13,10 @@
   width: 100%;
   height: 100%;
 }
+
+/* Disable Splash Cursor on mobile screens and touch devices */
+@media (max-width: 768px), (pointer: coarse) {
+  .splash-cursor {
+    display: none !important;
+  }
+}

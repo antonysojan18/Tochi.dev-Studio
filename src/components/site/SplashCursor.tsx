@@ -274,6 +274,7 @@ export interface SplashCursorProps {
   zIndex?: number;
   className?: string;
   style?: CSSProperties;
+  disableOnMobile?: boolean;
 }
 
 export function SplashCursor({
@@ -295,11 +296,29 @@ export function SplashCursor({
   theme = 'dark',
   zIndex = 40,
   className = '',
-  style
+  style,
+  disableOnMobile = true
 }: SplashCursorProps) {
   const rootRef = useRef(null);
   const canvasRef = useRef(null);
   const [generation, setGeneration] = useState(0);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth <= 768 || window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+  });
+
+  useEffect(() => {
+    if (!disableOnMobile) return undefined;
+    const checkMobile = () => {
+      const mobile =
+        typeof window !== 'undefined' &&
+        (window.innerWidth <= 768 || window.matchMedia('(max-width: 768px), (pointer: coarse)').matches);
+      setIsMobile(mobile);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [disableOnMobile]);
 
   const settings = {
     palette: (Array.isArray(colors) && colors.length ? colors : ['#8A1C36']).map(parseColor),
@@ -323,6 +342,7 @@ export function SplashCursor({
   const introRef = useRef(intro);
 
   useEffect(() => {
+    if (disableOnMobile && isMobile) return undefined;
     const parent = rootRef.current?.parentElement;
     if (!contained || !parent || getComputedStyle(parent).position !== 'static') return undefined;
     const previous = parent.style.position;
@@ -330,9 +350,10 @@ export function SplashCursor({
     return () => {
       parent.style.position = previous;
     };
-  }, [contained]);
+  }, [contained, disableOnMobile, isMobile]);
 
   useEffect(() => {
+    if (disableOnMobile && isMobile) return undefined;
     const canvas = canvasRef.current;
     if (!canvas) return undefined;
     const gl = canvas.getContext('webgl2', {
@@ -966,7 +987,11 @@ export function SplashCursor({
       canvas.removeEventListener('webglcontextrestored', onRestored);
       release();
     };
-  }, [generation]);
+  }, [generation, disableOnMobile, isMobile]);
+
+  if (disableOnMobile && isMobile) {
+    return null;
+  }
 
   return (
     <div
