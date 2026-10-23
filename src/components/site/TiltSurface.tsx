@@ -41,6 +41,14 @@ export function TiltSurface({
       onPointerCancel={reset}
     >
       <div ref={ref} className={`tilt-surface relative h-full ${className}`}>
+        <div
+          aria-hidden="true"
+          className="card-spotlight-glow pointer-events-none absolute inset-0 rounded-[inherit]"
+        />
+        <div
+          aria-hidden="true"
+          className="card-spotlight pointer-events-none absolute -inset-px rounded-[inherit]"
+        />
         {children}
         <div
           aria-hidden="true"

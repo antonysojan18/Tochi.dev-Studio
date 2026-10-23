@@ -289,6 +289,39 @@
 .tilt-surface[data-active="true"] > .holographic-sheen {
   opacity: 1;
 }
+.card-spotlight-glow {
+  opacity: 0;
+  transition: opacity 350ms ease;
+  background: radial-gradient(
+    380px circle at var(--sheen-x, 50%) var(--sheen-y, 50%),
+    rgba(255, 77, 54, 0.08),
+    rgba(107, 17, 36, 0.04) 45%,
+    transparent 70%
+  );
+  z-index: 0;
+}
+.tilt-surface[data-active="true"] > .card-spotlight-glow {
+  opacity: 1;
+}
+.card-spotlight {
+  opacity: 0;
+  transition: opacity 300ms ease;
+  z-index: 1;
+  padding: 1px;
+  background: radial-gradient(
+    280px circle at var(--sheen-x, 50%) var(--sheen-y, 50%),
+    rgba(255, 120, 150, 0.7) 0%,
+    rgba(255, 77, 54, 0.4) 30%,
+    rgba(138, 28, 54, 0.15) 60%,
+    transparent 80%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.tilt-surface[data-active="true"] > .card-spotlight {
+  opacity: 1;
+}
 .device-stage {
   background: linear-gradient(145deg, var(--accent), transparent 65%);
 }

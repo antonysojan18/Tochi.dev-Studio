@@ -2,6 +2,8 @@ import { useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight, Check, Github, Linkedin, Instagram } from "lucide-react";
 import { spring, tap } from "./motion";
+import FlyingButton from "./FlyingButton";
+import { KineticText } from "./KineticText";
 
 const field =
   "w-full rounded-2xl border border-input bg-primary-foreground/[0.04] px-4 py-3.5 text-[15px] text-primary-foreground placeholder:text-primary-foreground/40 outline-none transition focus:border-primary-foreground focus:ring-4 focus:ring-ring/15";
@@ -31,9 +33,9 @@ export function IntakeSheet() {
             <span className="font-mono text-xs tracking-[0.08em] text-primary-foreground/50 uppercase">
               Intake
             </span>
-            <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em] md:text-5xl">
+            <KineticText as="h2" className="mt-3 text-3xl font-semibold tracking-[-0.03em] md:text-5xl">
               Let's architect your system.
-            </h2>
+            </KineticText>
             <p className="mt-4 max-w-sm text-primary-foreground/65">
               Reply within one business day — from the engineer who will build it.
             </p>
@@ -133,7 +135,44 @@ export function IntakeSheet() {
             </span>
           </div>
         </div>
+
+        {/* 3D Flying Button over the bottom centre of the contact box */}
+        <div className="relative mt-8 sm:mt-10 flex w-full justify-center px-2 sm:px-4" style={{ height: 56 }}>
+          <div
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-2xl flex justify-center pointer-events-none"
+            style={{ height: 260, maxWidth: "100%" }}
+          >
+            <FlyingButton
+              theme="burgundy"
+              size="medium"
+              altitude={160}
+              hoverTime={3.2}
+              jets={2}
+              thrusters
+              trigger="hover"
+              carryCursor={false}
+              smoke={1.2}
+              turbulence={1}
+              wobble={1}
+              ramp={false}
+              buttonColor="#6B1124"
+              thrustColor="#FF4D36"
+              smokeColor="#F4EAEF"
+              textColor="#FAF7F2"
+              onClick={() => {
+                // Do not scroll away while flight is in progress
+                setTimeout(() => {
+                  const input = document.querySelector<HTMLInputElement>("input[name='name']");
+                  input?.focus({ preventScroll: true });
+                }, 4500);
+              }}
+            >
+              Start Build
+            </FlyingButton>
+          </div>
+        </div>
       </motion.div>
     </section>
   );
 }
+

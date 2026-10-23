@@ -1,0 +1,226 @@
+.flying-button {
+  --fly-bg: #6B1124;
+  --fly-bg-gradient: linear-gradient(135deg, #7E162B 0%, #540B1A 100%);
+  --fly-ink: #FAF7F2;
+  --fly-pod: #3A0713;
+  --fly-glow: #FF4D36;
+  --fly-thrust: 0;
+  --fly-h: 46px;
+  --fly-px: 24px;
+  --fly-fs: 14px;
+  --fly-scale: 1;
+  --fly-ramp: #3A0713;
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  overflow: visible;
+  isolation: isolate;
+  touch-action: manipulation;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .flying-button {
+    --fly-h: 40px;
+    --fly-px: 18px;
+    --fly-fs: 13px;
+    --fly-scale: 0.88;
+    min-height: 180px;
+  }
+}
+
+.flying-button[data-carry] {
+  cursor: none;
+}
+
+.flying-button__ramp {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: none;
+  pointer-events: none;
+}
+
+.flying-button__ramp-body {
+  stroke: var(--fly-ramp);
+  stroke-linejoin: round;
+}
+
+.flying-button__ramp-edge {
+  stroke: color-mix(in srgb, var(--fly-ramp) 72%, #fff);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.flying-button[data-theme='light'] .flying-button__ramp-edge {
+  stroke: color-mix(in srgb, var(--fly-ramp) 82%, #000);
+}
+
+.flying-button[data-dragging]:not([data-carry]) {
+  cursor: grabbing;
+}
+
+.flying-button__smoke {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.flying-button__craft {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--fly-h);
+  margin: 0;
+  padding: 0 var(--fly-px);
+  border: 1px solid rgba(255, 180, 200, 0.35);
+  border-radius: var(--fly-radius, calc(var(--fly-h) / 2));
+  background: var(--fly-bg-gradient, var(--fly-bg));
+  color: var(--fly-ink);
+  font-family: inherit;
+  font-size: var(--fly-fs);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  visibility: hidden;
+  pointer-events: auto;
+  box-shadow:
+    0 14px 32px -4px rgba(107, 17, 36, 0.55),
+    0 4px 12px -2px rgba(0, 0, 0, 0.35),
+    0 0 24px color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 90%), transparent);
+  transition: filter 0.2s ease, box-shadow 0.2s ease;
+}
+
+.flying-button[data-ready] .flying-button__craft {
+  visibility: visible;
+}
+
+.flying-button[data-trigger='hover'] .flying-button__craft {
+  cursor: pointer;
+}
+
+.flying-button[data-carry] .flying-button__craft {
+  pointer-events: auto;
+}
+
+.flying-button__craft:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--fly-glow) 70%, transparent);
+  outline-offset: 3px;
+}
+
+.flying-button__face {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 48%),
+    linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 45%), transparent),
+      transparent 60%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.flying-button[data-theme='light'] .flying-button__face {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 50%),
+    linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 30%), transparent),
+      transparent 62%
+    );
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+}
+
+.flying-button__label {
+  position: relative;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.flying-button__craft[data-hover],
+.flying-button__craft:hover {
+  filter: brightness(1.15) drop-shadow(0 0 16px rgba(255, 77, 54, 0.55));
+}
+
+.flying-button[data-theme='light'] .flying-button__craft[data-hover],
+.flying-button[data-theme='light'] .flying-button__craft:hover {
+  filter: brightness(0.97);
+}
+
+.flying-button__craft[data-pressed] .flying-button__label {
+  transform: scale(0.96);
+}
+
+.flying-button__pod {
+  position: absolute;
+  top: calc(100% - 3px * var(--fly-scale));
+  width: calc(14px * var(--fly-scale));
+  height: calc(8px * var(--fly-scale));
+  border-radius: 2px 2px 5px 5px;
+  background: linear-gradient(180deg, var(--fly-pod, #3A0713), #1C0308);
+  transform: translateX(-50%);
+  z-index: -1;
+  pointer-events: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.flying-button__pod::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: calc(7px * var(--fly-scale));
+  height: calc(2.5px * var(--fly-scale));
+  border-radius: 2px 2px 1px 1px;
+  transform: translateX(-50%);
+  background: color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 100%), #3f3f46);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 100%), transparent);
+}
+
+.flying-button[data-theme='light'] .flying-button__pod::after {
+  background: color-mix(in srgb, var(--fly-glow) calc(var(--fly-thrust) * 100%), #52525b);
+}
+
+.flying-button__cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: 20px;
+  height: 28px;
+  pointer-events: none;
+  display: none;
+  will-change: transform;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.28));
+}
+
+.flying-button[data-carry] .flying-button__cursor {
+  display: block;
+}

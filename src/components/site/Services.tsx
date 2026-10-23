@@ -11,6 +11,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { TiltSurface } from "./TiltSurface";
+import { KineticText } from "./KineticText";
 import { Button } from "@/components/ui/button";
 import { spring, tap } from "./motion";
 
@@ -74,9 +75,12 @@ export function Services() {
     <section id="services" className="relative z-10 mx-auto max-w-6xl px-3 sm:px-5 pt-12 pb-20 sm:pt-16 sm:pb-24 md:py-28 scroll-mt-28 md:scroll-mt-32">
       {/* Section Header: Clean and bold */}
       <div className="mb-6 sm:mb-10 md:mb-14">
-        <h2 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground">
+        <KineticText
+          as="h2"
+          className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground"
+        >
           Our Services
-        </h2>
+        </KineticText>
       </div>
 
       {/* Grid: 3-column on mobile and desktop alike (Top 2 tiles, Bottom 3 tiles) */}

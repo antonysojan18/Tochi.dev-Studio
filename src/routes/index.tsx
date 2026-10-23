@@ -6,6 +6,8 @@ import { Services } from "@/components/site/Services";
 import { ScrollStack } from "@/components/site/ScrollStack";
 import { Process } from "@/components/site/Process";
 import { IntakeSheet } from "@/components/site/IntakeSheet";
+import SplashCursor from "@/components/site/SplashCursor";
+import { AmbientOrbs } from "@/components/site/AmbientOrbs";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -32,6 +34,24 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <main className="studio-atmosphere relative isolate">
+      <AmbientOrbs />
+      <SplashCursor
+        rainbow={false}
+        colors={["#8A1C36", "#6B1124", "#A82544", "#540B1A", "#FF4D36"]}
+        size={0.7}
+        force={0.8}
+        swirl={2.8}
+        trail={0.85}
+        clickSplash
+        colorSpeed={0.8}
+        intensity={0.85}
+        momentum={0.9}
+        shading={0.8}
+        glow={0.1}
+        quality="high"
+        intro
+        contained={false}
+      />
       <Navbar />
       <Hero />
       <Mission />
@@ -42,3 +62,5 @@ function Index() {
     </main>
   );
 }
+
+
