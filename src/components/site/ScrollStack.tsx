@@ -1,48 +1,47 @@
 import { useRef } from "react";
+import { ArrowUpRight } from "lucide-react";
 import { TiltSurface } from "./TiltSurface";
 import { DeviceMockup } from "./DeviceMockup";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
 
+import bobaLiveImg from "@/assets/BobaLive Careers.png";
+import luahImg from "@/assets/Luah E commerce.png";
+import stradoImg from "@/assets/Strado design.png";
+
 const projects = [
   {
-    title: "Ledgerline",
-    cat: "Fintech operations platform",
-    tags: ["Next.js", "Supabase", "Tailwind"],
+    title: "BobaLive Careers",
+    cat: "Automated HR recruitment system",
+    tags: ["Recruitment Tech", "AI Screening", "Workflow Automation", "Analytics"],
     m: [
-      ["<45ms", "response time"],
-      ["3.2×", "faster close"],
+      ["10×", "faster screening"],
+      ["Automated", "lead pipeline"],
     ],
-    hue: "from-amber/30",
+    image: bobaLiveImg,
+    hue: "from-[#8A1C36]/30",
   },
   {
-    title: "Kiln AI",
-    cat: "Document intelligence engine",
-    tags: ["Python", "FastAPI", "pgvector"],
+    title: "Luah",
+    cat: "Jewellery e-commerce platform",
+    tags: ["E-Commerce", "Shopify / Headless", "Anti-Tarnish Luxury", "Direct-to-Consumer"],
     m: [
-      ["99.4%", "precision"],
-      ["1.2M", "docs / month"],
+      ["100%", "waterproof craft"],
+      ["18K Gold", "premium catalog"],
     ],
-    hue: "from-emerald/25",
+    image: luahImg,
+    hue: "from-amber/25",
   },
   {
-    title: "Fleetdeck",
-    cat: "Internal logistics tooling",
-    tags: ["React", "Postgres", "Workers"],
+    title: "Strado Design",
+    cat: "Brand website & media agency",
+    tags: ["Media Agency", "Brand Identity", "Motion & Web", "Production"],
     m: [
-      ["−68%", "manual ops"],
-      ["24/7", "live tracking"],
+      ["360°", "brand production"],
+      ["Bespoke", "creative studio"],
     ],
+    image: stradoImg,
+    url: "https://stradodesign.com/",
     hue: "from-foreground/20",
-  },
-  {
-    title: "Atelier OS",
-    cat: "Boutique commerce & CMS",
-    tags: ["Next.js", "Stripe", "Tailwind"],
-    m: [
-      ["100", "lighthouse"],
-      ["+41%", "conversion"],
-    ],
-    hue: "from-amber/20",
   },
 ];
 
@@ -76,9 +75,23 @@ function Card({
               <span className="caps text-[9px] sm:text-[11px]">
                 0{i + 1} / {p.cat}
               </span>
-              <h3 className="mt-1.5 sm:mt-3 text-xl sm:text-2xl md:text-4xl font-semibold tracking-tight">
-                {p.title}
-              </h3>
+              <div className="mt-1.5 sm:mt-3 flex items-center gap-2 sm:gap-3 flex-wrap">
+                <h3 className="text-xl sm:text-2xl md:text-4xl font-semibold tracking-tight">
+                  {p.title}
+                </h3>
+                {p.url && (
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visit ${p.title} live website`}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-hairline/80 bg-muted/60 px-3 py-1 font-mono text-[10px] sm:text-xs text-foreground transition-all hover:bg-foreground hover:text-background hover:scale-105"
+                  >
+                    <span>Visit website</span>
+                    <ArrowUpRight className="size-3" />
+                  </a>
+                )}
+              </div>
               <div className="mt-2.5 sm:mt-4 flex flex-wrap gap-1.5 sm:gap-2">
                 {p.tags.map((t) => (
                   <span
@@ -100,7 +113,7 @@ function Card({
                 ))}
               </div>
             </div>
-            <DeviceMockup title={p.title} index={i} />
+            <DeviceMockup title={p.title} index={i} image={p.image} url={p.url} />
           </div>
         </TiltSurface>
       </motion.article>

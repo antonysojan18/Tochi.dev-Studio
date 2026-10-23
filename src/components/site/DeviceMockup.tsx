@@ -12,31 +12,82 @@ import {
 
 const navigation = ["Overview", "Workspace", "Activity", "Settings"];
 
-export function DeviceMockup({ title, index }: { title: string; index: number }) {
-  const isPhone = index === 2;
+export function DeviceMockup({
+  title,
+  index,
+  image,
+  url,
+}: {
+  title: string;
+  index: number;
+  image?: string;
+  url?: string;
+}) {
+  const isPhone = !image && index === 2;
+  const displayUrl = url
+    ? url.replace(/^https?:\/\//, "").replace(/\/$/, "")
+    : `${title.toLowerCase().replace(/\s+/g, "")}.com`;
+
   return (
     <div
-      className="device-stage relative flex aspect-[16/11] items-center justify-center overflow-hidden rounded-xl"
+      className="device-stage relative flex aspect-[16/11] items-center justify-center overflow-hidden rounded-xl p-2 sm:p-3 md:p-4"
       aria-label={`${title} ${isPhone ? "desktop and mobile" : "MacBook"} concept mockup`}
     >
-      <div className={`device-laptop relative w-[94%] ${isPhone ? "device-with-phone" : ""}`}>
-        <div className="device-screen overflow-hidden rounded-t-xl rounded-b-md border-[5px] border-device-rim bg-device-surface shadow-device">
-          <div className="device-menubar flex h-5 items-center justify-between px-3 text-[7px] font-medium text-device-ink">
-            <span className="flex items-center gap-2">
+      <div className={`device-laptop relative w-[96%] ${isPhone ? "device-with-phone" : ""}`}>
+        <div className="device-screen overflow-hidden rounded-t-xl rounded-b-md border-[4px] sm:border-[5px] border-device-rim bg-device-surface shadow-device">
+          <div className="device-menubar flex h-4 sm:h-5 items-center justify-between px-2.5 sm:px-3 text-[7px] font-medium text-device-ink">
+            <span className="flex items-center gap-1.5 sm:gap-2">
               <Command className="size-2" /> {title}
               <span className="hidden sm:inline">File&nbsp;&nbsp; Edit&nbsp;&nbsp; View</span>
             </span>
-            <span>Studio workspace</span>
+            <span className="text-[6px] sm:text-[7px] text-device-muted">Studio preview</span>
           </div>
-          <div className="flex h-7 items-center gap-1 border-b border-device-line bg-device-toolbar px-2">
+          <div className="flex h-6 sm:h-7 items-center gap-1 border-b border-device-line bg-device-toolbar px-2">
             <span className="device-dot bg-device-close" />
             <span className="device-dot bg-amber" />
             <span className="device-dot bg-emerald" />
-            <div className="mx-auto flex w-[55%] items-center justify-center gap-1 rounded border border-device-line bg-device-surface py-0.5 text-[7px] text-device-muted">
-              <Search className="size-2" /> {title.toLowerCase()} / workspace
+            <div className="mx-auto flex w-[62%] items-center justify-center gap-1 rounded border border-device-line bg-device-surface py-0.5 px-1.5 text-[7px] text-device-muted">
+              <Search className="size-2 shrink-0" />
+              <span className="truncate">{displayUrl}</span>
             </div>
-            <PanelLeft className="size-2.5 text-device-muted" />
+            {url ? (
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Visit ${url}`}
+                className="text-device-muted hover:text-device-ink transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ArrowUpRight className="size-2.5 text-device-accent" />
+              </a>
+            ) : (
+              <PanelLeft className="size-2.5 text-device-muted" />
+            )}
           </div>
+          {image ? (
+            <div className="group/screen relative aspect-[16/8] sm:aspect-[16/7.8] w-full overflow-hidden bg-device-toolbar">
+              <img
+                src={image}
+                alt={`${title} interface preview`}
+                className="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover/screen:scale-[1.03]"
+                loading="lazy"
+              />
+              {url && (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 z-10 flex items-center justify-center bg-black/45 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover/screen:opacity-100"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-background/95 px-3.5 py-1.5 font-mono text-[11px] font-medium text-foreground shadow-2xl transition-transform hover:scale-105">
+                    Visit {displayUrl} <ArrowUpRight className="size-3 text-device-accent" />
+                  </span>
+                </a>
+              )}
+            </div>
+          ) : (
           <div className="grid min-h-[140px] sm:min-h-[180px] grid-cols-[25%_1fr] md:min-h-[230px]">
             <aside className="border-r border-device-line bg-device-toolbar p-2 md:p-3">
               <div className="mb-4 flex items-center gap-1.5 text-[9px] font-semibold text-device-ink">
@@ -126,6 +177,7 @@ export function DeviceMockup({ title, index }: { title: string; index: number })
               ))}
             </div>
           </div>
+          )}
         </div>
         <div className="device-base relative mx-auto h-3 w-[108%] -translate-x-[4%] rounded-b-xl">
           <div className="device-notch mx-auto h-1 w-[16%] rounded-b" />
