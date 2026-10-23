@@ -16,14 +16,16 @@ export function DeviceMockup({
   title,
   index,
   image,
+  video,
   url,
 }: {
   title: string;
   index: number;
   image?: string;
+  video?: string;
   url?: string;
 }) {
-  const isPhone = !image && index === 2;
+  const isPhone = !image && !video && index === 2;
   const displayUrl = url
     ? url.replace(/^https?:\/\//, "").replace(/\/$/, "")
     : `${title.toLowerCase().replace(/\s+/g, "")}.com`;
@@ -65,7 +67,31 @@ export function DeviceMockup({
               <PanelLeft className="size-2 sm:size-2.5 text-device-muted" />
             )}
           </div>
-          {image ? (
+          {video ? (
+            <div className="group/screen relative aspect-[16/8] sm:aspect-[16/7.8] w-full overflow-hidden bg-device-toolbar">
+              <video
+                src={video}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover/screen:scale-[1.03]"
+              />
+              {url && (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 z-10 flex items-center justify-center bg-black/45 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover/screen:opacity-100"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-background/95 px-3.5 py-1.5 font-mono text-[11px] font-medium text-foreground shadow-2xl transition-transform hover:scale-105">
+                    Visit {displayUrl} <ArrowUpRight className="size-3 text-device-accent" />
+                  </span>
+                </a>
+              )}
+            </div>
+          ) : image ? (
             <div className="group/screen relative aspect-[16/8] sm:aspect-[16/7.8] w-full overflow-hidden bg-device-toolbar">
               <img
                 src={image}

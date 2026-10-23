@@ -7,6 +7,7 @@ import { motion, useScroll, useTransform, type MotionValue } from "motion/react"
 import bobaLiveImg from "@/assets/BobaLive Careers.png";
 import luahImg from "@/assets/Luah E commerce.png";
 import stradoImg from "@/assets/Strado design.png";
+import dimeVideo from "@/assets/DiMe Innovation Scroll Animation website.mp4";
 
 const projects = [
   {
@@ -30,6 +31,13 @@ const projects = [
     image: stradoImg,
     url: "https://stradodesign.com/",
     hue: "from-foreground/20",
+  },
+  {
+    title: "DiMe Innovation",
+    cat: "Scroll animation website",
+    tags: ["Scroll Experience", "Motion Design", "Interactive 3D", "Creative Engineering"],
+    video: dimeVideo,
+    hue: "from-[#8A1C36]/25",
   },
 ];
 
@@ -91,7 +99,7 @@ function Card({
                 ))}
               </div>
             </div>
-            <DeviceMockup title={p.title} index={i} image={p.image} url={p.url} />
+            <DeviceMockup title={p.title} index={i} image={p.image} video={p.video} url={p.url} />
           </div>
         </TiltSurface>
       </motion.article>
