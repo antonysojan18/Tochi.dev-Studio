@@ -74,7 +74,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "TOCHI (.dev studio)" },
+      { title: "TOCHI .dev studio" },
       { name: "description", content: "Boutique software studio." },
       { name: "theme-color", content: "#2C0D1B" },
       { property: "og:type", content: "website" },

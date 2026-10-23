@@ -1,4 +1,4 @@
-# TOCHI (.dev studio)
+# TOCHI .dev studio
 
 Boutique software studio web application built with [TanStack Start](https://tanstack.com/start) and React.
 

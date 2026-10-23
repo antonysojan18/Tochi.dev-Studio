@@ -128,7 +128,7 @@ export function IntakeSheet() {
 
           <div className="flex flex-col gap-2 border-t border-primary-foreground/5 pt-4 sm:flex-row sm:items-center sm:justify-between">
             <span className="font-mono text-[11px] text-primary-foreground/50">
-              TOCHI (.dev studio) © 2026. All rights reserved.
+              TOCHI .dev studio © 2026. All rights reserved.
             </span>
             <span className="font-mono text-[11px] text-primary-foreground/50">
               Direct Engineering • High-Craft Systems

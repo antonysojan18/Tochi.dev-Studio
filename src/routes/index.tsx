@@ -12,13 +12,13 @@ import { AmbientOrbs } from "@/components/site/AmbientOrbs";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "TOCHI (.dev studio) — Modern software infused with Obsessive craft" },
+      { title: "TOCHI .dev studio" },
       {
         name: "description",
         content:
           "An independent engineering studio crafting modern web interfaces and high-leverage internal platforms.",
       },
-      { property: "og:title", content: "TOCHI (.dev studio)" },
+      { property: "og:title", content: "TOCHI .dev studio" },
       {
         property: "og:description",
         content:
