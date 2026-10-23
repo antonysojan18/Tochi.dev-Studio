@@ -30,24 +30,24 @@ export function DeviceMockup({
 
   return (
     <div
-      className="device-stage relative flex aspect-[16/11] items-center justify-center overflow-hidden rounded-xl p-2 sm:p-3 md:p-4"
+      className="device-stage relative flex aspect-[16/10] sm:aspect-[16/9.5] items-center justify-center overflow-hidden rounded-lg sm:rounded-xl p-1.5 sm:p-2.5 md:p-3"
       aria-label={`${title} ${isPhone ? "desktop and mobile" : "MacBook"} concept mockup`}
     >
-      <div className={`device-laptop relative w-[96%] ${isPhone ? "device-with-phone" : ""}`}>
-        <div className="device-screen overflow-hidden rounded-t-xl rounded-b-md border-[4px] sm:border-[5px] border-device-rim bg-device-surface shadow-device">
-          <div className="device-menubar flex h-4 sm:h-5 items-center justify-between px-2.5 sm:px-3 text-[7px] font-medium text-device-ink">
-            <span className="flex items-center gap-1.5 sm:gap-2">
-              <Command className="size-2" /> {title}
+      <div className={`device-laptop relative w-full max-w-[96%] ${isPhone ? "device-with-phone" : ""}`}>
+        <div className="device-screen overflow-hidden rounded-t-lg sm:rounded-t-xl rounded-b sm:rounded-b-md border-[3px] sm:border-[4px] border-device-rim bg-device-surface shadow-device">
+          <div className="device-menubar flex h-3.5 sm:h-4.5 items-center justify-between px-2 sm:px-2.5 text-[6.5px] sm:text-[7px] font-medium text-device-ink">
+            <span className="flex items-center gap-1 sm:gap-1.5">
+              <Command className="size-1.5 sm:size-2" /> {title}
               <span className="hidden sm:inline">File&nbsp;&nbsp; Edit&nbsp;&nbsp; View</span>
             </span>
-            <span className="text-[6px] sm:text-[7px] text-device-muted">Studio preview</span>
+            <span className="text-[5.5px] sm:text-[6.5px] text-device-muted hidden xs:inline">Studio preview</span>
           </div>
-          <div className="flex h-6 sm:h-7 items-center gap-1 border-b border-device-line bg-device-toolbar px-2">
+          <div className="flex h-5 sm:h-6 items-center gap-1 border-b border-device-line bg-device-toolbar px-1.5 sm:px-2">
             <span className="device-dot bg-device-close" />
             <span className="device-dot bg-amber" />
             <span className="device-dot bg-emerald" />
-            <div className="mx-auto flex w-[62%] items-center justify-center gap-1 rounded border border-device-line bg-device-surface py-0.5 px-1.5 text-[7px] text-device-muted">
-              <Search className="size-2 shrink-0" />
+            <div className="mx-auto flex w-[62%] items-center justify-center gap-1 rounded border border-device-line bg-device-surface py-0.5 px-1.5 text-[6.5px] sm:text-[7px] text-device-muted">
+              <Search className="size-1.5 sm:size-2 shrink-0" />
               <span className="truncate">{displayUrl}</span>
             </div>
             {url ? (
@@ -59,10 +59,10 @@ export function DeviceMockup({
                 className="text-device-muted hover:text-device-ink transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >
-                <ArrowUpRight className="size-2.5 text-device-accent" />
+                <ArrowUpRight className="size-2 sm:size-2.5 text-device-accent" />
               </a>
             ) : (
-              <PanelLeft className="size-2.5 text-device-muted" />
+              <PanelLeft className="size-2 sm:size-2.5 text-device-muted" />
             )}
           </div>
           {image ? (
@@ -179,8 +179,8 @@ export function DeviceMockup({
           </div>
           )}
         </div>
-        <div className="device-base relative mx-auto h-3 w-[108%] -translate-x-[4%] rounded-b-xl">
-          <div className="device-notch mx-auto h-1 w-[16%] rounded-b" />
+        <div className="device-base relative mx-auto h-2 sm:h-2.5 w-[106%] -translate-x-[3%] rounded-b-lg">
+          <div className="device-notch mx-auto h-0.5 sm:h-1 w-[16%] rounded-b" />
         </div>
       </div>
       {isPhone && (
