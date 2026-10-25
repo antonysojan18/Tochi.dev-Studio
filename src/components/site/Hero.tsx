@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll, useTransform } from "motion/react";
 import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
 import heroImg from "@/assets/IMG_1048.PNG";
+import brochurePdf from "@/assets/TOCHI .dev studio Brochure.pdf";
 import { spring, tap } from "./motion";
 
 const SETS = {
@@ -175,13 +176,15 @@ export function Hero() {
               className="mt-8 flex flex-wrap gap-3"
             >
               <motion.a
-                href="#intake"
+                href={brochurePdf}
+                target="_blank"
+                rel="noopener noreferrer"
                 whileTap={tap}
                 whileHover={{ scale: 1.02 }}
                 transition={spring}
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground shadow-[0_8px_24px_oklch(var(--primary)/25%)]"
               >
-                Start a Build <ArrowRight className="h-4 w-4" />
+                View Brochure <ArrowUpRight className="h-4 w-4" />
               </motion.a>
               <motion.a
                 href="https://antonysojan.vercel.app/"
