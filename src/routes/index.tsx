@@ -10,23 +10,93 @@ import { IntakeSheet } from "@/components/site/IntakeSheet";
 import SplashCursor from "@/components/site/SplashCursor";
 import { AmbientOrbs } from "@/components/site/AmbientOrbs";
 
+const homeServiceSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": "https://tochidevstudio.in/#studio-services",
+  "name": "TOCHI .dev Studio",
+  "url": "https://tochidevstudio.in",
+  "image": "https://tochidevstudio.in/og-image.png",
+  "description":
+    "Independent creative engineering and software studio building high-performance web platforms, AI applications, and interactive digital products.",
+  "serviceType": "Creative Web Engineering & AI Platform Development",
+  "areaServed": {
+    "@type": "Country",
+    "name": "Global"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Software Engineering & Design Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "AI Web Platform Engineering"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Creative UI/UX & Generative Interface Design"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Intelligent Backend & API Architecture"
+        }
+      }
+    ]
+  }
+};
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "TOCHI .dev studio" },
+      { title: "TOCHI .dev Studio | Creative Engineering & AI Web Development Studio" },
       {
         name: "description",
         content:
-          "An independent engineering studio crafting modern web interfaces and high-leverage internal platforms.",
+          "TOCHI .dev Studio (tochidevstudio.in) is an elite creative engineering and software studio crafting high-performance web platforms, AI applications, and interactive digital products.",
       },
-      { property: "og:title", content: "TOCHI .dev studio" },
+      {
+        name: "keywords",
+        content:
+          "tochidevstudio, tochidevstudio.in, tochi dev studio, tochi.dev studio, tochi studio, tochi labs, creative engineering studio, AI web development, UI UX design studio India, web design studio, software development agency",
+      },
+      { property: "og:site_name", content: "TOCHI .dev Studio" },
+      { property: "og:title", content: "TOCHI .dev Studio | Creative Engineering & AI Web Development Studio" },
       {
         property: "og:description",
         content:
-          "An independent engineering studio crafting modern web interfaces and high-leverage internal platforms.",
+          "An independent creative engineering studio crafting modern web interfaces, AI applications, and high-leverage software architectures.",
       },
+      { property: "og:url", content: "https://tochidevstudio.in/" },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "https://tochidevstudio.in/og-image.png" },
+      { property: "og:image:alt", content: "TOCHI .dev Studio — tochidevstudio.in" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:domain", content: "tochidevstudio.in" },
+      { name: "twitter:url", content: "https://tochidevstudio.in/" },
+      { name: "twitter:title", content: "TOCHI .dev Studio | Creative Engineering & AI Web Development Studio" },
+      {
+        name: "twitter:description",
+        content:
+          "An independent creative engineering studio crafting modern web interfaces, AI applications, and high-leverage software architectures.",
+      },
+      { name: "twitter:image", content: "https://tochidevstudio.in/og-image.png" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://tochidevstudio.in/" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(homeServiceSchema),
+      },
     ],
   }),
   component: Index,

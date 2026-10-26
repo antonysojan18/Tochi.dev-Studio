@@ -140,7 +140,7 @@ export function Hero() {
         >
           <motion.img
             src={heroImg}
-            alt="TOCHI .dev studio"
+            alt="TOCHI .dev Studio | Creative Engineering & AI Web Development Studio - tochidevstudio.in"
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ ...spring, delay: 0.1 }}
@@ -162,6 +162,7 @@ export function Hero() {
               style={{ opacity: headlineOpacity, y: headlineEntryY, filter: headlineBlur }}
               className="hero-copy text-5xl font-semibold tracking-[-0.035em] md:text-7xl"
             >
+              <span className="sr-only">TOCHI .dev Studio (tochidevstudio.in) — </span>
               Modern software infused with Obsessive craft.
             </motion.h1>
             <motion.p

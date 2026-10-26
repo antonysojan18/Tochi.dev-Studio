@@ -32,22 +32,167 @@ import tochiLabs1 from "@/assets/Tochi Labs 1.png";
 import tochiLabs2 from "@/assets/Tochi Labs 2.png";
 import certificateImg from "@/assets/TOCHI internship certificate.png";
 
+const labsSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "EducationalOccupationalProgram",
+      "@id": "https://tochidevstudio.in/labs#fellowship",
+      "name": "TOCHI .Labs 1-Month Production Internship",
+      "description":
+        "Free 1-month immersive production internship with TOCHI .dev Studio principal engineers. Receive official Government of India MSME-recognized credentials.",
+      "provider": {
+        "@type": "Organization",
+        "name": "TOCHI .dev Studio",
+        "url": "https://tochidevstudio.in"
+      },
+      "educationalCredentialAwarded": "Government of India MSME Recognized Certificate",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR",
+        "category": "Free"
+      },
+      "hasCourse": [
+        {
+          "@type": "Course",
+          "name": "AI Web Development",
+          "description": "Production full-stack web platforms with Next.js/Vite, TanStack, and OpenAI/Gemini SDK integrations.",
+          "provider": { "@type": "Organization", "name": "TOCHI .dev Studio" }
+        },
+        {
+          "@type": "Course",
+          "name": "Generative UI UX Design",
+          "description": "Motion systems, interactive micro-interactions, Figma design systems, and generative layout concepts.",
+          "provider": { "@type": "Organization", "name": "TOCHI .dev Studio" }
+        },
+        {
+          "@type": "Course",
+          "name": "Intelligent Backend & API Architecture",
+          "description": "Serverless backends, edge computing, PostgreSQL/vector search, and secure API gateways.",
+          "provider": { "@type": "Organization", "name": "TOCHI .dev Studio" }
+        },
+        {
+          "@type": "Course",
+          "name": "Machine Learning & Autonomous Systems",
+          "description": "RAG architectures, local LLM fine-tuning, autonomous agent workflows, and vector embeddings.",
+          "provider": { "@type": "Organization", "name": "TOCHI .dev Studio" }
+        },
+        {
+          "@type": "Course",
+          "name": "Cloud Native DevOps & SRE",
+          "description": "Docker, Kubernetes orchestration, CI/CD automated deployment pipelines, and zero-downtime releases.",
+          "provider": { "@type": "Organization", "name": "TOCHI .dev Studio" }
+        },
+        {
+          "@type": "Course",
+          "name": "Design Systems & Creative Engineering",
+          "description": "Advanced CSS architecture, canvas shaders, web animations, and cross-platform design tokens.",
+          "provider": { "@type": "Organization", "name": "TOCHI .dev Studio" }
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://tochidevstudio.in/labs#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the duration of Internship?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "All our internships are for a period of 1 month only."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I complete multiple tracks together?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We believe to provide an actual learning environment, we have limited our internship offerings to 1 track per month for each student. This allows students to explore the chosen track in-depth and get quality results."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there any fees for the internship?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The internship is completely free. However, a documentation fee of ₹129 must be paid to cover the processing charges."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When will I receive the Offer Letter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We process the Offer Letters at the mid & end of month in batches."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the internship Offline or Online?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "All our internships are conducted in Virtual mode (Online)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When will I get the Certificate?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Certificate of Completion is sent after the end date on the Offer Letter with Government of India MSME verification."
+          }
+        }
+      ]
+    }
+  ]
+};
+
 export const Route = createFileRoute("/labs")({
   head: () => ({
     meta: [
-      { title: "TOCHI .Labs — 1-Month Production Internship" },
+      { title: "TOCHI .Labs — 1-Month Production Internship & Training | tochidevstudio.in" },
       {
         name: "description",
         content:
-          "A one-month production internship with TOCHI principal engineers. Six courses, MSME-verified credentials.",
+          "Join TOCHI .Labs by TOCHI .dev Studio (tochidevstudio.in). Free 1-month immersive production internships with MSME-verified credentials across AI Web Development, UI/UX, Backend, and ML.",
       },
-      { property: "og:title", content: "TOCHI .Labs — 1-Month Production Internship" },
+      {
+        name: "keywords",
+        content:
+          "tochi labs, tochidevstudio.in/labs, tochi internship, TOCHI dev studio internship, free web development internship, MSME certified internship India, AI web development internship, UI UX internship, machine learning internship",
+      },
+      { property: "og:site_name", content: "TOCHI .dev Studio" },
+      { property: "og:title", content: "TOCHI .Labs — 1-Month Production Internship & Training" },
       {
         property: "og:description",
-        content: "No synthetic tutorials. Ship real software to production in one month.",
+        content:
+          "Free 1-month immersive production internship with MSME-verified credentials. No synthetic tutorials — ship real software to production with studio engineers.",
       },
+      { property: "og:url", content: "https://tochidevstudio.in/labs" },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "https://tochidevstudio.in/og-image.png" },
+      { property: "og:image:alt", content: "TOCHI .Labs — 1-Month Production Internship" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:domain", content: "tochidevstudio.in" },
+      { name: "twitter:url", content: "https://tochidevstudio.in/labs" },
+      { name: "twitter:title", content: "TOCHI .Labs — 1-Month Production Internship & Training" },
+      {
+        name: "twitter:description",
+        content:
+          "Free 1-month immersive production internship with MSME-verified credentials. Ship real software to production with studio engineers.",
+      },
+      { name: "twitter:image", content: "https://tochidevstudio.in/og-image.png" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://tochidevstudio.in/labs" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(labsSchema),
+      },
     ],
   }),
   component: LabsPage,
@@ -246,12 +391,13 @@ function Hero() {
         >
           <img
             src={tochiLabs1}
-            alt="TOCHI /LABS — 1-Month Internship Program"
+            alt="TOCHI .Labs by TOCHI .dev Studio — 1-Month Production Internship (tochidevstudio.in/labs)"
             draggable={false}
             className="h-9 w-auto select-none object-contain md:h-11"
           />
         </motion.div>
         <h1 className="mt-2 max-w-4xl font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-7xl">
+          <span className="sr-only">TOCHI .Labs by TOCHI .dev Studio (tochidevstudio.in/labs) — </span>
           A new way to learn,
           <span className="block text-muted-foreground">in the new world of AI.</span>
         </h1>
