@@ -5,6 +5,7 @@ import { Mission } from "@/components/site/Mission";
 import { Services } from "@/components/site/Services";
 import { ScrollStack } from "@/components/site/ScrollStack";
 import { Process } from "@/components/site/Process";
+import { InternshipSection } from "@/components/site/InternshipSection";
 import { IntakeSheet } from "@/components/site/IntakeSheet";
 import SplashCursor from "@/components/site/SplashCursor";
 import { AmbientOrbs } from "@/components/site/AmbientOrbs";
@@ -58,6 +59,7 @@ function Index() {
       <Services />
       <ScrollStack />
       <Process />
+      <InternshipSection />
       <IntakeSheet />
     </main>
   );

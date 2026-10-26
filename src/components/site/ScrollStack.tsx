@@ -112,7 +112,8 @@ export function ScrollStack() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   return (
-    <section id="work" className="bg-background py-10 sm:py-14 md:py-20 px-3 sm:px-5 scroll-mt-24">
+    <section id="portfolio" className="bg-background py-10 sm:py-14 md:py-20 px-3 sm:px-5 scroll-mt-28 md:scroll-mt-32">
+      <div id="work" />
       <div className="mx-auto max-w-5xl">
         <div className="mb-4 sm:mb-6 md:mb-8 flex items-end justify-between gap-6">
           <div>

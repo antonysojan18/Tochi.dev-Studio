@@ -48,11 +48,15 @@
   --color-device-selection: var(--device-selection);
   --color-device-close: var(--device-close);
   --shadow-device: var(--device-shadow);
+  --color-subtle: var(--subtle);
+  --color-success: var(--success);
+  --shadow-specular: var(--shadow-specular);
+  --shadow-lift: var(--shadow-lift);
   --font-sans:
     "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
   --font-heading: "Outfit", "Inter", sans-serif;
-  --font-display: "Outfit", "Inter", sans-serif;
-  --font-mono: "SF Mono", ui-monospace, Menlo, monospace;
+  --font-display: "Sora", "Outfit", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
 }
 
 :root {
@@ -102,6 +106,14 @@
   --device-metal: oklch(0.76 0.008 280);
   --device-metal-light: oklch(0.93 0.005 280);
   --device-shadow: 0 14px 25px oklch(0 0 0 / 30%);
+  --subtle: oklch(0.97 0.025 88 / 35%);
+  --success: oklch(0.696 0.149 162.5);
+  --shadow-specular: inset 0 1px 0 0 oklch(0.97 0.025 88 / 20%);
+  --shadow-lift: inset 0 1px 0 0 oklch(0.97 0.025 88 / 25%), 0 30px 60px -20px oklch(0 0 0 / 60%);
+  --cream-glass: linear-gradient(165deg, oklch(0.973 0.0224 86.4 / 78%), oklch(0.973 0.0224 86.4 / 55%));
+  --cream-glass-nav: linear-gradient(165deg, oklch(0.973 0.0224 86.4 / 72%), oklch(0.973 0.0224 86.4 / 50%));
+  --cream-border: oklch(0.973 0.0224 86.4 / 55%);
+  --shadow-glass: inset 0 1px 0 0 oklch(0.973 0.0224 86.4 / 75%), inset 0 0 0 1px oklch(0.973 0.0224 86.4 / 10%), 0 26px 50px -30px oklch(0 0 0 / 75%);
 }
 
 @layer base {
@@ -156,6 +168,37 @@
   background-image:
     radial-gradient(120% 80% at 0% 0%, oklch(0.97 0.025 88 / 8%), transparent 55%),
     radial-gradient(80% 60% at 100% 100%, oklch(0.6 0.12 20 / 14%), transparent 60%);
+}
+
+@utility glass-cream {
+  background-image:
+    linear-gradient(115deg, oklch(0.973 0.0224 86.4 / 50%) 0%, oklch(0.973 0.0224 86.4 / 0%) 45%),
+    var(--cream-glass);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid var(--cream-border);
+  box-shadow: var(--shadow-glass);
+}
+
+@utility glass-cream-nav {
+  background-image:
+    linear-gradient(115deg, oklch(0.973 0.0224 86.4 / 45%) 0%, oklch(0.973 0.0224 86.4 / 0%) 45%),
+    var(--cream-glass-nav);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid var(--cream-border);
+  box-shadow: var(--shadow-glass);
+}
+
+@utility atmosphere {
+  background-image:
+    radial-gradient(60% 50% at 50% 0%, oklch(0.973 0.0224 86.4 / 16%), transparent 70%),
+    radial-gradient(45% 40% at 50% 42%, oklch(0.973 0.0224 86.4 / 22%), transparent 72%),
+    radial-gradient(40% 40% at 90% 60%, oklch(0.973 0.0224 86.4 / 12%), transparent 70%),
+    radial-gradient(35% 35% at 8% 85%, oklch(0.973 0.0224 86.4 / 10%), transparent 70%),
+    linear-gradient(oklch(0.973 0.0224 86.4 / 6%) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.973 0.0224 86.4 / 6%) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
 }
 
 @utility spotlight {
