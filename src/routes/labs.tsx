@@ -163,30 +163,34 @@ export const Route = createFileRoute("/labs")({
         content:
           "tochi labs, tochidevstudio.in/labs, tochi internship, TOCHI dev studio internship, free web development internship, MSME certified internship India, AI web development internship, UI UX internship, machine learning internship",
       },
-      { property: "og:site_name", content: "TOCHI .dev Studio" },
+      { property: "og:site_name", content: "Tochi Dev Studio" },
       { property: "og:title", content: "TOCHI .Labs — 1-Month Production Internship & Training" },
       {
         property: "og:description",
         content:
           "Free 1-month immersive production internship with MSME-verified credentials. No synthetic tutorials — ship real software to production with studio engineers.",
       },
-      { property: "og:url", content: "https://tochidevstudio.in/labs" },
+      { property: "og:url", content: "https://www.tochidevstudio.in/labs" },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://tochidevstudio.in/og-image.png" },
+      { property: "og:image", content: "https://www.tochidevstudio.in/og-image.png" },
+      { property: "og:image:secure_url", content: "https://www.tochidevstudio.in/og-image.png" },
+      { property: "og:image:type", content: "image/png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: "TOCHI .Labs — 1-Month Production Internship" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:domain", content: "tochidevstudio.in" },
-      { name: "twitter:url", content: "https://tochidevstudio.in/labs" },
+      { name: "twitter:url", content: "https://www.tochidevstudio.in/labs" },
       { name: "twitter:title", content: "TOCHI .Labs — 1-Month Production Internship & Training" },
       {
         name: "twitter:description",
         content:
           "Free 1-month immersive production internship with MSME-verified credentials. Ship real software to production with studio engineers.",
       },
-      { name: "twitter:image", content: "https://tochidevstudio.in/og-image.png" },
+      { name: "twitter:image", content: "https://www.tochidevstudio.in/og-image.png" },
     ],
     links: [
-      { rel: "canonical", href: "https://tochidevstudio.in/labs" },
+      { rel: "canonical", href: "https://www.tochidevstudio.in/labs" },
     ],
     scripts: [
       {

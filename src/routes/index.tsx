@@ -56,41 +56,45 @@ const homeServiceSchema = {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "TOCHI .dev Studio | Creative Engineering & AI Web Development Studio" },
+      { title: "Tochi Dev Studio | Web Development & Digital Solutions" },
       {
         name: "description",
         content:
-          "TOCHI .dev Studio (tochidevstudio.in) is an elite creative engineering and software studio crafting high-performance web platforms, AI applications, and interactive digital products.",
+          "Tochi Dev Studio is an engineering and design studio crafting modern web development, high-performance digital solutions, and bespoke interactive platforms.",
       },
       {
         name: "keywords",
         content:
-          "tochidevstudio, tochidevstudio.in, tochi dev studio, tochi.dev studio, tochi studio, tochi labs, creative engineering studio, AI web development, UI UX design studio India, web design studio, software development agency",
+          "tochidevstudio, tochidevstudio.in, tochi dev studio, tochi.dev studio, tochi studio, web development, digital solutions, creative engineering studio, AI web development, UI UX design studio India",
       },
-      { property: "og:site_name", content: "TOCHI .dev Studio" },
-      { property: "og:title", content: "TOCHI .dev Studio | Creative Engineering & AI Web Development Studio" },
+      { property: "og:site_name", content: "Tochi Dev Studio" },
+      { property: "og:title", content: "Tochi Dev Studio | Web Development & Digital Solutions" },
       {
         property: "og:description",
         content:
-          "An independent creative engineering studio crafting modern web interfaces, AI applications, and high-leverage software architectures.",
+          "Tochi Dev Studio is an engineering and design studio crafting modern web development, high-performance digital solutions, and bespoke interactive platforms.",
       },
-      { property: "og:url", content: "https://tochidevstudio.in/" },
+      { property: "og:url", content: "https://www.tochidevstudio.in/" },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://tochidevstudio.in/og-image.png" },
-      { property: "og:image:alt", content: "TOCHI .dev Studio — tochidevstudio.in" },
+      { property: "og:image", content: "https://www.tochidevstudio.in/og-image.png" },
+      { property: "og:image:secure_url", content: "https://www.tochidevstudio.in/og-image.png" },
+      { property: "og:image:type", content: "image/png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Tochi Dev Studio — Web Development & Digital Solutions" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:domain", content: "tochidevstudio.in" },
-      { name: "twitter:url", content: "https://tochidevstudio.in/" },
-      { name: "twitter:title", content: "TOCHI .dev Studio | Creative Engineering & AI Web Development Studio" },
+      { name: "twitter:url", content: "https://www.tochidevstudio.in/" },
+      { name: "twitter:title", content: "Tochi Dev Studio | Web Development & Digital Solutions" },
       {
         name: "twitter:description",
         content:
-          "An independent creative engineering studio crafting modern web interfaces, AI applications, and high-leverage software architectures.",
+          "Tochi Dev Studio is an engineering and design studio crafting modern web development, high-performance digital solutions, and bespoke interactive platforms.",
       },
-      { name: "twitter:image", content: "https://tochidevstudio.in/og-image.png" },
+      { name: "twitter:image", content: "https://www.tochidevstudio.in/og-image.png" },
     ],
     links: [
-      { rel: "canonical", href: "https://tochidevstudio.in/" },
+      { rel: "canonical", href: "https://www.tochidevstudio.in/" },
     ],
     scripts: [
       {

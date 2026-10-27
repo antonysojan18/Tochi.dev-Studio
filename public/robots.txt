@@ -1,11 +1,5 @@
 User-agent: *
 Allow: /
 
-# Sitemap
+Sitemap: https://www.tochidevstudio.in/sitemap.xml
 Sitemap: https://tochidevstudio.in/sitemap.xml
-
-# Crawl-delay for polite crawling
-Crawl-delay: 1
-
-# Host
-Host: https://tochidevstudio.in
