@@ -188,7 +188,7 @@ export function Hero() {
                 View Brochure <ArrowUpRight className="h-4 w-4" />
               </motion.a>
               <motion.a
-                href="https://antonysojan.vercel.app/"
+                href="https://www.antonysojan.space/"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileTap={tap}
@@ -196,7 +196,7 @@ export function Hero() {
                 transition={spring}
                 className="glass inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium hover:border-primary/40"
               >
-                Meet Developer <ArrowUpRight className="h-4 w-4" />
+                Meet the Developer <ArrowUpRight className="h-4 w-4" />
               </motion.a>
             </motion.div>
           </motion.div>

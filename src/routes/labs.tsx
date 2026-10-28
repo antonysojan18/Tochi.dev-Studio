@@ -37,7 +37,7 @@ const labsSchema = {
   "@graph": [
     {
       "@type": "EducationalOccupationalProgram",
-      "@id": "https://tochidevstudio.in/labs#fellowship",
+      "@id": "https://tochidevstudio.in/labs#internship",
       "name": "TOCHI .Labs 1-Month Production Internship",
       "description":
         "Free 1-month immersive production internship with TOCHI .dev Studio principal engineers. Receive official Government of India MSME-recognized credentials.",
@@ -117,7 +117,7 @@ const labsSchema = {
           "name": "Is there any fees for the internship?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The internship is completely free. However, a documentation fee of ₹129 must be paid to cover the processing charges."
+            "text": "The internship is completely free. However, a documentation fee of ₹199 must be paid to cover the processing charges."
           }
         },
         {
@@ -206,7 +206,7 @@ const APPLY_URL = "https://forms.gle/LxtzXSBZzybcXLb58";
 
 const spring = { type: "spring" as const, stiffness: 350, damping: 30 };
 
-const courses = [
+const tracks = [
   {
     n: "01",
     icon: Code2,
@@ -262,7 +262,7 @@ const courses = [
     capstone: "A personal workflow engine combining coding agents, API tool calls and asset pipelines.",
   },
 ];
-type Course = (typeof courses)[number];
+type Track = (typeof tracks)[number];
 
 const curriculum = [
   "Week 1 — Scoping & architecture",
@@ -272,21 +272,22 @@ const curriculum = [
 ];
 
 function LabsPage() {
-  const [active, setActive] = useState<Course | null>(null);
+  const [active, setActive] = useState<Track | null>(null);
 
   return (
     <div className="atmosphere min-h-screen bg-background text-foreground">
       <Nav />
       <main className="mx-auto max-w-6xl px-5 md:px-8">
         <Hero />
-        <section id="courses" className="scroll-mt-28 py-12 md:py-20">
-          <Eyebrow>[ THE SIX COURSES ]</Eyebrow>
+        <section id="tracks" className="scroll-mt-28 py-12 md:py-20">
+          <span id="courses" className="sr-only" />
+          <Eyebrow>[ THE SIX TRACKS ]</Eyebrow>
           <h2 className="mt-2.5 max-w-2xl font-display text-2xl font-semibold tracking-tight md:mt-4 md:text-5xl">
-            Pick a course. Ship a capstone.
+            Pick a Track. Start the mission.
           </h2>
           <div className="mt-8 grid grid-cols-2 gap-3 md:mt-12 md:gap-5 lg:grid-cols-3">
-            {courses.map((c) => (
-              <CourseCard key={c.n} c={c} onOpen={() => setActive(c)} />
+            {tracks.map((t) => (
+              <TrackCard key={t.n} t={t} onOpen={() => setActive(t)} />
             ))}
           </div>
         </section>
@@ -296,7 +297,7 @@ function LabsPage() {
       </main>
       <LabsFooter />
       <AnimatePresence>
-        {active && <CourseDrawer c={active} onClose={() => setActive(null)} />}
+        {active && <TrackDrawer t={active} onClose={() => setActive(null)} />}
       </AnimatePresence>
     </div>
   );
@@ -350,8 +351,8 @@ function Nav() {
         </Link>
 
         <div className="hidden items-center gap-5 text-xs font-medium text-header-ink-muted md:flex">
-          <a href="#courses" className="transition-colors hover:text-header-ink">
-            Courses
+          <a href="#tracks" className="transition-colors hover:text-header-ink">
+            Tracks
           </a>
           <a href="#certification" className="transition-colors hover:text-header-ink">
             Certification
@@ -383,7 +384,7 @@ function Nav() {
 }
 
 function Hero() {
-  const metrics = ["Free Internship", "1 Month", "6 Courses", "MSME Verified"];
+  const metrics = ["Free Internship", "1 Month", "6 Tracks", "MSME Verified"];
   return (
     <section id="overview" className="scroll-mt-28 pb-12 pt-32 md:pt-40">
       <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={spring}>
@@ -419,10 +420,10 @@ function Hero() {
             Apply for Free <ArrowUpRight className="h-4 w-4" />
           </a>
           <a
-            href="#courses"
+            href="#tracks"
             className="inline-flex items-center rounded-full border border-border px-7 py-3 text-sm transition-colors hover:bg-secondary"
           >
-            See courses
+            See tracks
           </a>
         </div>
       </motion.div>
@@ -443,7 +444,7 @@ function Hero() {
   );
 }
 
-function CourseCard({ c, onOpen }: { c: Course; onOpen: () => void }) {
+function TrackCard({ t, onOpen }: { t: Track; onOpen: () => void }) {
   const reducedMotion = useReducedMotion();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -457,7 +458,7 @@ function CourseCard({ c, onOpen }: { c: Course; onOpen: () => void }) {
     y.set((e.clientY - r.top) / r.height - 0.5);
   };
 
-  const Icon = c.icon;
+  const Icon = t.icon;
 
   return (
     <motion.div
@@ -475,25 +476,25 @@ function CourseCard({ c, onOpen }: { c: Course; onOpen: () => void }) {
       transition={spring}
       className="glass-cream relative flex w-full flex-col overflow-hidden rounded-xl p-3 text-primary-foreground transition-shadow hover:shadow-lift md:rounded-3xl md:p-6"
     >
-      {c.popular && (
+      {t.popular && (
         <span className="absolute top-0 left-0 z-10 rounded-tl-[inherit] rounded-br-lg md:rounded-br-xl bg-amber-400 px-2 py-0.5 md:px-2.5 md:py-1 font-mono text-[8px] md:text-[9px] font-black uppercase tracking-widest text-zinc-950 shadow-sm">
           Popular
         </span>
       )}
-      <div className={`flex items-start justify-between ${c.popular ? "pt-3.5 md:pt-3" : ""}`}>
+      <div className={`flex items-start justify-between ${t.popular ? "pt-3.5 md:pt-3" : ""}`}>
         <div className="rounded-lg border border-primary-foreground/15 bg-primary-foreground/5 p-1 md:rounded-2xl md:p-2.5">
           <Icon className="h-3.5 w-3.5 md:h-5 md:w-5" />
         </div>
-        <span className="font-mono text-[9px] opacity-75 md:text-xs">{c.n}</span>
+        <span className="font-mono text-[9px] opacity-75 md:text-xs">{t.n}</span>
       </div>
       <h3 className="mt-2 font-display text-xs font-semibold leading-tight line-clamp-2 md:mt-4 md:text-xl md:line-clamp-none">
-        {c.title}
+        {t.title}
       </h3>
       <p className="mt-1 flex-1 text-[11px] leading-snug opacity-80 line-clamp-3 md:mt-3 md:text-sm md:leading-relaxed md:line-clamp-none">
-        {c.desc}
+        {t.desc}
       </p>
       <div className="mt-2 flex flex-wrap gap-0.5 md:mt-5 md:gap-1.5">
-        {c.stack.map((s) => (
+        {t.stack.map((s) => (
           <span
             key={s}
             className="rounded-full border border-primary-foreground/25 px-1.5 py-0.5 font-mono text-[8px] opacity-90 md:px-2.5 md:py-1 md:text-[10px]"
@@ -515,7 +516,7 @@ function CourseCard({ c, onOpen }: { c: Course; onOpen: () => void }) {
   );
 }
 
-function CourseDrawer({ c, onClose }: { c: Course; onClose: () => void }) {
+function TrackDrawer({ t, onClose }: { t: Track; onClose: () => void }) {
   return (
     <motion.div
       className="fixed inset-0 z-50 flex items-end justify-center bg-background/60 p-0 backdrop-blur-sm md:items-center md:p-6"
@@ -527,7 +528,7 @@ function CourseDrawer({ c, onClose }: { c: Course; onClose: () => void }) {
       <motion.div
         role="dialog"
         aria-modal="true"
-        aria-label={c.title}
+        aria-label={t.title}
         onClick={(e) => e.stopPropagation()}
         initial={{ y: 60, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -536,7 +537,7 @@ function CourseDrawer({ c, onClose }: { c: Course; onClose: () => void }) {
         className="glass max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-3xl p-7 md:rounded-3xl"
       >
         <div className="flex items-start justify-between">
-          <p className="font-mono text-[10px] tracking-[0.2em] text-subtle">COURSE {c.n}</p>
+          <p className="font-mono text-[10px] tracking-[0.2em] text-subtle">TRACK {t.n}</p>
           <button
             onClick={onClose}
             aria-label="Close"
@@ -545,7 +546,7 @@ function CourseDrawer({ c, onClose }: { c: Course; onClose: () => void }) {
             <X className="h-4 w-4" />
           </button>
         </div>
-        <h3 className="mt-3 font-display text-2xl font-semibold">{c.title}</h3>
+        <h3 className="mt-3 font-display text-2xl font-semibold">{t.title}</h3>
         <p className="mt-6 font-mono text-[10px] tracking-[0.2em] text-subtle">1-MONTH PROGRAM</p>
         <ol className="mt-3 space-y-2">
           {curriculum.map((item) => (
@@ -556,7 +557,7 @@ function CourseDrawer({ c, onClose }: { c: Course; onClose: () => void }) {
         </ol>
         <div className="mt-6 rounded-2xl border border-border bg-secondary p-5">
           <p className="font-mono text-[10px] tracking-[0.2em] text-subtle">CAPSTONE</p>
-          <p className="mt-2 text-sm leading-relaxed">{c.capstone}</p>
+          <p className="mt-2 text-sm leading-relaxed">{t.capstone}</p>
         </div>
         <a
           href={APPLY_URL}
@@ -565,7 +566,7 @@ function CourseDrawer({ c, onClose }: { c: Course; onClose: () => void }) {
           onClick={onClose}
           className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-transform hover:scale-95"
         >
-          Apply for this course <ArrowUpRight className="h-4 w-4" />
+          Apply for this track <ArrowUpRight className="h-4 w-4" />
         </a>
       </motion.div>
     </motion.div>
@@ -582,7 +583,7 @@ function Certification() {
             Official credentials
           </h2>
           <p className="mt-5 leading-relaxed text-muted-foreground">
-            Fellows who deploy their capstone receive a Certificate of Internship Completion from
+            Interns who deploy their capstone receive a Certificate of Internship Completion from
             TOCHI (.dev studio), verifiable under Government of India MSME (Udyam) registration
             with a public Certificate ID.
           </p>
@@ -692,7 +693,7 @@ const faqs = [
   },
   {
     q: "Is there any fees for the internship?",
-    a: "The internship is completely free. However, a documentation fee of ₹129 must be paid to cover the processing charges.",
+    a: "The internship is completely free. However, a documentation fee of ₹199 must be paid to cover the processing charges.",
   },
   {
     q: "When will I receive the Offer Letter?",
@@ -771,7 +772,7 @@ function LabsFooter() {
           </Link>
           <span className="h-3 w-px bg-header-ink/20 hidden sm:block" />
           <span className="font-mono text-[11px] md:text-xs text-header-ink-muted">
-            © 2026 TOCHI .Labs • 1-Month Fellowship
+            © 2026 TOCHI .Labs • 1-Month Internship
           </span>
         </div>
 
