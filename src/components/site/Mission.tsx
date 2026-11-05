@@ -1,10 +1,5 @@
 import { useEffect, useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValueEvent,
-} from "motion/react";
+import { motion, useScroll, useTransform, useMotionValueEvent } from "motion/react";
 import { spring } from "./motion";
 
 export function Mission() {
@@ -129,10 +124,11 @@ export function Mission() {
 
             {/* Mission Statement */}
             <p className="mt-8 max-w-3xl text-center text-xl sm:text-2xl md:text-3xl lg:text-[2.25rem] font-normal leading-[1.4] tracking-[-0.015em] text-foreground/80">
-              To build <span className="font-semibold text-foreground">fast, beautiful websites</span>,{" "}
+              To build{" "}
+              <span className="font-semibold text-foreground">fast, beautiful websites</span>,{" "}
               <span className="font-semibold text-foreground">online stores</span>, and{" "}
-              <span className="font-semibold text-foreground">custom software</span> from the ground up with{" "}
-              <span className="font-semibold text-foreground">sharp design</span>,{" "}
+              <span className="font-semibold text-foreground">custom software</span> from the ground
+              up with <span className="font-semibold text-foreground">sharp design</span>,{" "}
               <span className="font-semibold text-foreground">modern architecture</span>, and{" "}
               <span className="font-semibold text-foreground">direct engineering</span>.
             </p>

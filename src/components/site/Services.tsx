@@ -32,15 +32,7 @@ function Tile({ children, className = "" }: { children: ReactNode; className?: s
   );
 }
 
-function CardHeader({
-  icon,
-  number,
-  title,
-}: {
-  icon: ReactNode;
-  number: string;
-  title: string;
-}) {
+function CardHeader({ icon, number, title }: { icon: ReactNode; number: string; title: string }) {
   return (
     <div className="mt-2.5 sm:mt-5 md:mt-8 pt-2 sm:pt-3.5 border-t border-hairline/60">
       <div className="mb-1 sm:mb-2 md:mb-3.5 flex items-center justify-between">
@@ -72,7 +64,10 @@ export function Services() {
   ];
 
   return (
-    <section id="services" className="relative z-10 mx-auto max-w-6xl px-3 sm:px-5 pt-12 pb-20 sm:pt-16 sm:pb-24 md:py-28 scroll-mt-28 md:scroll-mt-32">
+    <section
+      id="services"
+      className="relative z-10 mx-auto max-w-6xl px-3 sm:px-5 pt-12 pb-20 sm:pt-16 sm:pb-24 md:py-28 scroll-mt-28 md:scroll-mt-32"
+    >
       {/* Section Header: Clean and bold */}
       <div className="mb-6 sm:mb-10 md:mb-14">
         <KineticText
@@ -204,7 +199,8 @@ export function Services() {
 
             <div className="flex items-center justify-between font-mono text-[8px] sm:text-[10px] md:text-[11px] text-muted-foreground">
               <span className="flex items-center gap-1 text-header-cream font-medium">
-                <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-header-cream" /> 100% Speed
+                <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-header-cream" /> 100%
+                Speed
               </span>
               <span className="hidden sm:inline">Edge Deployed</span>
             </div>
@@ -341,7 +337,11 @@ export function Services() {
 
             {/* SVG Pipeline */}
             <div className="rounded-lg sm:rounded-xl border border-hairline bg-background/60 p-1 sm:p-2">
-              <svg viewBox="0 0 160 45" className="h-5 sm:h-8 md:h-11 w-full overflow-visible" fill="none">
+              <svg
+                viewBox="0 0 160 45"
+                className="h-5 sm:h-8 md:h-11 w-full overflow-visible"
+                fill="none"
+              >
                 <path
                   d="M10 22 C45 22 45 8 80 8 S115 36 150 22"
                   stroke="var(--amber)"

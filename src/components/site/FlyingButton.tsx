@@ -1,8 +1,14 @@
 // @ts-nocheck
-'use client';
+"use client";
 
-import React, { useEffect, useRef, type ReactNode, type CSSProperties, type MouseEvent } from 'react';
-import './FlyingButton.css';
+import React, {
+  useEffect,
+  useRef,
+  type ReactNode,
+  type CSSProperties,
+  type MouseEvent,
+} from "react";
+import "./FlyingButton.css";
 
 const G = 1100;
 const SPRING = 380;
@@ -17,35 +23,39 @@ const SIZES = {
   small: { h: 36, px: 16, fs: 13, k: 0.82 },
   medium: { h: 44, px: 22, fs: 14, k: 1 },
   large: { h: 52, px: 26, fs: 16, k: 1.18 },
-  'extra-large': { h: 60, px: 30, fs: 18, k: 1.36 }
+  "extra-large": { h: 60, px: 30, fs: 18, k: 1.36 },
 };
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
-const num = (v, d) => (Number.isFinite(Number(v)) && v !== null && v !== '' ? Number(v) : d);
-const smooth = t => {
+const num = (v, d) => (Number.isFinite(Number(v)) && v !== null && v !== "" ? Number(v) : d);
+const smooth = (t) => {
   const s = clamp(t, 0, 1);
   return s * s * (3 - 2 * s);
 };
-const jerk = t => {
+const jerk = (t) => {
   const s = clamp(t, 0, 1);
   return s * s * s * (10 + s * (6 * s - 15));
 };
-const jerkV = t => {
+const jerkV = (t) => {
   const s = clamp(t, 0, 1);
   return 30 * s * s * (1 - s) * (1 - s);
 };
-const jerkA = t => {
+const jerkA = (t) => {
   const s = clamp(t, 0, 1);
   return 60 * s * (1 - s) * (1 - 2 * s);
 };
 const wave = (t, k) =>
-  Math.sin(t * 1.31 + k) * 0.5 + Math.sin(t * 2.73 + k * 1.7) * 0.3 + Math.sin(t * 5.19 + k * 2.3) * 0.2;
+  Math.sin(t * 1.31 + k) * 0.5 +
+  Math.sin(t * 2.73 + k * 1.7) * 0.3 +
+  Math.sin(t * 5.19 + k * 2.3) * 0.2;
 const waveD = (t, k) =>
-  Math.cos(t * 1.31 + k) * 0.655 + Math.cos(t * 2.73 + k * 1.7) * 0.819 + Math.cos(t * 5.19 + k * 2.3) * 1.038;
+  Math.cos(t * 1.31 + k) * 0.655 +
+  Math.cos(t * 2.73 + k * 1.7) * 0.819 +
+  Math.cos(t * 5.19 + k * 2.3) * 1.038;
 
-const rgb = hex => {
-  const h = String(hex || '').replace('#', '');
-  const v = h.length === 3 ? h.replace(/(.)/g, '$1$1') : h.padEnd(6, '0').slice(0, 6);
+const rgb = (hex) => {
+  const h = String(hex || "").replace("#", "");
+  const v = h.length === 3 ? h.replace(/(.)/g, "$1$1") : h.padEnd(6, "0").slice(0, 6);
   const n = parseInt(v, 16);
   if (!Number.isFinite(n)) return [1, 1, 1];
   return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
@@ -612,7 +622,7 @@ const SMOKE = {
   normalLod: -0.8,
   fine: 0.35,
   broad: 0.9,
-  iters: 28
+  iters: 28,
 };
 
 function createEngine({ root, canvas, button, cursor, ramp, props }) {
@@ -620,20 +630,22 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     return {
       refresh: () => {},
       rehome: () => {},
-      destroy: () => {}
+      destroy: () => {},
     };
   }
 
-  const gl = canvas.getContext('webgl2', {
+  const gl = canvas.getContext("webgl2", {
     alpha: true,
     premultipliedAlpha: true,
     antialias: false,
     depth: false,
     stencil: false,
-    powerPreference: 'high-performance'
+    powerPreference: "high-performance",
   });
   const motionQuery =
-    typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    typeof window !== "undefined" && window.matchMedia
+      ? window.matchMedia("(prefers-reduced-motion: reduce)")
+      : null;
   const s = {
     W: 0,
     H: 0,
@@ -650,7 +662,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     fvy: 0,
     thrust: [0, 0, 0, 0],
     delay: [0, 0, 0, 0],
-    phase: 'rest',
+    phase: "rest",
     pt: 0,
     clock: 0,
     seed: Math.random() * 100,
@@ -668,13 +680,13 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     track: null,
     back: null,
     flip: null,
-    rampKey: '',
+    rampKey: "",
     rampGeo: null,
     strip: null,
     u: 0,
     v: 0,
     target: { x: 0, y: 0 },
-    pointer: { in: false, x: 0, y: 0, type: 'mouse' },
+    pointer: { in: false, x: 0, y: 0, type: "mouse" },
     off: { x: 0, y: 0 },
     attached: false,
     hover: false,
@@ -691,12 +703,13 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     last: 0,
     raf: 0,
     simTime: 0,
-    activity: 0
+    activity: 0,
   };
 
   let sim = null;
   if (gl) {
-    const floatOk = gl.getExtension('EXT_color_buffer_float') || gl.getExtension('EXT_color_buffer_half_float');
+    const floatOk =
+      gl.getExtension("EXT_color_buffer_float") || gl.getExtension("EXT_color_buffer_half_float");
     if (floatOk) {
       try {
         sim = createSim(gl);
@@ -722,8 +735,13 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
   };
   const totalThrust = () => s.thrust[0] + s.thrust[1] + s.thrust[2] + s.thrust[3];
   const flying = () =>
-    s.phase === 'ignite' || s.phase === 'climb' || s.phase === 'hover' || s.phase === 'descend' || s.phase === 'drag';
-  const riding = () => s.phase === 'drive' || s.phase === 'loop' || s.phase === 'flip' || s.phase === 'return';
+    s.phase === "ignite" ||
+    s.phase === "climb" ||
+    s.phase === "hover" ||
+    s.phase === "descend" ||
+    s.phase === "drag";
+  const riding = () =>
+    s.phase === "drive" || s.phase === "loop" || s.phase === "flip" || s.phase === "return";
   const xLimits = () => [s.bw / 2 + 4, Math.max(s.bw / 2 + 4, s.W - s.bw / 2 - 4)];
   const rampOn = () => Boolean(props.current.ramp);
 
@@ -744,7 +762,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
         [ease, 0, K],
         [arc, K, K],
         [ease, K, 0],
-        [top, 0, 0]
+        [top, 0, 0],
       ];
       const g = { ss: [0], xs: [0], ys: [0], ps: [0], ks: [0] };
       let x = 0;
@@ -775,9 +793,9 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     const g = build(rise, Math.max(48, s.W * 0.16));
     const T = clamp(r * 0.12, 8, 16);
     const x0 = s.W - Math.max(18, s.W * 0.05) - T - Math.max(...g.xs);
-    const xs = g.xs.map(v => v + x0);
+    const xs = g.xs.map((v) => v + x0);
     const n = g.ss.length - 1;
-    const footAt = g.ys.findIndex(v => v > 3);
+    const footAt = g.ys.findIndex((v) => v > 3);
     const foot = footAt < 0 ? xs[n] : xs[footAt];
     const geo = {
       ...g,
@@ -788,7 +806,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       foot,
       S: g.ss[n],
       clear: Math.min(foot, xs[n]) - 12,
-      ok: Math.max(...g.ys) + T < s.H - 8
+      ok: Math.max(...g.ys) + T < s.H - 8,
     };
     s.rampKey = key;
     s.rampGeo = geo;
@@ -804,7 +822,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
 
   const craftCenter = () => ({
     x: s.x,
-    y: podH() + s.bh / 2 + s.y + REST
+    y: podH() + s.bh / 2 + s.y + REST,
   });
 
   const nozzles = () => {
@@ -812,7 +830,12 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     const cs = Math.cos(s.th);
     const sn = Math.sin(s.th);
     const ry = props.current.thrusters ? -(s.bh / 2 + podH()) + 1 : -(s.bh / 2) + 2;
-    return offsets().map(rx => ({ x: c.x + rx * cs - ry * sn, y: c.y + rx * sn + ry * cs, dx: sn, dy: -cs }));
+    return offsets().map((rx) => ({
+      x: c.x + rx * cs - ry * sn,
+      y: c.y + rx * sn + ry * cs,
+      dx: sn,
+      dy: -cs,
+    }));
   };
 
   const cssCenter = () => {
@@ -837,10 +860,27 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     const tx = p0[0] - (a * x0) / w;
     const ty = p0[1] - (d * x0) / w;
     if (Math.abs(g) < 1e-7 && Math.abs(k) < 1e-7) {
-      return `matrix(${[a / w, d / w, b / h, e / h, tx, ty].map(v => v.toFixed(6)).join(',')})`;
+      return `matrix(${[a / w, d / w, b / h, e / h, tx, ty].map((v) => v.toFixed(6)).join(",")})`;
     }
-    const m = [a / w, d / w, 0, g / w, b / h, e / h, 0, k / h, 0, 0, 1, 0, tx, ty, 0, 1 - (g * x0) / w];
-    return `matrix3d(${m.map(v => v.toFixed(6)).join(',')})`;
+    const m = [
+      a / w,
+      d / w,
+      0,
+      g / w,
+      b / h,
+      e / h,
+      0,
+      k / h,
+      0,
+      0,
+      1,
+      0,
+      tx,
+      ty,
+      0,
+      1 - (g * x0) / w,
+    ];
+    return `matrix3d(${m.map((v) => v.toFixed(6)).join(",")})`;
   };
 
   const dropStrip = () => {
@@ -848,7 +888,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     s.strip.wrap.remove();
     s.strip.ink.remove();
     s.strip = null;
-    button.style.visibility = '';
+    button.style.visibility = "";
   };
 
   const makeStrip = () => {
@@ -863,77 +903,83 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       sn.push(sn[i - 1] + (g.ss[i] - g.ss[i - 1]) * Math.max(1 - k * d, 0.2));
     }
     const n = clamp(Math.round(s.bw / 8), 8, 32);
-    const wrap = document.createElement('div');
-    wrap.setAttribute('aria-hidden', 'true');
-    wrap.style.cssText = 'position:absolute;inset:0;z-index:1;pointer-events:none';
-    const ink = document.createElement('div');
-    ink.setAttribute('aria-hidden', 'true');
-    ink.style.cssText = 'position:absolute;inset:0;z-index:2;pointer-events:none;will-change:transform';
+    const wrap = document.createElement("div");
+    wrap.setAttribute("aria-hidden", "true");
+    wrap.style.cssText = "position:absolute;inset:0;z-index:1;pointer-events:none";
+    const ink = document.createElement("div");
+    ink.setAttribute("aria-hidden", "true");
+    ink.style.cssText =
+      "position:absolute;inset:0;z-index:2;pointer-events:none;will-change:transform";
     const kids = Array.from(button.children);
     const label = kids[1];
-    const pods = kids.slice(2).map(p => {
+    const pods = kids.slice(2).map((p) => {
       const el = p.cloneNode(true);
-      el.style.left = '0px';
-      el.style.top = '0px';
-      el.style.transformOrigin = '0 0';
+      el.style.left = "0px";
+      el.style.top = "0px";
+      el.style.transformOrigin = "0 0";
       wrap.appendChild(el);
       return { el, x: p.offsetLeft, y: p.offsetTop + p.offsetHeight / 2, k: 1 };
     });
     const parts = [];
     for (let i = 0; i < n; i += 1) {
       const c = button.cloneNode(true);
-      c.removeAttribute('data-hover');
-      c.removeAttribute('data-pressed');
-      c.setAttribute('tabindex', '-1');
-      c.setAttribute('inert', '');
+      c.removeAttribute("data-hover");
+      c.removeAttribute("data-pressed");
+      c.setAttribute("tabindex", "-1");
+      c.setAttribute("inert", "");
       Array.from(c.children)
         .slice(1)
-        .forEach(k => {
-          k.style.visibility = 'hidden';
+        .forEach((k) => {
+          k.style.visibility = "hidden";
         });
       const x0 = (s.bw * i) / n - (i ? 0.75 : 2);
       const x1 = (s.bw * (i + 1)) / n + (i < n - 1 ? 0.75 : 2);
-      c.style.visibility = 'visible';
-      c.style.transformOrigin = '0 0';
+      c.style.visibility = "visible";
+      c.style.transformOrigin = "0 0";
       c.style.clipPath = `polygon(${x0}px -2px, ${x1}px -2px, ${x1}px ${s.bh + 2}px, ${x0}px ${s.bh + 2}px)`;
       wrap.appendChild(c);
       parts.push(c);
     }
     const items = [];
-    const text = label ? label.textContent || '' : '';
-    const ctx = document.createElement('canvas').getContext('2d');
+    const text = label ? label.textContent || "" : "";
+    const ctx = document.createElement("canvas").getContext("2d");
     if (label && ctx && text.trim() && !label.children.length) {
       const cs = getComputedStyle(label);
       const font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
       ctx.font = font;
       const chars = Array.from(text);
-      const at = i => ctx.measureText(chars.slice(0, i).join('')).width;
+      const at = (i) => ctx.measureText(chars.slice(0, i).join("")).width;
       const span = at(chars.length) || 1;
       const yc = label.offsetTop + label.offsetHeight / 2;
       chars.forEach((ch, i) => {
-        const el = document.createElement('span');
+        const el = document.createElement("span");
         el.textContent = ch;
         el.style.cssText = `position:absolute;left:0;top:0;white-space:pre;line-height:1;transform-origin:0 0;font:${font};color:${cs.color}`;
         ink.appendChild(el);
-        items.push({ el, x: label.offsetLeft + ((at(i) + at(i + 1)) / 2) * (label.offsetWidth / span), y: yc, k: 0.5 });
+        items.push({
+          el,
+          x: label.offsetLeft + ((at(i) + at(i + 1)) / 2) * (label.offsetWidth / span),
+          y: yc,
+          k: 0.5,
+        });
       });
     } else if (label) {
       const el = label.cloneNode(true);
-      el.style.position = 'absolute';
-      el.style.left = '0px';
-      el.style.top = '0px';
-      el.style.transformOrigin = '0 0';
+      el.style.position = "absolute";
+      el.style.left = "0px";
+      el.style.top = "0px";
+      el.style.transformOrigin = "0 0";
       ink.appendChild(el);
       items.push({
         el,
         x: label.offsetLeft + label.offsetWidth / 2,
         y: label.offsetTop + label.offsetHeight / 2,
-        k: 0
+        k: 0,
       });
     }
     root.appendChild(wrap);
     root.appendChild(ink);
-    button.style.visibility = 'hidden';
+    button.style.visibility = "hidden";
     s.strip = { wrap, ink, parts, n, sn, pods, items };
   };
 
@@ -954,8 +1000,8 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       }
       return to[lo] + (to[hi] - to[lo]) * ((v - from[lo]) / (from[hi] - from[lo]));
     };
-    const neutral = u => (u <= 0 ? u : u >= S ? E + u - S : seek(g.ss, st.sn, u));
-    const track = v => (v <= 0 ? v : v >= E ? S + v - E : seek(st.sn, g.ss, v));
+    const neutral = (u) => (u <= 0 ? u : u >= S ? E + u - S : seek(g.ss, st.sn, u));
+    const track = (v) => (v <= 0 ? v : v >= E ? S + v - E : seek(st.sn, g.ss, v));
     const nc = neutral(s.u);
     const lift = podH();
     const map = (x, y) => {
@@ -976,11 +1022,11 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     st.parts.forEach((part, i) => {
       part.style.transform = quad(i * w, w, s.bh, top[i], top[i + 1], low[i + 1], low[i]);
     });
-    st.pods.forEach(p => {
+    st.pods.forEach((p) => {
       const [x, y, a] = map(p.x, p.y);
       pose(p.el, x, y, a);
     });
-    st.items.forEach(it => {
+    st.items.forEach((it) => {
       const [bx, by, ba] = map(it.x, it.y);
       const [ox, oy, oa] = map(s.bw / 2, it.y);
       const o = it.x - s.bw / 2;
@@ -996,36 +1042,38 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     const left = c.x - s.bw / 2;
     const top = s.H - c.y - s.bh / 2;
     button.style.transform = `translate3d(${left.toFixed(2)}px, ${top.toFixed(2)}px, 0) rotate(${(-s.th).toFixed(5)}rad)`;
-    root.style.setProperty('--fly-thrust', clamp(totalThrust() * 0.9, 0, 1.2).toFixed(3));
+    root.style.setProperty("--fly-thrust", clamp(totalThrust() * 0.9, 0, 1.2).toFixed(3));
   };
 
   const drawRamp = () => {
     if (!ramp) return;
     const g = rampGeo();
-    const paths = ramp.querySelectorAll('path');
+    const paths = ramp.querySelectorAll("path");
     const body = paths[0];
     const edge = paths[1];
-    const f = v => v.toFixed(1);
-    const line = off => {
+    const f = (v) => v.toFixed(1);
+    const line = (off) => {
       const out = [];
       for (let i = 0; i < g.ss.length; i += 2) {
         const a = g.ps[i];
         out.push(`${f(g.xs[i] + Math.sin(a) * off)} ${f(s.H - g.ys[i] + Math.cos(a) * off)}`);
       }
       const a = g.ps[g.ss.length - 1];
-      out.push(`${f(g.xs[g.ss.length - 1] + Math.sin(a) * off)} ${f(s.H - g.ys[g.ss.length - 1] + Math.cos(a) * off)}`);
-      return `M ${out.join(' L ')}`;
+      out.push(
+        `${f(g.xs[g.ss.length - 1] + Math.sin(a) * off)} ${f(s.H - g.ys[g.ss.length - 1] + Math.cos(a) * off)}`,
+      );
+      return `M ${out.join(" L ")}`;
     };
-    ramp.setAttribute('viewBox', `0 0 ${f(s.W)} ${f(s.H)}`);
-    ramp.style.visibility = g.ok ? '' : 'hidden';
+    ramp.setAttribute("viewBox", `0 0 ${f(s.W)} ${f(s.H)}`);
+    ramp.style.visibility = g.ok ? "" : "hidden";
     if (body) {
-      body.setAttribute('d', line(g.T / 2));
-      body.setAttribute('stroke-width', f(g.T));
+      body.setAttribute("d", line(g.T / 2));
+      body.setAttribute("stroke-width", f(g.T));
     }
-    if (edge) edge.setAttribute('d', line(0.75));
+    if (edge) edge.setAttribute("d", line(0.75));
   };
 
-  const jetUniforms = list => {
+  const jetUniforms = (list) => {
     const a = new Float32Array(MAX_JETS * 4);
     const b = new Float32Array(MAX_JETS * 4);
     const bend = [0, 0, 0, 0];
@@ -1037,8 +1085,13 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       const reach = q.dy < -0.2 ? q.y / -q.dy : K.forceMax;
       a.set([q.x, q.y, q.dx, q.dy], i * 4);
       b.set(
-        [K.speed * Math.sqrt(str), K.radius * k, Math.min(K.forceMax, reach * K.reach), str > 0.004 ? str : 0],
-        i * 4
+        [
+          K.speed * Math.sqrt(str),
+          K.radius * k,
+          Math.min(K.forceMax, reach * K.reach),
+          str > 0.004 ? str : 0,
+        ],
+        i * 4,
       );
       const across = s.fvx * -q.dy + s.fvy * q.dx;
       bend[i] = clamp(-across * 0.22, -0.55 * reach, 0.55 * reach);
@@ -1046,7 +1099,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     return { a, b, bend };
   };
 
-  const draw = dt => {
+  const draw = (dt) => {
     if (!sim) return;
     const P = props.current;
     const list = nozzles();
@@ -1057,7 +1110,9 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     const craft = [c.x, c.y, s.bw / 2, s.bh / 2];
     const motion = [s.vx, s.vy, s.th, s.w];
     const calm =
-      (1 - smooth((Math.abs(s.fvx) - 40) / 100)) * (1 - smooth((Math.abs(s.th) - 0.1) / 0.2)) * (riding() ? 0 : 1);
+      (1 - smooth((Math.abs(s.fvx) - 40) / 100)) *
+      (1 - smooth((Math.abs(s.th) - 0.1) / 0.2)) *
+      (riding() ? 0 : 1);
     if (dt > 0) {
       s.simTime += dt;
       sim.step(dt, {
@@ -1067,13 +1122,13 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
         calm,
         scale: k,
         activity: s.activity,
-        jetX: [0, 1, 2, 3].map(i => (i < xs.length ? xs[i] : 0)),
+        jetX: [0, 1, 2, 3].map((i) => (i < xs.length ? xs[i] : 0)),
         jetN: xs.length,
         spacing: xs.length > 1 ? xs[1] - xs[0] : 0,
         wind: s.wind * SMOKE.wind,
         time: s.simTime,
         smoke: clamp(num(P.smoke, 1), 0, 3),
-        turbulence: clamp(num(P.turbulence, 1), 0, 3)
+        turbulence: clamp(num(P.turbulence, 1), 0, 3),
       });
     }
     const smoke = rgb(P.smokeColor);
@@ -1084,10 +1139,10 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       scale: k,
       activity: s.activity,
       time: s.simTime,
-      light: P.theme === 'light',
+      light: P.theme === "light",
       smokeColor: smoke,
       shadeColor: smoke.map((v, i) => v * 0.74 + [0.0, 0.012, 0.045][i]),
-      thrustColor: rgb(P.thrustColor)
+      thrustColor: rgb(P.thrustColor),
     });
   };
 
@@ -1115,7 +1170,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     }
     if (sim) sim.resize(s.W, s.H);
     drawRamp();
-    root.dataset.ready = '';
+    root.dataset.ready = "";
     place();
     if (!s.running) draw(0);
   };
@@ -1127,7 +1182,11 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     const dy = py - c.y;
     const lx = dx * Math.cos(a) - dy * Math.sin(a);
     const ly = dx * Math.sin(a) + dy * Math.cos(a);
-    return Math.abs(lx) <= s.bw / 2 + 2 + margin && ly >= -s.bh / 2 - 2 - margin && ly <= s.bh / 2 + podH() + margin;
+    return (
+      Math.abs(lx) <= s.bw / 2 + 2 + margin &&
+      ly >= -s.bh / 2 - 2 - margin &&
+      ly <= s.bh / 2 + podH() + margin
+    );
   };
 
   const begin = () => {
@@ -1141,12 +1200,12 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
   };
 
   const launch = () => {
-    if ((s.phase !== 'rest' && s.phase !== 'landed') || still()) return false;
+    if ((s.phase !== "rest" && s.phase !== "landed") || still()) return false;
     const P = props.current;
     begin();
-    s.phase = 'ignite';
+    s.phase = "ignite";
     s.delay = s.delay.map(() => Math.random() * 0.04);
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
     const targetAlt = isMobile ? Math.min(130, num(P.altitude, 160) * 0.78) : num(P.altitude, 160);
     const top = s.H - s.bh - podH() - 24 - REST;
     s.alt = clamp(s.y + targetAlt, s.y + 24, Math.max(s.y + 24, top));
@@ -1163,7 +1222,12 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     let hi = g.ss.length - 1;
     if (u >= g.ss[hi]) {
       const a = g.ps[hi];
-      return [g.xs[hi] + Math.cos(a) * (u - g.ss[hi]), g.ys[hi] + Math.sin(a) * (u - g.ss[hi]), a, 0];
+      return [
+        g.xs[hi] + Math.cos(a) * (u - g.ss[hi]),
+        g.ys[hi] + Math.sin(a) * (u - g.ss[hi]),
+        a,
+        0,
+      ];
     }
     while (hi - lo > 1) {
       const mid = (lo + hi) >> 1;
@@ -1171,7 +1235,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       else hi = mid;
     }
     const m = (u - g.ss[lo]) / (g.ss[hi] - g.ss[lo]);
-    return [g.xs, g.ys, g.ps, g.ks].map(v => v[lo] + (v[hi] - v[lo]) * m);
+    return [g.xs, g.ys, g.ps, g.ks].map((v) => v[lo] + (v[hi] - v[lo]) * m);
   };
 
   const ridePose = (t, u) => {
@@ -1180,7 +1244,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
   };
 
   const ride = () => {
-    if (s.phase !== 'rest' || still() || !rampOn()) return false;
+    if (s.phase !== "rest" || still() || !rampOn()) return false;
     const g = rampGeo();
     const run = g.x0 - s.x;
     if (run < 60 || !g.ok) return launch();
@@ -1189,7 +1253,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     const top = Math.max(...g.ys) - 2 * base;
     const v0 = Math.sqrt(2 * G_RIDE * top + 2.2 * G_RIDE * (g.r - base));
     s.track = { geo: g, base, v0, acc: (v0 * v0) / (2 * run) };
-    s.phase = 'drive';
+    s.phase = "drive";
     s.u = -run;
     s.v = 0;
     s.thrust = [0, 0, 0, 0];
@@ -1198,19 +1262,19 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     return true;
   };
 
-  const chooseLanding = lead => {
+  const chooseLanding = (lead) => {
     const [lo, hi] = xLimits();
     let x = s.x + lead;
     if (rampOn()) x = Math.min(x, rampGeo().clear - s.bw / 2);
     s.landX = clamp(x, lo, hi);
   };
 
-  const physics = dt => {
+  const physics = (dt) => {
     const P = props.current;
     const wob = clamp(num(P.wobble, 1), 0, 3);
     s.pt += dt;
     s.clock += dt;
-    if (s.phase === 'return') {
+    if (s.phase === "return") {
       const b = s.back;
       const u = Math.min(s.pt / b.time, 1);
       s.x = b.from + (b.to - b.from) * jerk(u);
@@ -1220,19 +1284,20 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       s.th = 0;
       s.w = 0;
       if (u >= 1) {
-        s.phase = 'rest';
+        s.phase = "rest";
         s.pt = 0;
         s.vx = 0;
       }
       return;
     }
-    if (s.phase === 'drive' || s.phase === 'loop') {
+    if (s.phase === "drive" || s.phase === "loop") {
       const t = s.track;
       const prev = ridePose(t, s.u);
-      if (s.phase === 'drive') s.v = Math.min(t.v0, s.v + t.acc * dt);
-      else s.v = Math.sqrt(Math.max(t.v0 * t.v0 - 2 * G_RIDE * (prev.cy - t.base), 0.2 * t.v0 * t.v0));
+      if (s.phase === "drive") s.v = Math.min(t.v0, s.v + t.acc * dt);
+      else
+        s.v = Math.sqrt(Math.max(t.v0 * t.v0 - 2 * G_RIDE * (prev.cy - t.base), 0.2 * t.v0 * t.v0));
       s.u += (s.v * dt) / Math.max(1 - prev.bend, 0.25);
-      if (s.phase === 'drive' && s.u >= 0) s.phase = 'loop';
+      if (s.phase === "drive" && s.u >= 0) s.phase = "loop";
       const pose = ridePose(t, s.u);
       s.vx = (pose.x - prev.x) / dt;
       s.vy = (pose.cy - prev.cy) / dt;
@@ -1240,10 +1305,10 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       s.x = pose.x;
       s.y = pose.cy - podH() - s.bh / 2 - REST;
       s.th = pose.th;
-      s.thrust = s.thrust.map(v => v * Math.exp(-dt / 0.1));
-      if (s.phase === 'loop' && s.u >= t.geo.S) {
+      s.thrust = s.thrust.map((v) => v * Math.exp(-dt / 0.1));
+      if (s.phase === "loop" && s.u >= t.geo.S) {
         dropStrip();
-        s.phase = 'flip';
+        s.phase = "flip";
         s.pt = 0;
         s.flip = { th: s.th, w: s.w };
       }
@@ -1257,7 +1322,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     let kp = 3;
     let kd = 3.6;
     let turn = null;
-    if (s.phase === 'flip') {
+    if (s.phase === "flip") {
       const u = Math.min(s.pt / FLIP_TIME, 1);
       const f = s.flip;
       const end = Math.PI * 2;
@@ -1266,29 +1331,29 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
           (2 * u * u * u - 3 * u * u + 1) * f.th +
           (u * u * u - 2 * u * u + u) * FLIP_TIME * f.w +
           (3 * u * u - 2 * u * u * u) * end,
-        w: ((6 * u * u - 6 * u) * (f.th - end)) / FLIP_TIME + (3 * u * u - 4 * u + 1) * f.w
+        w: ((6 * u * u - 6 * u) * (f.th - end)) / FLIP_TIME + (3 * u * u - 4 * u + 1) * f.w,
       };
       total = 2.4 * smooth((Math.cos(turn.th) - 0.8) / 0.15);
       const nearGround = s.y + REST < s.bh * 0.6;
       if (u >= 1 || nearGround) {
         turn = null;
         s.th -= Math.PI * 2 * Math.round(s.th / (Math.PI * 2));
-        s.phase = 'descend';
+        s.phase = "descend";
         s.pt = 0;
         s.boost = true;
         s.vrPrev = s.vy;
         chooseLanding((s.vx * Math.abs(s.vx)) / 700);
       }
     }
-    if (s.phase === 'ignite') {
+    if (s.phase === "ignite") {
       total = 1.35 * smooth(s.pt / 0.12);
       if (s.pt >= 0.12) {
-        s.phase = 'climb';
+        s.phase = "climb";
         s.pt = 0;
         s.y0 = s.y;
       }
     }
-    if (s.phase === 'climb') {
+    if (s.phase === "climb") {
       const u = s.pt / s.climbT;
       const span = s.alt - s.y0;
       const yr = s.y0 + span * jerk(u);
@@ -1297,34 +1362,37 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       total = (G + ar + 30 * (yr - s.y) + 8 * (vr - s.vy)) / (G * cs);
       control = true;
       if (u >= 1) {
-        s.phase = 'hover';
+        s.phase = "hover";
         s.pt = 0;
       }
-    } else if (s.phase === 'hover') {
+    } else if (s.phase === "hover") {
       const t = s.clock * 0.8;
       const yr = s.alt + 3.5 * wob * wave(t, s.seed);
       const vr = 3.5 * wob * 0.8 * waveD(t, s.seed);
       total = (G + 30 * (yr - s.y) + 8 * (vr - s.vy)) / (G * cs);
       control = true;
       if (s.pt >= s.hold) {
-        s.phase = 'descend';
+        s.phase = "descend";
         s.pt = 0;
         s.vrPrev = 0;
         chooseLanding(0);
       }
-    } else if (s.phase === 'drag') {
+    } else if (s.phase === "drag") {
       const yr = s.target.y - podH() - s.bh / 2 - REST;
       total = (G + 34 * (yr - s.y) - 10 * s.vy) / (G * cs);
       control = true;
-    } else if (s.phase === 'descend') {
+    } else if (s.phase === "descend") {
       xt = s.landX;
       kp = s.boost ? 5 : 4;
       kd = s.boost ? 4.6 : 4.2;
       const vmax = 170;
       const vt = 32;
-      const off = s.boost ? smooth((Math.abs(s.landX - s.x) - 20) / 40) : smooth((Math.abs(s.landX - s.x) - 3) / 23);
+      const off = s.boost
+        ? smooth((Math.abs(s.landX - s.x) - 20) / 40)
+        : smooth((Math.abs(s.landX - s.x) - 3) / 23);
       const h = Math.max(s.y + REST, 0);
-      const profile = (vt + (vmax - vt) * (1 - Math.exp(-h / 52))) * (1 - (s.boost ? 0.45 : 0.88) * off);
+      const profile =
+        (vt + (vmax - vt) * (1 - Math.exp(-h / 52))) * (1 - (s.boost ? 0.45 : 0.88) * off);
       const ramp = s.boost ? vmax * 3 : vmax * smooth(s.pt / 0.9) + 1;
       const vr = -Math.min(profile, ramp);
       const ar = clamp((vr - s.vrPrev) / Math.max(dt, 1e-4), -600, 600);
@@ -1332,15 +1400,15 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       total = (G + ar + (s.boost ? 9 : 7) * (vr - s.vy)) / (G * cs);
       control = true;
       if (s.contact && s.pt > 0.3) {
-        s.phase = 'landed';
+        s.phase = "landed";
         s.pt = 0;
         s.boost = false;
       }
-    } else if (s.phase === 'landed') {
+    } else if (s.phase === "landed") {
       total = 0;
       if (s.pt > 0.6 && totalThrust() < 0.03) {
         const back = rampOn() && s.track ? home() : s.x;
-        s.phase = Math.abs(back - s.x) > 6 ? 'return' : 'rest';
+        s.phase = Math.abs(back - s.x) > 6 ? "return" : "rest";
         s.pt = 0;
         s.thrust = [0, 0, 0, 0];
         s.vy = 0;
@@ -1350,21 +1418,21 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
         s.back = { from: s.x, to: back, time: clamp(Math.abs(back - s.x) / 200, 0.7, 1.8) };
       }
     }
-    total = Number.isFinite(total) ? clamp(total, 0, s.boost || s.phase === 'flip' ? 2.6 : 1.9) : 1;
+    total = Number.isFinite(total) ? clamp(total, 0, s.boost || s.phase === "flip" ? 2.6 : 1.9) : 1;
 
     const xs = offsets();
     const n = xs.length;
     const sx2 = xs.reduce((acc, v) => acc + v * v, 0);
-    const hand = s.phase === 'drag' ? clamp(100 * (s.target.x - s.x) - 17 * s.vx, -2400, 2400) : 0;
+    const hand = s.phase === "drag" ? clamp(100 * (s.target.x - s.x) - 17 * s.vx, -2400, 2400) : 0;
     let alphaCmd = 0;
     if (control) {
       const gust = 0.8 * wob * wave(s.clock * 1.7, s.seed + 3);
-      const aCmd = s.phase === 'drag' ? hand * 0.75 : kp * (xt - s.x) - kd * s.vx;
+      const aCmd = s.phase === "drag" ? hand * 0.75 : kp * (xt - s.x) - kd * s.vx;
       const lean = s.boost ? 0.45 : 0.32;
       const thRef = clamp(-Math.atan2(aCmd, G), -lean, lean);
       alphaCmd = -81 * (s.th - thRef) - 14 * s.w - gust;
     }
-    const cap = (s.boost || s.phase === 'flip' ? 2.6 : 2.4) / n;
+    const cap = (s.boost || s.phase === "flip" ? 2.6 : 2.4) / n;
     const spool = (cur, cmd) => cur + (cmd - cur) * (1 - Math.exp(-dt / (cmd > cur ? 0.08 : 0.17)));
     const unit = sx2 > 1 ? (alphaCmd * I) / (G * sx2) : 0;
     const room = Math.abs(unit) * Math.max(0, ...xs.map(Math.abs));
@@ -1374,18 +1442,18 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       let cmd = 0;
       if (k < n) {
         cmd = clamp(base + unit * xs[k], 0, cap);
-        if (s.phase === 'ignite' && s.pt < s.delay[k]) cmd = 0;
+        if (s.phase === "ignite" && s.pt < s.delay[k]) cmd = 0;
       }
       s.thrust[k] = spool(s.thrust[k], cmd);
       if (k < n) torque += s.thrust[k] * xs[k];
     }
 
     const T = totalThrust() * G;
-    let ax = s.phase === 'drag' ? hand : -T * Math.sin(s.th) - 0.8 * s.vx;
+    let ax = s.phase === "drag" ? hand : -T * Math.sin(s.th) - 0.8 * s.vx;
     let ay = T * Math.cos(s.th) - G - 0.3 * s.vy;
-    let alpha = s.phase === 'flip' ? 0 : (torque * G) / I - 1.2 * s.w;
+    let alpha = s.phase === "flip" ? 0 : (torque * G) / I - 1.2 * s.w;
     if (control) {
-      if (s.phase !== 'drag') ax += 12 * wob * wave(s.clock * 0.7, s.seed + 7);
+      if (s.phase !== "drag") ax += 12 * wob * wave(s.clock * 0.7, s.seed + 7);
       alpha += 0.9 * wob * wave(s.clock * 2.3, s.seed + 11);
       if (sx2 < 1) alpha += alphaCmd;
       if (Math.abs(s.th) > 0.35) alpha -= (s.th - Math.sign(s.th) * 0.35) * 160;
@@ -1395,8 +1463,8 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     const sn = Math.sin(s.th);
     const ry = -(s.bh / 2 + podH());
     let contact = false;
-    if (s.phase !== 'flip') {
-      feet().forEach(rx => {
+    if (s.phase !== "flip") {
+      feet().forEach((rx) => {
         const ox = rx * csn - ry * sn;
         const oy = rx * sn + ry * csn;
         const footY = c.y + oy;
@@ -1424,7 +1492,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       s.th = turn.th;
       s.w = turn.w;
     }
-    if (s.phase !== 'flip' && Math.abs(s.th) > TILT_MAX) {
+    if (s.phase !== "flip" && Math.abs(s.th) > TILT_MAX) {
       s.th = Math.sign(s.th) * TILT_MAX;
       if (s.w * s.th > 0) s.w = 0;
     }
@@ -1438,12 +1506,21 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       s.vy = 0;
     }
     if (!Number.isFinite(s.y + s.x + s.th + s.vy + s.vx + s.w + totalThrust())) {
-      Object.assign(s, { x: s.W / 2, vx: 0, y: -REST, vy: 0, th: 0, w: 0, thrust: [0, 0, 0, 0], phase: 'rest' });
+      Object.assign(s, {
+        x: s.W / 2,
+        vx: 0,
+        y: -REST,
+        vy: 0,
+        th: 0,
+        w: 0,
+        thrust: [0, 0, 0, 0],
+        phase: "rest",
+      });
       s.drag = null;
     }
   };
 
-  const updatePointer = dt => {
+  const updatePointer = (dt) => {
     const P = props.current;
     const p = s.pointer;
     const c = cssCenter();
@@ -1465,34 +1542,42 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     const over = p.in && overCraft(fx, fy, s.attached || s.drag ? 10 : 0);
     if (over !== s.hover) {
       s.hover = over;
-      if (over) button.dataset.hover = '';
+      if (over) button.dataset.hover = "";
       else delete button.dataset.hover;
     }
     if (!over && !s.drag) {
       s.attached = false;
-      if (s.phase === 'rest') s.armed = true;
+      if (s.phase === "rest") s.armed = true;
     }
-    if (over && s.armed && s.phase === 'rest' && p.type === 'mouse' && P.trigger !== 'click' && !rampOn() && launch()) {
+    if (
+      over &&
+      s.armed &&
+      s.phase === "rest" &&
+      p.type === "mouse" &&
+      P.trigger !== "click" &&
+      !rampOn() &&
+      launch()
+    ) {
       s.attached = Boolean(P.carryCursor);
     }
-    if (s.phase === 'rest' && Math.abs(s.off.x) + Math.abs(s.off.y) < 12) {
+    if (s.phase === "rest" && Math.abs(s.off.x) + Math.abs(s.off.y) < 12) {
       const k = Math.exp(-dt * 6);
       s.off.x *= k;
       s.off.y *= k;
     }
-    if (Math.abs(s.off.x) + Math.abs(s.off.y) < 0.3 && (!s.attached || s.phase === 'rest')) {
+    if (Math.abs(s.off.x) + Math.abs(s.off.y) < 0.3 && (!s.attached || s.phase === "rest")) {
       s.off.x = 0;
       s.off.y = 0;
-      if (s.phase === 'rest') s.attached = false;
+      if (s.phase === "rest") s.attached = false;
     }
     const carry =
       Boolean(P.carryCursor) &&
       p.in &&
-      p.type === 'mouse' &&
+      p.type === "mouse" &&
       (s.attached || Boolean(s.drag) || s.off.x !== 0 || s.off.y !== 0);
     if (carry !== s.carry) {
       s.carry = carry;
-      if (carry) root.dataset.carry = '';
+      if (carry) root.dataset.carry = "";
       else delete root.dataset.carry;
     }
     if (carry && cursor) {
@@ -1500,12 +1585,12 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     }
   };
 
-  const frame = now => {
+  const frame = (now) => {
     s.raf = 0;
     const dt = s.last ? clamp((now - s.last) / 1000, 0, 1 / 30) : 1 / 60;
     s.last = now;
     if (dt > 0) {
-      if (s.phase !== 'rest') {
+      if (s.phase !== "rest") {
         const steps = 6;
         for (let i = 0; i < steps; i += 1) physics(dt / steps);
       }
@@ -1516,11 +1601,11 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       place();
       draw(dt);
       const thrust = totalThrust();
-      s.quiet = thrust > 0.01 || s.phase !== 'rest' ? 0 : s.quiet + dt;
+      s.quiet = thrust > 0.01 || s.phase !== "rest" ? 0 : s.quiet + dt;
       const firing = thrust > 0.05 ? 1 : 0;
       s.activity += (firing - s.activity) * (1 - Math.exp(-dt / (firing ? 0.25 : 1.6)));
     }
-    if (s.phase !== 'rest' || s.quiet < 7 || s.carry) s.raf = requestAnimationFrame(frame);
+    if (s.phase !== "rest" || s.quiet < 7 || s.carry) s.raf = requestAnimationFrame(frame);
     else {
       s.running = false;
       s.last = 0;
@@ -1535,14 +1620,14 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     s.raf = requestAnimationFrame(frame);
   };
 
-  const local = e => {
+  const local = (e) => {
     const r = root.getBoundingClientRect();
     return { x: e.clientX - r.left, y: e.clientY - r.top };
   };
 
   const pointerAt = () => {
     const p = s.pointer;
-    const mouse = p.type === 'mouse';
+    const mouse = p.type === "mouse";
     return { x: p.x + (mouse ? s.off.x : 0), y: p.y + (mouse ? s.off.y : 0) };
   };
 
@@ -1555,32 +1640,32 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     s.target.y = clamp(s.H - (f.y - s.drag.gy), low, Math.max(low, s.H - s.bh / 2 - 6));
   };
 
-  const startDrag = e => {
+  const startDrag = (e) => {
     const f = pointerAt();
     const c = cssCenter();
     s.drag = { gx: f.x - c.x, gy: f.y - c.y };
-    s.phase = 'drag';
+    s.phase = "drag";
     s.pt = 0;
     s.attached = false;
     s.pressed = false;
     s.suppress = true;
     s.boost = false;
     delete button.dataset.pressed;
-    root.dataset.dragging = '';
+    root.dataset.dragging = "";
     try {
       root.setPointerCapture(e.pointerId);
     } catch {}
     aim();
   };
 
-  const endDrag = e => {
+  const endDrag = (e) => {
     s.drag = null;
     s.press = null;
     delete root.dataset.dragging;
     try {
       root.releasePointerCapture(e.pointerId);
     } catch {}
-    s.phase = 'hover';
+    s.phase = "hover";
     s.pt = 0;
     s.alt = s.y;
     const [lo, hi] = xLimits();
@@ -1588,7 +1673,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     s.hold = Math.min(Math.max(0, num(props.current.hoverTime, 2.4)), 0.9);
   };
 
-  const onMove = e => {
+  const onMove = (e) => {
     const q = local(e);
     const p = s.pointer;
     if (p.in && !s.attached && !s.drag && (s.off.x || s.off.y)) {
@@ -1599,11 +1684,12 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     p.x = q.x;
     p.y = q.y;
     p.in = true;
-    p.type = e.pointerType || 'mouse';
-    if (s.press && !s.drag && flying() && Math.hypot(q.x - s.press.x, q.y - s.press.y) > 4) startDrag(e);
+    p.type = e.pointerType || "mouse";
+    if (s.press && !s.drag && flying() && Math.hypot(q.x - s.press.x, q.y - s.press.y) > 4)
+      startDrag(e);
     if (s.drag) aim();
     updatePointer(0);
-    if (s.carry || s.phase !== 'rest') wake();
+    if (s.carry || s.phase !== "rest") wake();
   };
 
   const onLeave = () => {
@@ -1615,25 +1701,26 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     updatePointer(0);
   };
 
-  const onDown = e => {
+  const onDown = (e) => {
     const q = local(e);
     const p = s.pointer;
     p.x = q.x;
     p.y = q.y;
     p.in = true;
-    p.type = e.pointerType || 'mouse';
+    p.type = e.pointerType || "mouse";
     s.suppress = false;
     const f = pointerAt();
     if (!overCraft(f.x, f.y, s.attached ? 10 : 0)) return;
-    if (p.type !== 'mouse' && s.phase === 'rest' && props.current.trigger !== 'click' && !rampOn()) launch();
+    if (p.type !== "mouse" && s.phase === "rest" && props.current.trigger !== "click" && !rampOn())
+      launch();
     s.press = { x: q.x, y: q.y };
-    if (s.carry && p.type === 'mouse') {
+    if (s.carry && p.type === "mouse") {
       s.pressed = true;
-      button.dataset.pressed = '';
+      button.dataset.pressed = "";
     }
   };
 
-  const onUp = e => {
+  const onUp = (e) => {
     if (s.drag) {
       endDrag(e);
       return;
@@ -1643,50 +1730,51 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     s.pressed = false;
     delete button.dataset.pressed;
     if (s.carry && s.hover) {
-      if (s.phase === 'rest' && rampOn()) ride();
-      else if (props.current.trigger === 'click' && launch()) s.attached = Boolean(props.current.carryCursor);
+      if (s.phase === "rest" && rampOn()) ride();
+      else if (props.current.trigger === "click" && launch())
+        s.attached = Boolean(props.current.carryCursor);
       if (props.current.onClick) props.current.onClick(e);
     }
   };
 
-  const onButtonPointerEnter = e => {
+  const onButtonPointerEnter = (e) => {
     s.pointer.in = true;
-    s.pointer.type = e.pointerType || 'mouse';
+    s.pointer.type = e.pointerType || "mouse";
     const q = local(e);
     s.pointer.x = q.x;
     s.pointer.y = q.y;
     s.hover = true;
-    button.dataset.hover = '';
-    if (s.phase === 'rest' || s.phase === 'landed') {
+    button.dataset.hover = "";
+    if (s.phase === "rest" || s.phase === "landed") {
       launch();
-      s.attached = Boolean(props.current.carryCursor && e.pointerType === 'mouse');
+      s.attached = Boolean(props.current.carryCursor && e.pointerType === "mouse");
     }
   };
 
-  const onButtonTouchStart = e => {
+  const onButtonTouchStart = (e) => {
     s.pointer.in = true;
-    s.pointer.type = 'touch';
+    s.pointer.type = "touch";
     if (e.touches && e.touches[0]) {
       const q = local(e.touches[0]);
       s.pointer.x = q.x;
       s.pointer.y = q.y;
     }
     s.hover = true;
-    if (s.phase === 'rest' || s.phase === 'landed') {
+    if (s.phase === "rest" || s.phase === "landed") {
       launch();
     }
   };
 
-  const onButtonClick = e => {
+  const onButtonClick = (e) => {
     if (s.suppress) {
       s.suppress = false;
       e.stopPropagation();
       e.preventDefault();
       return;
     }
-    if (s.phase === 'rest' || s.phase === 'landed') {
+    if (s.phase === "rest" || s.phase === "landed") {
       launch();
-    } else if (s.phase === 'hover' || s.phase === 'climb') {
+    } else if (s.phase === "hover" || s.phase === "climb") {
       s.alt = Math.min(s.alt + 35, s.H - s.bh - 25);
       s.hold = Math.max(s.hold + 1.2, 2.2);
     }
@@ -1695,18 +1783,18 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     }
   };
 
-  button.addEventListener('pointerenter', onButtonPointerEnter);
-  button.addEventListener('pointermove', onMove);
-  button.addEventListener('touchstart', onButtonTouchStart, { passive: true });
-  button.addEventListener('click', onButtonClick);
-  button.addEventListener('pointerleave', onLeave);
-  root.addEventListener('pointermove', onMove);
-  root.addEventListener('pointerenter', onMove);
-  root.addEventListener('pointerleave', onLeave);
-  root.addEventListener('pointerdown', onDown);
-  root.addEventListener('pointerup', onUp);
-  root.addEventListener('pointercancel', onUp);
-  window.addEventListener('resize', measure);
+  button.addEventListener("pointerenter", onButtonPointerEnter);
+  button.addEventListener("pointermove", onMove);
+  button.addEventListener("touchstart", onButtonTouchStart, { passive: true });
+  button.addEventListener("click", onButtonClick);
+  button.addEventListener("pointerleave", onLeave);
+  root.addEventListener("pointermove", onMove);
+  root.addEventListener("pointerenter", onMove);
+  root.addEventListener("pointerleave", onLeave);
+  root.addEventListener("pointerdown", onDown);
+  root.addEventListener("pointerup", onUp);
+  root.addEventListener("pointercancel", onUp);
+  window.addEventListener("resize", measure);
 
   const ro = new ResizeObserver(measure);
   ro.observe(root);
@@ -1717,7 +1805,7 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
     refresh: measure,
     rehome() {
       measure();
-      if (s.phase !== 'rest') return;
+      if (s.phase !== "rest") return;
       s.x = home();
       place();
       if (!s.running) draw(0);
@@ -1726,20 +1814,20 @@ function createEngine({ root, canvas, button, cursor, ramp, props }) {
       ro.disconnect();
       dropStrip();
       if (s.raf) cancelAnimationFrame(s.raf);
-      button.removeEventListener('pointerenter', onButtonPointerEnter);
-      button.removeEventListener('pointermove', onMove);
-      button.removeEventListener('touchstart', onButtonTouchStart);
-      button.removeEventListener('click', onButtonClick);
-      button.removeEventListener('pointerleave', onLeave);
-      root.removeEventListener('pointermove', onMove);
-      root.removeEventListener('pointerenter', onMove);
-      root.removeEventListener('pointerleave', onLeave);
-      root.removeEventListener('pointerdown', onDown);
-      root.removeEventListener('pointerup', onUp);
-      root.removeEventListener('pointercancel', onUp);
-      window.removeEventListener('resize', measure);
+      button.removeEventListener("pointerenter", onButtonPointerEnter);
+      button.removeEventListener("pointermove", onMove);
+      button.removeEventListener("touchstart", onButtonTouchStart);
+      button.removeEventListener("click", onButtonClick);
+      button.removeEventListener("pointerleave", onLeave);
+      root.removeEventListener("pointermove", onMove);
+      root.removeEventListener("pointerenter", onMove);
+      root.removeEventListener("pointerleave", onLeave);
+      root.removeEventListener("pointerdown", onDown);
+      root.removeEventListener("pointerup", onUp);
+      root.removeEventListener("pointercancel", onUp);
+      window.removeEventListener("resize", measure);
       if (sim) sim.dispose();
-    }
+    },
   };
 }
 
@@ -1757,7 +1845,7 @@ function createSim(gl) {
   };
   const vs = compile(gl.VERTEX_SHADER, VERT);
   const programs = [];
-  const make = src => {
+  const make = (src) => {
     const fs = compile(gl.FRAGMENT_SHADER, src);
     const p = gl.createProgram();
     gl.attachShader(p, vs);
@@ -1769,7 +1857,7 @@ function createSim(gl) {
     const count = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS);
     for (let i = 0; i < count; i += 1) {
       const info = gl.getActiveUniform(p, i);
-      u[info.name.replace(/\[0\]$/, '')] = gl.getUniformLocation(p, info.name);
+      u[info.name.replace(/\[0\]$/, "")] = gl.getUniformLocation(p, info.name);
     }
     const prog = { p, u };
     programs.push(prog);
@@ -1787,7 +1875,7 @@ function createSim(gl) {
     scale: make(SCALE),
     blur: make(BLUR),
     dye: make(DYE),
-    render: make(RENDER)
+    render: make(RENDER),
   };
 
   const vao = gl.createVertexArray();
@@ -1798,7 +1886,11 @@ function createSim(gl) {
     gl.bindTexture(gl.TEXTURE_2D, tex);
     const levels = mips ? Math.floor(Math.log2(Math.max(w, h))) + 1 : 1;
     gl.texStorage2D(gl.TEXTURE_2D, levels, internal, w, h);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mips ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
+    gl.texParameteri(
+      gl.TEXTURE_2D,
+      gl.TEXTURE_MIN_FILTER,
+      mips ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR,
+    );
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
@@ -1826,7 +1918,7 @@ function createSim(gl) {
   let world = [1, 1];
 
   const free = () => {
-    targets.forEach(t => {
+    targets.forEach((t) => {
       gl.deleteTexture(t.tex);
       gl.deleteFramebuffer(t.fbo);
     });
@@ -1853,7 +1945,7 @@ function createSim(gl) {
       curl: target(vw, vh, gl.R16F, false),
       dye: pair(dw, dh, gl.RG16F, false),
       soft: target(dw, dh, gl.RG16F, true),
-      temp: target(dw, dh, gl.RG16F, false)
+      temp: target(dw, dh, gl.RG16F, false),
     };
   };
 
@@ -1864,7 +1956,7 @@ function createSim(gl) {
     Object.entries(values).forEach(([name, v]) => {
       const loc = prog.u[name];
       if (loc === undefined || loc === null) return;
-      if (typeof v === 'number') gl.uniform1f(loc, v);
+      if (typeof v === "number") gl.uniform1f(loc, v);
       else if (v.f1) gl.uniform1fv(loc, v.f1);
       else if (v.tex) {
         gl.activeTexture(gl.TEXTURE0 + unit);
@@ -1894,7 +1986,7 @@ function createSim(gl) {
     run(
       P.advect,
       { uVelocity: f.velocity.read, uSource: f.velocity.read, uWorld: world, uDt: dt, uKeep: 1 },
-      f.velocity.write
+      f.velocity.write,
     );
     f.velocity.swap();
     run(
@@ -1919,9 +2011,9 @@ function createSim(gl) {
         uCraftMotion: o.motion,
         uJetA: o.jets.a,
         uJetB: o.jets.b,
-        uJetBend: { f1: o.jets.bend }
+        uJetBend: { f1: o.jets.bend },
       },
-      f.velocity.write
+      f.velocity.write,
     );
     f.velocity.swap();
     run(P.curl, { uVelocity: f.velocity.read, uTexel: vt }, f.curl);
@@ -1932,19 +2024,27 @@ function createSim(gl) {
         uCurl: f.curl,
         uTexel: vt,
         uStrength: K.vort * o.turbulence * (0.4 + 0.6 * o.activity),
-        uDt: dt
+        uDt: dt,
       },
-      f.velocity.write
+      f.velocity.write,
     );
     f.velocity.swap();
     run(P.divergence, { uVelocity: f.velocity.read, uTexel: vt }, f.divergence);
     run(P.scale, { uSource: f.pressure.read, uScale: 0.8 }, f.pressure.write);
     f.pressure.swap();
     for (let i = 0; i < K.iters; i += 1) {
-      run(P.pressure, { uPressure: f.pressure.read, uDivergence: f.divergence, uTexel: vt }, f.pressure.write);
+      run(
+        P.pressure,
+        { uPressure: f.pressure.read, uDivergence: f.divergence, uTexel: vt },
+        f.pressure.write,
+      );
       f.pressure.swap();
     }
-    run(P.gradient, { uPressure: f.pressure.read, uVelocity: f.velocity.read, uTexel: vt }, f.velocity.write);
+    run(
+      P.gradient,
+      { uPressure: f.pressure.read, uVelocity: f.velocity.read, uTexel: vt },
+      f.velocity.write,
+    );
     f.velocity.swap();
 
     run(
@@ -1970,9 +2070,9 @@ function createSim(gl) {
         uTime: o.time,
         uJetA: o.jets.a,
         uJetB: o.jets.b,
-        uJetBend: { f1: o.jets.bend }
+        uJetBend: { f1: o.jets.bend },
       },
-      f.dye.write
+      f.dye.write,
     );
     f.dye.swap();
     const spread = K.blur / 2;
@@ -2010,7 +2110,7 @@ function createSim(gl) {
       uCraftMotion: o.motion,
       uJetA: o.jets.a,
       uJetB: o.jets.b,
-      uJetBend: { f1: o.jets.bend }
+      uJetBend: { f1: o.jets.bend },
     });
   };
 
@@ -2024,8 +2124,8 @@ function createSim(gl) {
       f.dye.read,
       f.dye.write,
       f.soft,
-      f.temp
-    ].forEach(t => {
+      f.temp,
+    ].forEach((t) => {
       gl.bindFramebuffer(gl.FRAMEBUFFER, t.fbo);
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
@@ -2036,7 +2136,7 @@ function createSim(gl) {
 
   const dispose = () => {
     free();
-    programs.forEach(p => gl.deleteProgram(p.p));
+    programs.forEach((p) => gl.deleteProgram(p.p));
     gl.deleteShader(vs);
     gl.deleteVertexArray(vao);
   };
@@ -2047,14 +2147,14 @@ function createSim(gl) {
 export interface FlyingButtonProps {
   children?: ReactNode;
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
-  theme?: 'dark' | 'light';
-  size?: 'small' | 'medium' | 'large' | 'extra-large';
+  theme?: "dark" | "light";
+  size?: "small" | "medium" | "large" | "extra-large";
   radius?: number;
   altitude?: number;
   hoverTime?: number;
   jets?: number;
   thrusters?: boolean;
-  trigger?: 'hover' | 'click';
+  trigger?: "hover" | "click";
   carryCursor?: boolean;
   ramp?: boolean;
   rampColor?: string;
@@ -2070,16 +2170,16 @@ export interface FlyingButtonProps {
 }
 
 export function FlyingButton({
-  children = 'Take off',
+  children = "Take off",
   onClick,
-  theme = 'dark',
-  size = 'medium',
+  theme = "dark",
+  size = "medium",
   radius,
   altitude = 170,
   hoverTime = 2.4,
   jets = 2,
   thrusters = true,
-  trigger = 'hover',
+  trigger = "hover",
   carryCursor = true,
   ramp = false,
   rampColor,
@@ -2090,8 +2190,8 @@ export function FlyingButton({
   smokeColor,
   buttonColor,
   textColor,
-  className = '',
-  style
+  className = "",
+  style,
 }: FlyingButtonProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -2100,19 +2200,19 @@ export function FlyingButton({
   const rampRef = useRef<SVGSVGElement | null>(null);
   const engineRef = useRef<any>(null);
   const propsRef = useRef<any>({});
-  const light = theme === 'light';
-  const burgundy = theme === 'burgundy' || !buttonColor;
+  const light = theme === "light";
+  const burgundy = theme === "burgundy" || !buttonColor;
   const dims = SIZES[size] || SIZES.medium;
-  const thrust = thrustColor || (burgundy ? '#FF4D36' : light ? '#4f8cff' : '#8ec5ff');
-  const smokeTone = smokeColor || (burgundy ? '#F4EAEF' : light ? '#e9ebf0' : '#eef1f6');
-  const body = buttonColor || (burgundy ? '#6B1124' : light ? '#18181b' : '#27272a');
-  const ink = textColor || (burgundy ? '#FAF7F2' : light ? '#fafafa' : '#f5f5f5');
-  const deck = rampColor || (burgundy ? '#3A0713' : light ? '#ececf0' : '#25222b');
+  const thrust = thrustColor || (burgundy ? "#FF4D36" : light ? "#4f8cff" : "#8ec5ff");
+  const smokeTone = smokeColor || (burgundy ? "#F4EAEF" : light ? "#e9ebf0" : "#eef1f6");
+  const body = buttonColor || (burgundy ? "#6B1124" : light ? "#18181b" : "#27272a");
+  const ink = textColor || (burgundy ? "#FAF7F2" : light ? "#fafafa" : "#f5f5f5");
+  const deck = rampColor || (burgundy ? "#3A0713" : light ? "#ececf0" : "#25222b");
   const jetCount = clamp(Math.round(num(jets, 2)), 1, MAX_JETS);
   const spread = jetCount === 1 ? 0 : jetCount === 2 ? 0.3 : 0.34;
   const pods = thrusters
     ? Array.from({ length: jetCount }, (_, k) =>
-        jetCount === 1 ? 50 : 50 + spread * 100 * ((2 * k) / (jetCount - 1) - 1)
+        jetCount === 1 ? 50 : 50 + spread * 100 * ((2 * k) / (jetCount - 1) - 1),
       )
     : [];
   propsRef.current = {
@@ -2130,7 +2230,7 @@ export function FlyingButton({
     thrustColor: thrust,
     smokeColor: smokeTone,
     theme,
-    onClick
+    onClick,
   };
 
   useEffect(() => {
@@ -2141,7 +2241,7 @@ export function FlyingButton({
       button: buttonRef.current,
       cursor: cursorRef.current,
       ramp: rampRef.current,
-      props: propsRef
+      props: propsRef,
     });
     engineRef.current = engine;
     return () => {
@@ -2163,26 +2263,28 @@ export function FlyingButton({
       ref={rootRef}
       className={`flying-button ${className}`.trim()}
       data-theme={theme}
-      data-trigger={ramp ? 'click' : trigger}
+      data-trigger={ramp ? "click" : trigger}
       style={
         {
-          '--fly-bg': body,
-          '--fly-ink': ink,
-          '--fly-glow': thrust,
-          '--fly-ramp': deck,
-          '--fly-h': `${dims.h}px`,
-          '--fly-px': `${dims.px}px`,
-          '--fly-fs': `${dims.fs}px`,
-          '--fly-scale': dims.k,
-          ...(radius !== undefined && radius !== null ? { '--fly-radius': `${num(radius, 0)}px` } : {}),
-          ...style
+          "--fly-bg": body,
+          "--fly-ink": ink,
+          "--fly-glow": thrust,
+          "--fly-ramp": deck,
+          "--fly-h": `${dims.h}px`,
+          "--fly-px": `${dims.px}px`,
+          "--fly-fs": `${dims.fs}px`,
+          "--fly-scale": dims.k,
+          ...(radius !== undefined && radius !== null
+            ? { "--fly-radius": `${num(radius, 0)}px` }
+            : {}),
+          ...style,
         } as CSSProperties
       }
     >
       <svg
         ref={rampRef}
         className="flying-button__ramp"
-        style={ramp ? undefined : { display: 'none' }}
+        style={ramp ? undefined : { display: "none" }}
         aria-hidden="true"
       >
         <path className="flying-button__ramp-body" />
@@ -2193,12 +2295,17 @@ export function FlyingButton({
         ref={buttonRef}
         type="button"
         className="flying-button__craft"
-        onClick={e => propsRef.current.onClick && propsRef.current.onClick(e)}
+        onClick={(e) => propsRef.current.onClick && propsRef.current.onClick(e)}
       >
         <span className="flying-button__face" aria-hidden="true" />
         <span className="flying-button__label">{children}</span>
-        {pods.map(left => (
-          <span key={left} className="flying-button__pod" style={{ left: `${left}%` }} aria-hidden="true" />
+        {pods.map((left) => (
+          <span
+            key={left}
+            className="flying-button__pod"
+            style={{ left: `${left}%` }}
+            aria-hidden="true"
+          />
         ))}
       </button>
       <svg ref={cursorRef} className="flying-button__cursor" viewBox="0 0 24 34" aria-hidden="true">

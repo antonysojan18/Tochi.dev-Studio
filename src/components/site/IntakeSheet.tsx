@@ -33,7 +33,10 @@ export function IntakeSheet() {
             <span className="font-mono text-xs tracking-[0.08em] text-primary-foreground/50 uppercase">
               Intake
             </span>
-            <KineticText as="h2" className="mt-3 text-3xl font-semibold tracking-[-0.03em] md:text-5xl">
+            <KineticText
+              as="h2"
+              className="mt-3 text-3xl font-semibold tracking-[-0.03em] md:text-5xl"
+            >
               Let's architect your system.
             </KineticText>
             <p className="mt-4 max-w-sm text-primary-foreground/65">
@@ -137,7 +140,10 @@ export function IntakeSheet() {
         </div>
 
         {/* 3D Flying Button over the bottom centre of the contact box */}
-        <div className="relative mt-8 sm:mt-10 flex w-full justify-center px-2 sm:px-4" style={{ height: 56 }}>
+        <div
+          className="relative mt-8 sm:mt-10 flex w-full justify-center px-2 sm:px-4"
+          style={{ height: 56 }}
+        >
           <div
             className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-2xl flex justify-center pointer-events-none"
             style={{ height: 260, maxWidth: "100%" }}
@@ -175,4 +181,3 @@ export function IntakeSheet() {
     </section>
   );
 }
-

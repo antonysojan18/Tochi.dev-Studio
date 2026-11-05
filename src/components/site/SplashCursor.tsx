@@ -1,21 +1,21 @@
 // @ts-nocheck
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState, type CSSProperties } from 'react';
-import './SplashCursor.css';
+import React, { useEffect, useRef, useState, type CSSProperties } from "react";
+import "./SplashCursor.css";
 
 const QUALITY = {
   low: { sim: 64, dye: 512, iterations: 10 },
   medium: { sim: 96, dye: 1024, iterations: 16 },
-  high: { sim: 128, dye: 1440, iterations: 20 }
+  high: { sim: 128, dye: 1440, iterations: 20 },
 };
 const BLOOM_RESOLUTION = 256;
 const BLOOM_ITERATIONS = 4;
 const BLOOM_THRESHOLD = 0.3;
 const BLOOM_KNEE = 0.7;
 
-const ROOT = 'splash-cursor';
-const CANVAS = 'splash-cursor__canvas';
+const ROOT = "splash-cursor";
+const CANVAS = "splash-cursor__canvas";
 
 const VERTEX = `#version 300 es
 precision highp float;
@@ -226,14 +226,14 @@ void main() {
     float alpha = clamp(max(c.r, max(c.g, c.b)), 0.0, 1.0);
     outColor = vec4(min(c, vec3(alpha)), alpha);
   }
-}`
+}`,
 };
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
-const parseColor = value => {
-  let hex = String(value).replace('#', '').trim();
-  if (hex.length === 3) hex = [...hex].map(char => char + char).join('');
+const parseColor = (value) => {
+  let hex = String(value).replace("#", "").trim();
+  if (hex.length === 3) hex = [...hex].map((char) => char + char).join("");
   const number = parseInt(hex.slice(0, 6), 16);
   if (Number.isNaN(number)) return [1, 1, 1];
   return [((number >> 16) & 255) / 255, ((number >> 8) & 255) / 255, (number & 255) / 255];
@@ -266,11 +266,11 @@ export interface SplashCursorProps {
   momentum?: number;
   shading?: number;
   glow?: number;
-  quality?: 'low' | 'medium' | 'high';
+  quality?: "low" | "medium" | "high";
   clickSplash?: boolean;
   intro?: boolean;
   contained?: boolean;
-  theme?: 'dark' | 'light';
+  theme?: "dark" | "light";
   zIndex?: number;
   className?: string;
   style?: CSSProperties;
@@ -278,7 +278,7 @@ export interface SplashCursorProps {
 }
 
 export function SplashCursor({
-  colors = ['#8A1C36', '#6B1124', '#A82544', '#540B1A', '#FF4D36'],
+  colors = ["#8A1C36", "#6B1124", "#A82544", "#540B1A", "#FF4D36"],
   rainbow = false,
   colorSpeed = 0.8,
   intensity = 0.85,
@@ -289,39 +289,42 @@ export function SplashCursor({
   momentum = 0.9,
   shading = 0.8,
   glow = 0.1,
-  quality = 'high',
+  quality = "high",
   clickSplash = true,
   intro = true,
   contained = false,
-  theme = 'dark',
+  theme = "dark",
   zIndex = 40,
-  className = '',
+  className = "",
   style,
-  disableOnMobile = true
+  disableOnMobile = true,
 }: SplashCursorProps) {
   const rootRef = useRef(null);
   const canvasRef = useRef(null);
   const [generation, setGeneration] = useState(0);
   const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return window.innerWidth <= 768 || window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+    if (typeof window === "undefined") return false;
+    return (
+      window.innerWidth <= 768 || window.matchMedia("(max-width: 768px), (pointer: coarse)").matches
+    );
   });
 
   useEffect(() => {
     if (!disableOnMobile) return undefined;
     const checkMobile = () => {
       const mobile =
-        typeof window !== 'undefined' &&
-        (window.innerWidth <= 768 || window.matchMedia('(max-width: 768px), (pointer: coarse)').matches);
+        typeof window !== "undefined" &&
+        (window.innerWidth <= 768 ||
+          window.matchMedia("(max-width: 768px), (pointer: coarse)").matches);
       setIsMobile(mobile);
     };
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, [disableOnMobile]);
 
   const settings = {
-    palette: (Array.isArray(colors) && colors.length ? colors : ['#8A1C36']).map(parseColor),
+    palette: (Array.isArray(colors) && colors.length ? colors : ["#8A1C36"]).map(parseColor),
     rainbow,
     colorSpeed: Math.max(0, colorSpeed),
     intensity: Math.max(0, intensity),
@@ -332,10 +335,10 @@ export function SplashCursor({
     momentum: Math.max(0.05, momentum),
     shading: clamp(shading, 0, 1),
     glow: clamp(glow, 0, 1),
-    quality: QUALITY[quality] ? quality : 'high',
+    quality: QUALITY[quality] ? quality : "high",
     clickSplash,
     contained,
-    light: theme === 'light'
+    light: theme === "light",
   };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
@@ -344,9 +347,9 @@ export function SplashCursor({
   useEffect(() => {
     if (disableOnMobile && isMobile) return undefined;
     const parent = rootRef.current?.parentElement;
-    if (!contained || !parent || getComputedStyle(parent).position !== 'static') return undefined;
+    if (!contained || !parent || getComputedStyle(parent).position !== "static") return undefined;
     const previous = parent.style.position;
-    parent.style.position = 'relative';
+    parent.style.position = "relative";
     return () => {
       parent.style.position = previous;
     };
@@ -356,17 +359,17 @@ export function SplashCursor({
     if (disableOnMobile && isMobile) return undefined;
     const canvas = canvasRef.current;
     if (!canvas) return undefined;
-    const gl = canvas.getContext('webgl2', {
+    const gl = canvas.getContext("webgl2", {
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
       depth: false,
       stencil: false,
-      preserveDrawingBuffer: false
+      preserveDrawingBuffer: false,
     });
     if (!gl) return undefined;
-    gl.getExtension('EXT_color_buffer_float');
-    gl.getExtension('EXT_color_buffer_half_float');
+    gl.getExtension("EXT_color_buffer_float");
+    gl.getExtension("EXT_color_buffer_half_float");
 
     const renderable = (internal, format) => {
       const texture = gl.createTexture();
@@ -400,7 +403,7 @@ export function SplashCursor({
       const program = gl.createProgram();
       gl.attachShader(program, vertex);
       gl.attachShader(program, fragment);
-      gl.bindAttribLocation(program, 0, 'aPosition');
+      gl.bindAttribLocation(program, 0, "aPosition");
       gl.linkProgram(program);
       gl.deleteShader(fragment);
       if (!gl.getProgramParameter(program, gl.LINK_STATUS)) broken = true;
@@ -428,12 +431,12 @@ export function SplashCursor({
 
     const release = () => {
       if (gl.isContextLost()) return;
-      targets.forEach(target => {
+      targets.forEach((target) => {
         gl.deleteFramebuffer(target.fbo);
         gl.deleteTexture(target.texture);
       });
       targets.clear();
-      Object.values(programs).forEach(item => gl.deleteProgram(item.program));
+      Object.values(programs).forEach((item) => gl.deleteProgram(item.program));
       gl.deleteBuffer(buffer);
       gl.deleteVertexArray(vao);
     };
@@ -443,13 +446,13 @@ export function SplashCursor({
       return undefined;
     }
 
-    const use = name => {
+    const use = (name) => {
       const item = programs[name];
       gl.useProgram(item.program);
       return item.uniforms;
     };
 
-    const blit = target => {
+    const blit = (target) => {
       if (target) {
         gl.viewport(0, 0, target.width, target.height);
         gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo);
@@ -468,7 +471,17 @@ export function SplashCursor({
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texImage2D(gl.TEXTURE_2D, 0, format.internal, width, height, 0, format.format, gl.HALF_FLOAT, null);
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        format.internal,
+        width,
+        height,
+        0,
+        format.format,
+        gl.HALF_FLOAT,
+        null,
+      );
       const fbo = gl.createFramebuffer();
       gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
       gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
@@ -482,17 +495,17 @@ export function SplashCursor({
         height,
         texelX: 1 / width,
         texelY: 1 / height,
-        attach: unit => {
+        attach: (unit) => {
           gl.activeTexture(gl.TEXTURE0 + unit);
           gl.bindTexture(gl.TEXTURE_2D, texture);
           return unit;
-        }
+        },
       };
       targets.add(target);
       return target;
     };
 
-    const destroyTarget = target => {
+    const destroyTarget = (target) => {
       if (!target) return;
       gl.deleteFramebuffer(target.fbo);
       gl.deleteTexture(target.texture);
@@ -501,7 +514,17 @@ export function SplashCursor({
 
     const reshape = (target, width, height, format) => {
       gl.bindTexture(gl.TEXTURE_2D, target.texture);
-      gl.texImage2D(gl.TEXTURE_2D, 0, format.internal, width, height, 0, format.format, gl.HALF_FLOAT, null);
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        format.internal,
+        width,
+        height,
+        0,
+        format.format,
+        gl.HALF_FLOAT,
+        null,
+      );
       target.width = width;
       target.height = height;
       target.texelX = 1 / width;
@@ -520,7 +543,7 @@ export function SplashCursor({
           const current = pair.read;
           pair.read = pair.write;
           pair.write = current;
-        }
+        },
       };
       return pair;
     };
@@ -528,7 +551,7 @@ export function SplashCursor({
     const resizeDouble = (pair, width, height, format, filter, keep) => {
       if (keep) {
         const next = createTarget(width, height, format, filter);
-        const u = use('copy');
+        const u = use("copy");
         gl.uniform1i(u.uTexture, pair.read.attach(0));
         blit(next);
         destroyTarget(pair.read);
@@ -543,7 +566,7 @@ export function SplashCursor({
       pair.texelY = 1 / height;
     };
 
-    const resolution = base => {
+    const resolution = (base) => {
       const width = gl.drawingBufferWidth;
       const height = gl.drawingBufferHeight;
       const aspect = Math.max(width, height) / Math.max(1, Math.min(width, height));
@@ -553,7 +576,7 @@ export function SplashCursor({
     };
 
     const fit = () => {
-      const ratio = Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, 2);
+      const ratio = Math.min(typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1, 2);
       const width = Math.max(1, Math.floor(canvas.clientWidth * ratio));
       const height = Math.max(1, Math.floor(canvas.clientHeight * ratio));
       if (canvas.width === width && canvas.height === height) return;
@@ -564,7 +587,10 @@ export function SplashCursor({
     const sizes = () => {
       const q = QUALITY[settingsRef.current.quality];
       const shortSide = Math.min(gl.drawingBufferWidth, gl.drawingBufferHeight);
-      return { sim: resolution(q.sim), ink: resolution(Math.max(q.sim, Math.min(q.dye, shortSide))) };
+      return {
+        sim: resolution(q.sim),
+        ink: resolution(Math.max(q.sim, Math.min(q.dye, shortSide))),
+      };
     };
 
     fit();
@@ -611,16 +637,17 @@ export function SplashCursor({
         reshape(curl, next.sim.width, next.sim.height, r);
       }
       const glowSize = resolution(BLOOM_RESOLUTION);
-      if (bloom && (bloom.width !== glowSize.width || bloom.height !== glowSize.height)) dropBloom();
+      if (bloom && (bloom.width !== glowSize.width || bloom.height !== glowSize.height))
+        dropBloom();
     };
 
-    const radiusFor = scale => {
+    const radiusFor = (scale) => {
       const aspect = canvas.width / canvas.height;
       return ((0.2 * settingsRef.current.size * scale) / 100) * (aspect > 1 ? aspect : 1);
     };
 
     const splat = (ax, ay, bx, by, vx, vy, color, radius) => {
-      const u = use('splat');
+      const u = use("splat");
       gl.uniform1i(u.uTarget, velocity.read.attach(0));
       gl.uniform1f(u.aspectRatio, canvas.width / canvas.height);
       gl.uniform2f(u.pointA, ax, ay);
@@ -649,12 +676,12 @@ export function SplashCursor({
       return [
         from[0] + (to[0] - from[0]) * blend,
         from[1] + (to[1] - from[1]) * blend,
-        from[2] + (to[2] - from[2]) * blend
+        from[2] + (to[2] - from[2]) * blend,
       ];
     };
 
     const inkFor = (color, amount) =>
-      color.map(channel => (settingsRef.current.light ? 1 - channel : channel) * amount);
+      color.map((channel) => (settingsRef.current.light ? 1 - channel : channel) * amount);
 
     const flush = (pointer, dt, now) => {
       const s = settingsRef.current;
@@ -683,7 +710,7 @@ export function SplashCursor({
       const s = settingsRef.current;
       const seed = Math.random() * Math.PI * 2;
       const aspect = canvas.width / canvas.height;
-      let u = use('burst');
+      let u = use("burst");
       gl.uniform1i(u.uTarget, velocity.read.attach(0));
       gl.uniform1f(u.aspectRatio, aspect);
       gl.uniform2f(u.point, x, y);
@@ -696,7 +723,7 @@ export function SplashCursor({
       const amount = 1.6 * s.intensity;
       const first = inkFor(colorAt(offset, now), amount);
       const second = inkFor(colorAt(offset + 0.3, now), amount);
-      u = use('crown');
+      u = use("crown");
       gl.uniform1i(u.uTarget, dye.read.attach(0));
       gl.uniform1f(u.aspectRatio, aspect);
       gl.uniform2f(u.point, x, y);
@@ -708,17 +735,17 @@ export function SplashCursor({
       dye.swap();
     };
 
-    const step = dt => {
+    const step = (dt) => {
       const s = settingsRef.current;
       const iterations = QUALITY[s.quality].iterations;
       gl.disable(gl.BLEND);
 
-      let u = use('curl');
+      let u = use("curl");
       gl.uniform2f(u.texelSize, velocity.texelX, velocity.texelY);
       gl.uniform1i(u.uVelocity, velocity.read.attach(0));
       blit(curl);
 
-      u = use('vorticity');
+      u = use("vorticity");
       gl.uniform2f(u.texelSize, velocity.texelX, velocity.texelY);
       gl.uniform1i(u.uVelocity, velocity.read.attach(0));
       gl.uniform1i(u.uCurl, curl.attach(1));
@@ -727,18 +754,18 @@ export function SplashCursor({
       blit(velocity.write);
       velocity.swap();
 
-      u = use('divergence');
+      u = use("divergence");
       gl.uniform2f(u.texelSize, velocity.texelX, velocity.texelY);
       gl.uniform1i(u.uVelocity, velocity.read.attach(0));
       blit(divergence);
 
-      u = use('clear');
+      u = use("clear");
       gl.uniform1i(u.uTexture, pressure.read.attach(0));
       gl.uniform1f(u.value, 0.1);
       blit(pressure.write);
       pressure.swap();
 
-      u = use('pressure');
+      u = use("pressure");
       gl.uniform2f(u.texelSize, velocity.texelX, velocity.texelY);
       gl.uniform1i(u.uDivergence, divergence.attach(0));
       for (let i = 0; i < iterations; i++) {
@@ -747,14 +774,14 @@ export function SplashCursor({
         pressure.swap();
       }
 
-      u = use('gradient');
+      u = use("gradient");
       gl.uniform2f(u.texelSize, velocity.texelX, velocity.texelY);
       gl.uniform1i(u.uPressure, pressure.read.attach(0));
       gl.uniform1i(u.uVelocity, velocity.read.attach(1));
       blit(velocity.write);
       velocity.swap();
 
-      u = use('advection');
+      u = use("advection");
       gl.uniform2f(u.texelSize, velocity.texelX, velocity.texelY);
       gl.uniform1i(u.uVelocity, velocity.read.attach(0));
       gl.uniform1i(u.uSource, velocity.read.attach(0));
@@ -770,20 +797,20 @@ export function SplashCursor({
       dye.swap();
     };
 
-    const applyBloom = amount => {
+    const applyBloom = (amount) => {
       const base = ensureBloom();
       if (!bloomChain.length) return;
       gl.disable(gl.BLEND);
-      let u = use('prefilter');
+      let u = use("prefilter");
       const knee = BLOOM_THRESHOLD * BLOOM_KNEE + 0.0001;
       gl.uniform3f(u.curve, BLOOM_THRESHOLD - knee, knee * 2, 0.25 / knee);
       gl.uniform1f(u.threshold, BLOOM_THRESHOLD);
       gl.uniform1i(u.uTexture, dye.read.attach(0));
       blit(base);
-      u = use('blur');
+      u = use("blur");
       gl.uniform1f(u.intensity, 1);
       let last = base;
-      bloomChain.forEach(target => {
+      bloomChain.forEach((target) => {
         gl.uniform2f(u.texelSize, last.texelX, last.texelY);
         gl.uniform1i(u.uTexture, last.attach(0));
         blit(target);
@@ -809,7 +836,7 @@ export function SplashCursor({
       const s = settingsRef.current;
       if (s.glow > 0) applyBloom(2 * s.glow);
       gl.disable(gl.BLEND);
-      const u = use('display');
+      const u = use("display");
       gl.uniform2f(u.texelSize, 1 / gl.drawingBufferWidth, 1 / gl.drawingBufferHeight);
       gl.uniform1i(u.uTexture, dye.read.attach(0));
       gl.uniform1i(u.uBloom, (bloom ?? dye.read).attach(1));
@@ -828,14 +855,26 @@ export function SplashCursor({
 
     const pointers = new Map();
     const bursts = [];
-    const reduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? true : false;
-    const introPointer = { x: 0, y: 0, px: 0, py: 0, ready: false, moved: false, offset: Math.random() };
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+        ? true
+        : false;
+    const introPointer = {
+      x: 0,
+      y: 0,
+      px: 0,
+      py: 0,
+      ready: false,
+      moved: false,
+      offset: Math.random(),
+    };
     let introStart = introRef.current && !reduced ? performance.now() + 150 : -1;
     let raf = 0;
     let last = 0;
     let lastActivity = performance.now();
 
-    const advanceIntro = now => {
+    const advanceIntro = (now) => {
       if (introStart < 0) return;
       const progress = (now - introStart) / 1100;
       if (progress < 0) return;
@@ -856,7 +895,7 @@ export function SplashCursor({
       lastActivity = now;
     };
 
-    const frame = now => {
+    const frame = (now) => {
       raf = 0;
       if (disposed || lost) return;
       const s = settingsRef.current;
@@ -868,12 +907,12 @@ export function SplashCursor({
         introPointer.moved = false;
         flush(introPointer, dt, now);
       }
-      pointers.forEach(pointer => {
+      pointers.forEach((pointer) => {
         if (!pointer.moved) return;
         pointer.moved = false;
         flush(pointer, dt, now);
       });
-      bursts.splice(0).forEach(point => burst(point.x, point.y, now));
+      bursts.splice(0).forEach((point) => burst(point.x, point.y, now));
       step(dt);
       render();
       const quiet = (2.2 * s.trail + 0.4) * 1000;
@@ -928,47 +967,49 @@ export function SplashCursor({
       wake();
     };
 
-    const onPointerMove = event => {
-      if (event.pointerType !== 'touch') track(`p${event.pointerId}`, event.clientX, event.clientY);
+    const onPointerMove = (event) => {
+      if (event.pointerType !== "touch") track(`p${event.pointerId}`, event.clientX, event.clientY);
     };
-    const onPointerDown = event => {
-      if (event.pointerType !== 'touch') press(event.clientX, event.clientY);
+    const onPointerDown = (event) => {
+      if (event.pointerType !== "touch") press(event.clientX, event.clientY);
     };
-    const onTouchStart = event => {
-      Array.from(event.changedTouches).forEach(touch => {
+    const onTouchStart = (event) => {
+      Array.from(event.changedTouches).forEach((touch) => {
         pointers.delete(`t${touch.identifier}`);
         track(`t${touch.identifier}`, touch.clientX, touch.clientY);
         press(touch.clientX, touch.clientY);
       });
     };
-    const onTouchMove = event => {
-      Array.from(event.changedTouches).forEach(touch => track(`t${touch.identifier}`, touch.clientX, touch.clientY));
+    const onTouchMove = (event) => {
+      Array.from(event.changedTouches).forEach((touch) =>
+        track(`t${touch.identifier}`, touch.clientX, touch.clientY),
+      );
     };
-    const onTouchEnd = event => {
-      Array.from(event.changedTouches).forEach(touch => pointers.delete(`t${touch.identifier}`));
+    const onTouchEnd = (event) => {
+      Array.from(event.changedTouches).forEach((touch) => pointers.delete(`t${touch.identifier}`));
     };
     const onLeave = () => {
-      pointers.forEach(pointer => {
+      pointers.forEach((pointer) => {
         pointer.ready = false;
       });
     };
-    const onLost = event => {
+    const onLost = (event) => {
       event.preventDefault();
       lost = true;
       cancelAnimationFrame(raf);
       raf = 0;
     };
-    const onRestored = () => setGeneration(value => value + 1);
+    const onRestored = () => setGeneration((value) => value + 1);
 
-    window.addEventListener('pointermove', onPointerMove, { passive: true });
-    window.addEventListener('pointerdown', onPointerDown, { passive: true });
-    window.addEventListener('touchstart', onTouchStart, { passive: true });
-    window.addEventListener('touchmove', onTouchMove, { passive: true });
-    window.addEventListener('touchend', onTouchEnd, { passive: true });
-    window.addEventListener('touchcancel', onTouchEnd, { passive: true });
-    document.documentElement.addEventListener('pointerleave', onLeave);
-    canvas.addEventListener('webglcontextlost', onLost);
-    canvas.addEventListener('webglcontextrestored', onRestored);
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerdown", onPointerDown, { passive: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
+    document.documentElement.addEventListener("pointerleave", onLeave);
+    canvas.addEventListener("webglcontextlost", onLost);
+    canvas.addEventListener("webglcontextrestored", onRestored);
 
     resize();
     if (introStart >= 0) wake();
@@ -976,15 +1017,15 @@ export function SplashCursor({
     return () => {
       disposed = true;
       cancelAnimationFrame(raf);
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('touchstart', onTouchStart);
-      window.removeEventListener('touchmove', onTouchMove);
-      window.removeEventListener('touchend', onTouchEnd);
-      window.removeEventListener('touchcancel', onTouchEnd);
-      document.documentElement.removeEventListener('pointerleave', onLeave);
-      canvas.removeEventListener('webglcontextlost', onLost);
-      canvas.removeEventListener('webglcontextrestored', onRestored);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
+      document.documentElement.removeEventListener("pointerleave", onLeave);
+      canvas.removeEventListener("webglcontextlost", onLost);
+      canvas.removeEventListener("webglcontextrestored", onRestored);
       release();
     };
   }, [generation, disableOnMobile, isMobile]);
@@ -996,9 +1037,9 @@ export function SplashCursor({
   return (
     <div
       ref={rootRef}
-      className={[ROOT, className].filter(Boolean).join(' ')}
+      className={[ROOT, className].filter(Boolean).join(" ")}
       style={{ zIndex, ...style }}
-      data-contained={contained ? '' : undefined}
+      data-contained={contained ? "" : undefined}
       aria-hidden="true"
     >
       <canvas ref={canvasRef} className={CANVAS} />

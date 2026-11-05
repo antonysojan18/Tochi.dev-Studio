@@ -29,7 +29,10 @@ const steps = [
 
 export function Process() {
   return (
-    <section id="process" className="mx-auto max-w-6xl px-3 sm:px-5 py-14 sm:py-20 md:py-28 scroll-mt-28 md:scroll-mt-32">
+    <section
+      id="process"
+      className="mx-auto max-w-6xl px-3 sm:px-5 py-14 sm:py-20 md:py-28 scroll-mt-28 md:scroll-mt-32"
+    >
       {/* Header with Kinetic Text Reveal */}
       <div className="mb-8 sm:mb-12 md:mb-16">
         <KineticText
@@ -43,7 +46,10 @@ export function Process() {
       {/* Circuit bus container */}
       <div className="relative">
         {/* Sequential Pulse Circuit line connecting all 4 cards (Desktop) */}
-        <div aria-hidden="true" className="hidden lg:block absolute -top-6 left-12 right-12 h-px bg-gradient-to-r from-hairline/10 via-hairline/40 to-hairline/10 pointer-events-none z-10">
+        <div
+          aria-hidden="true"
+          className="hidden lg:block absolute -top-6 left-12 right-12 h-px bg-gradient-to-r from-hairline/10 via-hairline/40 to-hairline/10 pointer-events-none z-10"
+        >
           {/* Traveling energy beam */}
           <motion.div
             className="absolute -top-[1px] h-[3px] w-36 rounded-full bg-gradient-to-r from-transparent via-[#FF4D36] to-transparent shadow-[0_0_14px_#FF4D36]"

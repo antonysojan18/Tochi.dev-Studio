@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useReducedMotion } from 'motion/react';
+import { useEffect, useRef } from "react";
+import { motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
 
 export function AmbientOrbs() {
   const reducedMotion = useReducedMotion();
@@ -22,8 +22,8 @@ export function AmbientOrbs() {
       mouseY.set(y);
     };
 
-    window.addEventListener('pointermove', handlePointerMove, { passive: true });
-    return () => window.removeEventListener('pointermove', handlePointerMove);
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    return () => window.removeEventListener("pointermove", handlePointerMove);
   }, [mouseX, mouseY, reducedMotion]);
 
   if (reducedMotion) {

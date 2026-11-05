@@ -1,5 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useReducedMotion,
+} from "motion/react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -38,115 +45,121 @@ const labsSchema = {
     {
       "@type": "EducationalOccupationalProgram",
       "@id": "https://tochidevstudio.in/labs#internship",
-      "name": "TOCHI .Labs 1-Month Production Internship",
-      "description":
+      name: "TOCHI .Labs 1-Month Production Internship",
+      description:
         "Free 1-month immersive production internship with TOCHI .dev Studio principal engineers. Receive official Government of India MSME-recognized credentials.",
-      "provider": {
+      provider: {
         "@type": "Organization",
-        "name": "TOCHI .dev Studio",
-        "url": "https://tochidevstudio.in"
+        name: "TOCHI .dev Studio",
+        url: "https://tochidevstudio.in",
       },
-      "educationalCredentialAwarded": "Government of India MSME Recognized Certificate",
-      "offers": {
+      educationalCredentialAwarded: "Government of India MSME Recognized Certificate",
+      offers: {
         "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "INR",
-        "category": "Free"
+        price: "0",
+        priceCurrency: "INR",
+        category: "Free",
       },
-      "hasCourse": [
+      hasCourse: [
         {
           "@type": "Course",
-          "name": "AI Web Development",
-          "description": "Production full-stack web platforms with Next.js/Vite, TanStack, and OpenAI/Gemini SDK integrations.",
-          "provider": { "@type": "Organization", "name": "TOCHI .dev Studio" }
+          name: "AI Web Development",
+          description:
+            "Production full-stack web platforms with Next.js/Vite, TanStack, and OpenAI/Gemini SDK integrations.",
+          provider: { "@type": "Organization", name: "TOCHI .dev Studio" },
         },
         {
           "@type": "Course",
-          "name": "Generative UI UX Design",
-          "description": "Motion systems, interactive micro-interactions, Figma design systems, and generative layout concepts.",
-          "provider": { "@type": "Organization", "name": "TOCHI .dev Studio" }
+          name: "Generative UI UX Design",
+          description:
+            "Motion systems, interactive micro-interactions, Figma design systems, and generative layout concepts.",
+          provider: { "@type": "Organization", name: "TOCHI .dev Studio" },
         },
         {
           "@type": "Course",
-          "name": "Intelligent Backend & API Architecture",
-          "description": "Serverless backends, edge computing, PostgreSQL/vector search, and secure API gateways.",
-          "provider": { "@type": "Organization", "name": "TOCHI .dev Studio" }
+          name: "Intelligent Backend & API Architecture",
+          description:
+            "Serverless backends, edge computing, PostgreSQL/vector search, and secure API gateways.",
+          provider: { "@type": "Organization", name: "TOCHI .dev Studio" },
         },
         {
           "@type": "Course",
-          "name": "Machine Learning & Autonomous Systems",
-          "description": "RAG architectures, local LLM fine-tuning, autonomous agent workflows, and vector embeddings.",
-          "provider": { "@type": "Organization", "name": "TOCHI .dev Studio" }
+          name: "Machine Learning & Autonomous Systems",
+          description:
+            "RAG architectures, local LLM fine-tuning, autonomous agent workflows, and vector embeddings.",
+          provider: { "@type": "Organization", name: "TOCHI .dev Studio" },
         },
         {
           "@type": "Course",
-          "name": "Cloud Native DevOps & SRE",
-          "description": "Docker, Kubernetes orchestration, CI/CD automated deployment pipelines, and zero-downtime releases.",
-          "provider": { "@type": "Organization", "name": "TOCHI .dev Studio" }
+          name: "Cloud Native DevOps & SRE",
+          description:
+            "Docker, Kubernetes orchestration, CI/CD automated deployment pipelines, and zero-downtime releases.",
+          provider: { "@type": "Organization", name: "TOCHI .dev Studio" },
         },
         {
           "@type": "Course",
-          "name": "Design Systems & Creative Engineering",
-          "description": "Advanced CSS architecture, canvas shaders, web animations, and cross-platform design tokens.",
-          "provider": { "@type": "Organization", "name": "TOCHI .dev Studio" }
-        }
-      ]
+          name: "Design Systems & Creative Engineering",
+          description:
+            "Advanced CSS architecture, canvas shaders, web animations, and cross-platform design tokens.",
+          provider: { "@type": "Organization", name: "TOCHI .dev Studio" },
+        },
+      ],
     },
     {
       "@type": "FAQPage",
       "@id": "https://tochidevstudio.in/labs#faq",
-      "mainEntity": [
+      mainEntity: [
         {
           "@type": "Question",
-          "name": "What is the duration of Internship?",
-          "acceptedAnswer": {
+          name: "What is the duration of Internship?",
+          acceptedAnswer: {
             "@type": "Answer",
-            "text": "All our internships are for a period of 1 month only."
-          }
+            text: "All our internships are for a period of 1 month only.",
+          },
         },
         {
           "@type": "Question",
-          "name": "Can I complete multiple tracks together?",
-          "acceptedAnswer": {
+          name: "Can I complete multiple tracks together?",
+          acceptedAnswer: {
             "@type": "Answer",
-            "text": "We believe to provide an actual learning environment, we have limited our internship offerings to 1 track per month for each student. This allows students to explore the chosen track in-depth and get quality results."
-          }
+            text: "We believe to provide an actual learning environment, we have limited our internship offerings to 1 track per month for each student. This allows students to explore the chosen track in-depth and get quality results.",
+          },
         },
         {
           "@type": "Question",
-          "name": "Is there any fees for the internship?",
-          "acceptedAnswer": {
+          name: "Is there any fees for the internship?",
+          acceptedAnswer: {
             "@type": "Answer",
-            "text": "The internship is completely free. However, a documentation fee of ₹199 must be paid to cover the processing charges."
-          }
+            text: "The internship is completely free. However, a documentation fee of ₹199 must be paid to cover the processing charges.",
+          },
         },
         {
           "@type": "Question",
-          "name": "When will I receive the Offer Letter?",
-          "acceptedAnswer": {
+          name: "When will I receive the Offer Letter?",
+          acceptedAnswer: {
             "@type": "Answer",
-            "text": "We process the Offer Letters at the mid & end of month in batches."
-          }
+            text: "We process the Offer Letters at the mid & end of month in batches.",
+          },
         },
         {
           "@type": "Question",
-          "name": "Is the internship Offline or Online?",
-          "acceptedAnswer": {
+          name: "Is the internship Offline or Online?",
+          acceptedAnswer: {
             "@type": "Answer",
-            "text": "All our internships are conducted in Virtual mode (Online)."
-          }
+            text: "All our internships are conducted in Virtual mode (Online).",
+          },
         },
         {
           "@type": "Question",
-          "name": "When will I get the Certificate?",
-          "acceptedAnswer": {
+          name: "When will I get the Certificate?",
+          acceptedAnswer: {
             "@type": "Answer",
-            "text": "The Certificate of Completion is sent after the end date on the Offer Letter with Government of India MSME verification."
-          }
-        }
-      ]
-    }
-  ]
+            text: "The Certificate of Completion is sent after the end date on the Offer Letter with Government of India MSME verification.",
+          },
+        },
+      ],
+    },
+  ],
 };
 
 export const Route = createFileRoute("/labs")({
@@ -189,9 +202,7 @@ export const Route = createFileRoute("/labs")({
       },
       { name: "twitter:image", content: "https://www.tochidevstudio.in/og-image.png" },
     ],
-    links: [
-      { rel: "canonical", href: "https://www.tochidevstudio.in/labs" },
-    ],
+    links: [{ rel: "canonical", href: "https://www.tochidevstudio.in/labs" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -214,7 +225,8 @@ const tracks = [
     popular: true,
     desc: "High-performance web platforms built with AI developer workflows, component generators and prompt-driven architectures.",
     stack: ["Next.js 15", "TypeScript", "Tailwind", "Cursor", "v0"],
-    capstone: "A responsive web platform deployed to production with a dynamic CMS and sub-second load times.",
+    capstone:
+      "A responsive web platform deployed to production with a dynamic CMS and sub-second load times.",
   },
   {
     n: "02",
@@ -232,7 +244,8 @@ const tracks = [
     popular: false,
     desc: "Autonomous business pipelines, multi-step LLM routing, webhooks and automated operational backends.",
     stack: ["Python", "FastAPI", "LangChain", "Webhooks", "PostgreSQL"],
-    capstone: "A workflow engine that parses documents, extracts data and routes it to production databases.",
+    capstone:
+      "A workflow engine that parses documents, extracts data and routes it to production databases.",
   },
   {
     n: "04",
@@ -241,7 +254,8 @@ const tracks = [
     popular: false,
     desc: "Relational schema design, secure authentication, edge APIs and reactive frontends, end to end.",
     stack: ["Next.js", "Supabase", "PostgreSQL", "GraphQL", "Tailwind"],
-    capstone: "A multi-tenant SaaS MVP with role-based auth, real-time subscriptions and cloud deployment.",
+    capstone:
+      "A multi-tenant SaaS MVP with role-based auth, real-time subscriptions and cloud deployment.",
   },
   {
     n: "05",
@@ -250,7 +264,8 @@ const tracks = [
     popular: false,
     desc: "Model training, dataset hygiene, risk evaluation and RESTful model deployment.",
     stack: ["Python", "Scikit-Learn", "CatBoost", "Flask", "OpenCV"],
-    capstone: "A predictive modeling service exposing trained ML inference endpoints for live data.",
+    capstone:
+      "A predictive modeling service exposing trained ML inference endpoints for live data.",
   },
   {
     n: "06",
@@ -259,7 +274,8 @@ const tracks = [
     popular: false,
     desc: "The modern AI toolchain, used to multiply engineering and creative output across design, code and docs.",
     stack: ["Claude Code", "Cursor", "Lovable", "OpenAI APIs", "Perplexity"],
-    capstone: "A personal workflow engine combining coding agents, API tool calls and asset pipelines.",
+    capstone:
+      "A personal workflow engine combining coding agents, API tool calls and asset pipelines.",
   },
 ];
 type Track = (typeof tracks)[number];
@@ -357,9 +373,9 @@ function Nav() {
           <a href="#certification" className="transition-colors hover:text-header-ink">
             Certification
           </a>
-          <a href="#features" className="transition-colors hover:text-header-ink">
-            Features
-          </a>
+          <Link to="/verify" className="transition-colors hover:text-header-ink">
+            Verify
+          </Link>
           <a href="#faq" className="transition-colors hover:text-header-ink">
             FAQ
           </a>
@@ -387,7 +403,11 @@ function Hero() {
   const metrics = ["Free Internship", "1 Month", "6 Tracks", "MSME Verified"];
   return (
     <section id="overview" className="scroll-mt-28 pb-12 pt-32 md:pt-40">
-      <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={spring}>
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={spring}
+      >
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -402,7 +422,9 @@ function Hero() {
           />
         </motion.div>
         <h1 className="mt-2 max-w-4xl font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-7xl">
-          <span className="sr-only">TOCHI .Labs by TOCHI .dev Studio (tochidevstudio.in/labs) — </span>
+          <span className="sr-only">
+            TOCHI .Labs by TOCHI .dev Studio (tochidevstudio.in/labs) —{" "}
+          </span>
           A new way to learn,
           <span className="block text-muted-foreground">in the new world of AI.</span>
         </h1>
@@ -584,8 +606,8 @@ function Certification() {
           </h2>
           <p className="mt-5 leading-relaxed text-muted-foreground">
             Interns who deploy their capstone receive a Certificate of Internship Completion from
-            TOCHI (.dev studio), verifiable under Government of India MSME (Udyam) registration
-            with a public Certificate ID.
+            TOCHI (.dev studio), verifiable under Government of India MSME (Udyam) registration with
+            a public Certificate ID.
           </p>
           <div className="mt-6 flex flex-wrap gap-2 font-mono text-[11px] text-muted-foreground">
             <span className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1">
@@ -733,7 +755,8 @@ function FAQ() {
           Any Questions?
         </h2>
         <p className="mt-1 max-w-xl text-[11px] leading-snug text-muted-foreground md:mt-4 md:text-base md:leading-relaxed">
-          Everything you need to know about the internship format, timelines, task submissions, and credentials.
+          Everything you need to know about the internship format, timelines, task submissions, and
+          credentials.
         </p>
 
         <Accordion type="single" collapsible className="mt-3.5 space-y-1.5 md:mt-10 md:space-y-3">

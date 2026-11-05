@@ -76,40 +76,38 @@ const organizationSchema = {
     {
       "@type": ["Organization", "ProfessionalService"],
       "@id": "https://tochidevstudio.in/#organization",
-      "name": "TOCHI .dev Studio",
-      "alternateName": [
+      name: "TOCHI .dev Studio",
+      alternateName: [
         "tochidevstudio",
         "tochidevstudio.in",
         "TOCHI dev studio",
         "TOCHI Studio",
-        "TOCHI .Labs"
+        "TOCHI .Labs",
       ],
-      "url": "https://tochidevstudio.in",
-      "logo": "https://tochidevstudio.in/favicon.png",
-      "image": "https://tochidevstudio.in/og-image.png",
-      "description":
+      url: "https://tochidevstudio.in",
+      logo: "https://tochidevstudio.in/favicon.png",
+      image: "https://tochidevstudio.in/og-image.png",
+      description:
         "TOCHI .dev Studio (tochidevstudio.in) is an independent creative engineering and software studio building high-performance web applications, modern AI experiences, and production systems.",
-      "address": {
+      address: {
         "@type": "PostalAddress",
-        "addressCountry": "IN"
+        addressCountry: "IN",
       },
-      "sameAs": [
-        "https://github.com/antonysojan18/Tochi.dev-Studio"
-      ]
+      sameAs: ["https://github.com/antonysojan18/Tochi.dev-Studio"],
     },
     {
       "@type": "WebSite",
       "@id": "https://tochidevstudio.in/#website",
-      "url": "https://tochidevstudio.in",
-      "name": "TOCHI .dev Studio",
-      "alternateName": "tochidevstudio.in",
-      "description": "Creative Engineering & AI Web Development Studio",
-      "publisher": {
-        "@id": "https://tochidevstudio.in/#organization"
+      url: "https://tochidevstudio.in",
+      name: "TOCHI .dev Studio",
+      alternateName: "tochidevstudio.in",
+      description: "Creative Engineering & AI Web Development Studio",
+      publisher: {
+        "@id": "https://tochidevstudio.in/#organization",
       },
-      "inLanguage": "en-US"
-    }
-  ]
+      inLanguage: "en-US",
+    },
+  ],
 };
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
@@ -131,8 +129,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "Tochi Dev Studio" },
       { name: "publisher", content: "Tochi Dev Studio" },
       { name: "creator", content: "Tochi Dev Studio" },
-      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
-      { name: "googlebot", content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" },
+      {
+        name: "robots",
+        content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      },
+      {
+        name: "googlebot",
+        content: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+      },
       { name: "theme-color", content: "#2C0D1B" },
       { property: "og:site_name", content: "Tochi Dev Studio" },
       { property: "og:type", content: "website" },
@@ -149,7 +153,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image:type", content: "image/png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Tochi Dev Studio — Web Development & Digital Solutions" },
+      {
+        property: "og:image:alt",
+        content: "Tochi Dev Studio — Web Development & Digital Solutions",
+      },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:domain", content: "tochidevstudio.in" },
       { name: "twitter:url", content: "https://www.tochidevstudio.in/" },

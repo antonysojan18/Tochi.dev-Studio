@@ -21,7 +21,8 @@ export function InternshipSection() {
         </KineticText>
         <p className="mt-3 sm:mt-4 max-w-2xl text-sm sm:text-base md:text-lg text-muted-foreground leading-relaxed">
           Step inside TOCHI .dev studio's 1-month high-velocity internship program. Free real-world
-          engineering experience with senior code reviews, production capstones, and MSME-verified credentials.
+          engineering experience with senior code reviews, production capstones, and MSME-verified
+          credentials.
         </p>
       </div>
 
@@ -43,7 +44,12 @@ export function InternshipSection() {
                 JOIN OUR INTERN SQUAD
               </h3>
               <p className="max-w-xl text-xs sm:text-sm md:text-base text-header-cream/80 leading-relaxed">
-                Explore the 6 specialized curriculum tracks, view capstone projects, and submit your free application on our dedicated <span className="font-semibold text-header-cream underline underline-offset-2">/Labs</span> portal.
+                Explore the 6 specialized curriculum tracks, view capstone projects, and submit your
+                free application on our dedicated{" "}
+                <span className="font-semibold text-header-cream underline underline-offset-2">
+                  /Labs
+                </span>{" "}
+                portal.
               </p>
             </div>
 

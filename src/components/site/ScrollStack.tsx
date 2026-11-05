@@ -64,7 +64,10 @@ function Card({
 
   return (
     <div className="md:sticky md:top-24 lg:top-28" style={{ zIndex: i }}>
-      <motion.article style={{ scale, opacity, filter }} className="mb-4 sm:mb-5 origin-top md:mb-10">
+      <motion.article
+        style={{ scale, opacity, filter }}
+        className="mb-4 sm:mb-5 origin-top md:mb-10"
+      >
         <TiltSurface className="glass glass-sheen rounded-xl sm:rounded-2xl md:rounded-3xl p-3 sm:p-4 md:p-5 lg:p-6">
           <div className="grid gap-3 sm:gap-4 md:grid-cols-[0.9fr_1.3fr] md:items-center md:gap-6 lg:gap-8">
             <div className="flex flex-col justify-center">
@@ -112,7 +115,10 @@ export function ScrollStack() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
   return (
-    <section id="portfolio" className="bg-background py-10 sm:py-14 md:py-20 px-3 sm:px-5 scroll-mt-28 md:scroll-mt-32">
+    <section
+      id="portfolio"
+      className="bg-background py-10 sm:py-14 md:py-20 px-3 sm:px-5 scroll-mt-28 md:scroll-mt-32"
+    >
       <div id="work" />
       <div className="mx-auto max-w-5xl">
         <div className="mb-4 sm:mb-6 md:mb-8 flex items-end justify-between gap-6">
@@ -124,17 +130,13 @@ export function ScrollStack() {
               Selected Works
             </h2>
           </div>
-          <span className="font-mono text-xs text-muted-foreground hidden md:block">2024 — 2026</span>
+          <span className="font-mono text-xs text-muted-foreground hidden md:block">
+            2024 — 2026
+          </span>
         </div>
         <div ref={ref}>
           {projects.map((p, i) => (
-            <Card
-              key={p.title}
-              p={p}
-              i={i}
-              total={projects.length}
-              progress={scrollYProgress}
-            />
+            <Card key={p.title} p={p} i={i} total={projects.length} progress={scrollYProgress} />
           ))}
         </div>
       </div>

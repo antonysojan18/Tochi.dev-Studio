@@ -14,43 +14,43 @@ const homeServiceSchema = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
   "@id": "https://tochidevstudio.in/#studio-services",
-  "name": "TOCHI .dev Studio",
-  "url": "https://tochidevstudio.in",
-  "image": "https://tochidevstudio.in/og-image.png",
-  "description":
+  name: "TOCHI .dev Studio",
+  url: "https://tochidevstudio.in",
+  image: "https://tochidevstudio.in/og-image.png",
+  description:
     "Independent creative engineering and software studio building high-performance web platforms, AI applications, and interactive digital products.",
-  "serviceType": "Creative Web Engineering & AI Platform Development",
-  "areaServed": {
+  serviceType: "Creative Web Engineering & AI Platform Development",
+  areaServed: {
     "@type": "Country",
-    "name": "Global"
+    name: "Global",
   },
-  "hasOfferCatalog": {
+  hasOfferCatalog: {
     "@type": "OfferCatalog",
-    "name": "Software Engineering & Design Services",
-    "itemListElement": [
+    name: "Software Engineering & Design Services",
+    itemListElement: [
       {
         "@type": "Offer",
-        "itemOffered": {
+        itemOffered: {
           "@type": "Service",
-          "name": "AI Web Platform Engineering"
-        }
+          name: "AI Web Platform Engineering",
+        },
       },
       {
         "@type": "Offer",
-        "itemOffered": {
+        itemOffered: {
           "@type": "Service",
-          "name": "Creative UI/UX & Generative Interface Design"
-        }
+          name: "Creative UI/UX & Generative Interface Design",
+        },
       },
       {
         "@type": "Offer",
-        "itemOffered": {
+        itemOffered: {
           "@type": "Service",
-          "name": "Intelligent Backend & API Architecture"
-        }
-      }
-    ]
-  }
+          name: "Intelligent Backend & API Architecture",
+        },
+      },
+    ],
+  },
 };
 
 export const Route = createFileRoute("/")({
@@ -81,7 +81,10 @@ export const Route = createFileRoute("/")({
       { property: "og:image:type", content: "image/png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Tochi Dev Studio — Web Development & Digital Solutions" },
+      {
+        property: "og:image:alt",
+        content: "Tochi Dev Studio — Web Development & Digital Solutions",
+      },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:domain", content: "tochidevstudio.in" },
       { name: "twitter:url", content: "https://www.tochidevstudio.in/" },
@@ -93,9 +96,7 @@ export const Route = createFileRoute("/")({
       },
       { name: "twitter:image", content: "https://www.tochidevstudio.in/og-image.png" },
     ],
-    links: [
-      { rel: "canonical", href: "https://www.tochidevstudio.in/" },
-    ],
+    links: [{ rel: "canonical", href: "https://www.tochidevstudio.in/" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -138,5 +139,3 @@ function Index() {
     </main>
   );
 }
-
-
