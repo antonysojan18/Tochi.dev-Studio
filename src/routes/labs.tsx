@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/accordion";
 import tochiLabs1 from "@/assets/Tochi Labs 1.png";
 import tochiLabs2 from "@/assets/Tochi Labs 2.png";
+import tochiStudioLogo from "@/assets/Tochi .dev Studio.png";
 import certificateImg from "@/assets/TOCHI internship certificate.png";
 
 const labsSchema = {
@@ -355,10 +356,10 @@ function Nav() {
         transition={{ ...spring, delay: 0.2 }}
         className="glass-ivory pointer-events-auto flex w-full items-center justify-between gap-3 rounded-full py-1.5 pr-1.5 pl-3.5 shadow-lg md:py-2 md:pr-2 md:pl-4"
       >
-        <Link to="/labs" className="flex items-center shrink-0">
+        <Link to="/" aria-label="TOCHI .dev studio" className="flex items-center shrink-0">
           <motion.img
-            src={tochiLabs2}
-            alt="TOCHI /LABS"
+            src={tochiStudioLogo}
+            alt="TOCHI .dev studio"
             draggable={false}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}

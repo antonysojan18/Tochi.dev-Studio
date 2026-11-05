@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  ShieldCheck,
   Search,
   Award,
   Calendar,
@@ -18,7 +17,7 @@ import { TRACK_DETAILS, STATUS_DETAILS, type VerifiedCandidate } from "@/types/v
 import { verifyCandidate } from "@/lib/verify";
 import { supabase } from "@/lib/supabase";
 import { TiltSurface } from "@/components/site/TiltSurface";
-import tochiLabs2 from "@/assets/Tochi Labs 2.png";
+import tochiStudioLogo from "@/assets/Tochi .dev Studio.png";
 
 const spring = { type: "spring" as const, stiffness: 350, damping: 30 };
 
@@ -181,22 +180,24 @@ function VerifyPage() {
           transition={{ ...spring, delay: 0.2 }}
           className="glass-ivory pointer-events-auto flex w-full items-center justify-between gap-3 rounded-full py-1.5 pr-2 pl-3.5 shadow-lg md:py-2 md:pr-3 md:pl-4"
         >
-          <Link to="/labs" className="flex items-center gap-2.5 shrink-0">
-            <img
-              src={tochiLabs2}
-              alt="TOCHI /LABS"
+          <Link to="/" aria-label="TOCHI .dev studio — home" className="flex items-center shrink-0">
+            <motion.img
+              src={tochiStudioLogo}
+              alt="TOCHI .dev studio"
               draggable={false}
-              className="h-6 w-auto select-none object-contain md:h-7"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              className="h-7 w-auto select-none object-contain md:h-8"
             />
-            <span className="hidden sm:inline-block h-3.5 w-px bg-header-ink/20" />
-            <span className="hidden sm:inline-block font-mono text-[10px] font-semibold uppercase tracking-wider text-header-ink-muted">
-              Registry
-            </span>
           </Link>
 
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-[#541228]/10 border border-[#541228]/20 text-[#541228]">
-            <ShieldCheck className="h-3.5 w-3.5 text-[#541228]" />
-            <span>Official Registry</span>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/labs"
+              className="inline-flex items-center gap-1 rounded-full bg-header-ink px-4 py-1.5 text-xs md:text-sm font-semibold text-header-cream shadow-sm transition-all hover:bg-header-ink/90 active:scale-95"
+            >
+              <span>/Labs</span>
+            </Link>
           </div>
         </motion.header>
       </div>
@@ -205,20 +206,10 @@ function VerifyPage() {
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 pt-32 pb-16 md:pt-40 md:pb-24">
         {/* Title & Introduction */}
         <div className="text-center mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...spring, delay: 0.25 }}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-medium bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 mb-4"
-          >
-            <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-            <span>Cryptographic Verification Node Live</span>
-          </motion.div>
-
           <motion.h1
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ ...spring, delay: 0.3 }}
+            transition={{ ...spring, delay: 0.25 }}
             className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-heading"
           >
             Verify Internship Credential
@@ -227,7 +218,7 @@ function VerifyPage() {
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ ...spring, delay: 0.35 }}
+            transition={{ ...spring, delay: 0.3 }}
             className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto mt-2 leading-relaxed"
           >
             Tamper-proof authenticity check for official Tochi .dev Studio offer letters and

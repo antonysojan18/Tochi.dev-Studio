@@ -3,7 +3,6 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
-  ShieldCheck,
   Search,
   Award,
   Calendar,
@@ -16,6 +15,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { TRACK_DETAILS, STATUS_DETAILS, VerifiedCandidate } from "@/types/verification";
+import tochiStudioLogo from "@/assets/Tochi .dev Studio.png";
 
 const rawAdminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || "https://admin.tochidevstudio.in";
 const ADMIN_URL = rawAdminUrl.replace(/\/+$/, "");
@@ -78,20 +78,13 @@ function VerifyContent() {
     <div className="min-h-screen bg-[#3A111F] text-[#FAF6F0] flex flex-col justify-between selection:bg-[#FAF6F0] selection:text-[#541228]">
       {/* Top Navbar */}
       <nav className="w-full border-b border-[#FAF6F0]/10 bg-[#3A111F]/80 backdrop-blur-md py-3.5 px-6 sm:px-12 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <a
-            href="/labs"
-            className="h-8 w-8 rounded-lg bg-[#FAF6F0] text-[#541228] flex items-center justify-center font-bold text-xs"
-          >
-            TL
-          </a>
-          <div>
-            <h1 className="text-sm font-bold font-mono tracking-tight text-[#FAF6F0]">
-              Tochi <span className="font-sans text-[#FAF6F0]/70">.dev Studio</span>
-            </h1>
-            <p className="text-[10px] font-mono text-[#FAF6F0]/50">PUBLIC INTERNSHIP REGISTRY</p>
-          </div>
-        </div>
+        <a href="/" className="flex items-center gap-3">
+          <img
+            src={tochiStudioLogo}
+            alt="TOCHI .dev studio"
+            className="h-7 w-auto select-none object-contain md:h-8"
+          />
+        </a>
 
         <div className="flex items-center gap-3">
           <a
@@ -101,21 +94,12 @@ function VerifyContent() {
             <ArrowLeft className="h-3 w-3" />
             <span>Back to Labs</span>
           </a>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 border border-emerald-500/30 text-emerald-300">
-            <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-            <span className="hidden sm:inline">Official Registry</span>
-          </div>
         </div>
       </nav>
 
       {/* Main Body */}
       <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-10 sm:py-16">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 mb-3.5">
-            <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-            <span>Cryptographic Verification Node Live</span>
-          </div>
-
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#FAF6F0] font-sans">
             Verify Internship Credential
           </h2>
