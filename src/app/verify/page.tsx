@@ -13,6 +13,8 @@ import {
   Loader2,
   ExternalLink,
   ArrowLeft,
+  IdCard,
+  QrCode,
 } from "lucide-react";
 import { TRACK_DETAILS, STATUS_DETAILS, VerifiedCandidate } from "@/types/verification";
 import tochiStudioLogo from "@/assets/Tochi .dev Studio.png";
@@ -24,7 +26,9 @@ function VerifyContent() {
   const searchParams = useSearchParams();
   const initialQuery =
     searchParams.get("hash") || searchParams.get("id") || searchParams.get("q") || "";
+  const initialMode = searchParams.get("hash") ? "hash" : "id";
 
+  const [searchMode, setSearchMode] = useState<"id" | "hash">(initialMode);
   const [inputQuery, setInputQuery] = useState(initialQuery);
   const [record, setRecord] = useState<VerifiedCandidate | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -62,9 +66,11 @@ function VerifyContent() {
 
   useEffect(() => {
     if (initialQuery) {
+      if (searchParams.get("hash")) setSearchMode("hash");
+      else if (searchParams.get("id")) setSearchMode("id");
       performLookup(initialQuery);
     }
-  }, [initialQuery]);
+  }, [initialQuery, searchParams]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,58 +103,106 @@ function VerifyContent() {
         </div>
       </nav>
 
-      {/* Main Body */}
-      <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-10 sm:py-16">
-        <div className="text-center mb-8">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#FAF6F0] font-sans">
+      {/* Main Body — Centered vertically on mobile & desktop */}
+      <main className="flex-1 flex flex-col justify-center items-center w-full max-w-xl mx-auto px-4 py-12 sm:py-16 my-auto">
+        <div className="w-full text-center mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#FAF6F0] font-sans">
             Verify Internship Credential
           </h2>
-          <p className="text-xs sm:text-sm text-[#FAF6F0]/70 max-w-md mx-auto mt-1.5">
+          <p className="text-xs sm:text-sm text-[#FAF6F0]/70 max-w-md mx-auto mt-2 leading-relaxed px-2">
             Tamper-proof authenticity check for official Tochi .dev Studio offer letters and
             certificates.
           </p>
         </div>
 
-        {/* Search Bar */}
-        <form onSubmit={handleSubmit} className="mb-8">
-          <div className="relative flex items-center rounded-2xl p-1 bg-white/5 border border-white/10 backdrop-blur-md shadow-lg focus-within:border-[#FAF6F0]/40 transition-all">
-            <Search className="absolute left-4 h-4 w-4 text-[#FAF6F0]/50" />
-            <input
-              type="text"
-              value={inputQuery}
-              onChange={(e) => setInputQuery(e.target.value)}
-              placeholder="Enter Student ID (e.g. TCL-26Q4-WEB-0001) or QR Hash..."
-              className="w-full bg-transparent pl-11 pr-28 py-3 text-xs sm:text-sm text-[#FAF6F0] placeholder:text-[#FAF6F0]/40 outline-none font-mono"
-            />
+        {/* Centered Search Tabs */}
+        <div className="w-full flex flex-col items-center mb-6 sm:mb-8">
+          <div className="inline-flex items-center justify-center p-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-inner mb-3.5 gap-1">
             <button
-              type="submit"
-              disabled={isLoading || !inputQuery.trim()}
-              className="absolute right-2 px-4 py-2 rounded-xl bg-[#FAF6F0] hover:bg-white text-[#541228] font-semibold text-xs transition-all active:scale-95 disabled:opacity-40"
+              type="button"
+              onClick={() => setSearchMode("id")}
+              className={`flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-mono font-medium transition-all ${
+                searchMode === "id"
+                  ? "bg-[#FAF6F0] text-[#541228] font-bold shadow-xs scale-100"
+                  : "text-[#FAF6F0]/60 hover:text-[#FAF6F0]"
+              }`}
             >
-              {isLoading ? "Verifying..." : "Verify"}
+              <IdCard className="h-3.5 w-3.5" />
+              <span>Student ID</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setSearchMode("hash")}
+              className={`flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-mono font-medium transition-all ${
+                searchMode === "hash"
+                  ? "bg-[#FAF6F0] text-[#541228] font-bold shadow-xs scale-100"
+                  : "text-[#FAF6F0]/60 hover:text-[#FAF6F0]"
+              }`}
+            >
+              <QrCode className="h-3.5 w-3.5" />
+              <span>QR Hash</span>
             </button>
           </div>
-        </form>
+
+          {/* Search Bar */}
+          <form onSubmit={handleSubmit} className="w-full">
+            <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center rounded-2xl p-1.5 bg-white/5 border border-white/10 backdrop-blur-md shadow-lg focus-within:border-[#FAF6F0]/40 transition-all gap-2 sm:gap-0">
+              <div className="relative flex-1 flex items-center">
+                <Search className="absolute left-3.5 h-4 w-4 text-[#FAF6F0]/50 pointer-events-none" />
+                <input
+                  type="text"
+                  value={inputQuery}
+                  onChange={(e) => setInputQuery(e.target.value)}
+                  placeholder={
+                    searchMode === "id"
+                      ? "Enter Student ID (e.g. TCL-26Q4-WEB-0001)..."
+                      : "Enter or paste QR verification hash..."
+                  }
+                  className="w-full bg-transparent pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3 text-xs sm:text-sm text-[#FAF6F0] placeholder:text-[#FAF6F0]/40 outline-none font-mono"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isLoading || !inputQuery.trim()}
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#FAF6F0] hover:bg-white text-[#541228] font-bold text-xs font-mono transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-1.5 shadow-sm shrink-0"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    <span>Verifying...</span>
+                  </>
+                ) : (
+                  <span>Verify</span>
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
 
         {/* Verification Result Card - WARM IVORY BOX */}
         {record ? (
-          <div className="rounded-2xl border border-[#E7DFD3] bg-[#FAF6F0] text-[#1C181B] p-6 sm:p-8 shadow-xl relative overflow-hidden animate-in fade-in duration-150">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-[#E7DFD3] gap-3">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-xl bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-800">
-                  <CheckCircle2 className="h-6 w-6" />
+          <div className="w-full rounded-2xl border border-[#E7DFD3] bg-[#FAF6F0] text-[#1C181B] p-5 sm:p-8 shadow-xl relative overflow-hidden animate-in fade-in duration-150">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-[#E7DFD3] gap-3.5 sm:gap-4">
+              <div className="flex items-start sm:items-center gap-3">
+                <div className="h-10 w-10 sm:h-11 sm:w-11 rounded-xl bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-800 shrink-0">
+                  <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6" />
                 </div>
                 <div>
                   <span className="text-[10px] font-mono font-bold tracking-wider text-emerald-800 uppercase block">
                     Official Authenticity Verified
                   </span>
-                  <h3 className="text-xl font-bold text-[#1C181B] mt-0.5">{record.full_name}</h3>
+                  <h3 className="text-lg sm:text-2xl font-bold text-[#1C181B] mt-0.5 break-words">
+                    {record.full_name}
+                  </h3>
                 </div>
               </div>
 
-              <div className="font-mono text-xs sm:text-right">
+              <div className="font-mono text-xs sm:text-right bg-white/70 sm:bg-transparent p-2.5 sm:p-0 rounded-xl border border-[#E7DFD3] sm:border-none">
                 <div className="text-[10px] text-[#9E959B]">STUDENT ID:</div>
-                <div className="text-sm font-bold text-[#541228]">{record.student_id}</div>
+                <div className="text-xs sm:text-sm font-bold text-[#541228] break-all">
+                  {record.student_id}
+                </div>
               </div>
             </div>
 
@@ -204,13 +258,13 @@ function VerifyContent() {
               </div>
 
               {/* PDF Document Viewers */}
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
                 {record.has_certificate && (
                   <a
                     href={`${ADMIN_URL}/api/pdf/certificate/${record.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#541228] hover:bg-[#6B1733] text-white transition-all shadow-sm"
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#541228] hover:bg-[#6B1733] text-white transition-all shadow-sm"
                   >
                     <Award className="h-3.5 w-3.5" />
                     <span>Certificate PDF</span>
@@ -223,7 +277,7 @@ function VerifyContent() {
                     href={`${ADMIN_URL}/api/pdf/offer-letter/${record.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-stone-50 text-[#1C181B] border border-[#E7DFD3] transition-all"
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-stone-50 text-[#1C181B] border border-[#E7DFD3] transition-all"
                   >
                     <FileText className="h-3.5 w-3.5 text-[#541228]" />
                     <span>Offer Letter</span>
@@ -234,7 +288,7 @@ function VerifyContent() {
             </div>
           </div>
         ) : hasSearched && !isLoading ? (
-          <div className="rounded-2xl border border-rose-800/40 bg-rose-950/40 p-6 text-center my-6 backdrop-blur-md">
+          <div className="w-full rounded-2xl border border-rose-800/40 bg-rose-950/40 p-5 sm:p-6 text-center my-4 backdrop-blur-md">
             <AlertTriangle className="h-6 w-6 text-rose-400 mx-auto mb-2" />
             <h3 className="text-sm font-bold text-rose-200">Verification Failed</h3>
             <p className="text-xs text-rose-300 mt-1 max-w-sm mx-auto">
