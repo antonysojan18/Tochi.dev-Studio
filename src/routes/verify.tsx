@@ -92,24 +92,28 @@ function VerifyPage() {
       let localErr: string | null = null;
       try {
         const res = await fetch(`/api/verify?hash=${encodeURIComponent(trimmed)}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && data.data) {
-            foundRecord = data.data;
-          } else if (data.error) {
-            localErr = data.error;
-          }
+        const data = (await res.json().catch(() => null)) as {
+          success?: boolean;
+          data?: VerifiedCandidate;
+          error?: string;
+        } | null;
+
+        if (res.ok && data?.success && data.data) {
+          foundRecord = data.data;
+        } else if (data?.error) {
+          localErr = data.error;
         }
       } catch {
         // Network or local endpoint fallback
       }
 
-      // 2. Direct Supabase fallback if local endpoint did not resolve
-      if (!foundRecord && !localErr) {
+      // 2. Direct Supabase / Admin fallback if local endpoint did not resolve
+      if (!foundRecord) {
         const directResult = await verifyCandidate(trimmed);
         if (directResult.success) {
           foundRecord = directResult.data;
-        } else {
+          localErr = null;
+        } else if (directResult.error) {
           localErr = directResult.error;
         }
       }
@@ -521,15 +525,32 @@ function VerifyPage() {
             >
               <AlertTriangle className="h-6 w-6 text-rose-400 mx-auto mb-2" />
               <h3 className="text-sm font-bold text-rose-200 font-mono tracking-tight">
-                Verification Failed
+                {errorMessage?.includes("lfrgpiohvjilxkgvfdhr")
+                  ? "Registry Node Unreachable"
+                  : "Verification Failed"}
               </h3>
-              <p className="text-xs text-rose-300/80 mt-1 max-w-sm mx-auto leading-relaxed">
+              <p className="text-xs text-rose-300/80 mt-1 max-w-md mx-auto leading-relaxed">
                 {errorMessage ||
                   "No student record found matching that Student ID or Verification Hash."}
               </p>
-              <p className="text-[11px] text-rose-300/60 mt-2 font-mono">
-                Please double-check the ID or re-scan the QR code printed on the official document.
-              </p>
+              {errorMessage?.includes("supabase.com") ? (
+                <div className="mt-3.5 flex justify-center">
+                  <a
+                    href="https://supabase.com/dashboard/project/lfrgpiohvjilxkgvfdhr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#541228] hover:bg-[#6B1733] border border-rose-500/40 text-xs font-mono font-medium text-[#FAF6F0] shadow-md transition-all active:scale-95"
+                  >
+                    <span>Unpause Project in Supabase</span>
+                    <ExternalLink className="h-3.5 w-3.5 opacity-80" />
+                  </a>
+                </div>
+              ) : (
+                <p className="text-[11px] text-rose-300/60 mt-2 font-mono">
+                  Please double-check the ID or re-scan the QR code printed on the official
+                  document.
+                </p>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
