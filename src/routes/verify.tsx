@@ -14,29 +14,34 @@ import {
   ExternalLink,
   IdCard,
   QrCode,
+  Camera,
+  ScanLine,
 } from "lucide-react";
 import { TRACK_DETAILS, STATUS_DETAILS, type VerifiedCandidate } from "@/types/verification";
 import { verifyCandidate } from "@/lib/verify";
 import { supabase } from "@/lib/supabase";
 import { TiltSurface } from "@/components/site/TiltSurface";
+import { QrScannerModal } from "@/components/site/QrScannerModal";
 import tochiStudioLogo from "@/assets/Tochi .dev Studio.png";
 
 const spring = { type: "spring" as const, stiffness: 350, damping: 30 };
 
 const rawAdminUrl =
-  (typeof process !== "undefined" && process.env?.NEXT_PUBLIC_ADMIN_URL) ||
-  import.meta.env?.NEXT_PUBLIC_ADMIN_URL ||
-  import.meta.env?.VITE_ADMIN_URL ||
+  (typeof process !== "undefined" && process.env?.["NEXT_PUBLIC_ADMIN_URL"]) ||
+  (import.meta.env && (import.meta.env["NEXT_PUBLIC_ADMIN_URL"] as string | undefined)) ||
+  (import.meta.env && (import.meta.env["VITE_ADMIN_URL"] as string | undefined)) ||
   "https://admin.tochidevstudio.in";
 
 const ADMIN_URL = rawAdminUrl.replace(/\/+$/, "");
 
 export const Route = createFileRoute("/verify")({
-  validateSearch: (search: Record<string, unknown>): { hash?: string; id?: string; q?: string } => {
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { hash?: string | undefined; id?: string | undefined; q?: string | undefined } => {
     return {
-      hash: typeof search.hash === "string" ? search.hash : undefined,
-      id: typeof search.id === "string" ? search.id : undefined,
-      q: typeof search.q === "string" ? search.q : undefined,
+      hash: typeof search["hash"] === "string" ? search["hash"] : undefined,
+      id: typeof search["id"] === "string" ? search["id"] : undefined,
+      q: typeof search["q"] === "string" ? search["q"] : undefined,
     };
   },
   head: () => ({
@@ -62,8 +67,8 @@ function VerifyPage() {
   const search = Route.useSearch();
   const router = useRouter();
 
-  const urlQuery = search.hash || search.id || search.q || "";
-  const initialMode = search.hash ? "hash" : "id";
+  const urlQuery = (search["hash"] || search["id"] || search["q"] || "") as string;
+  const initialMode = search["hash"] ? "hash" : "id";
 
   const [searchMode, setSearchMode] = useState<"id" | "hash">(initialMode);
   const [inputQuery, setInputQuery] = useState(urlQuery);
@@ -71,6 +76,7 @@ function VerifyPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
 
   const performLookup = useCallback(async (query: string) => {
     const trimmed = query.trim();
@@ -129,12 +135,12 @@ function VerifyPage() {
 
   useEffect(() => {
     if (urlQuery) {
-      if (search.hash) setSearchMode("hash");
-      else if (search.id) setSearchMode("id");
+      if (search["hash"]) setSearchMode("hash");
+      else if (search["id"]) setSearchMode("id");
       setInputQuery(urlQuery);
       performLookup(urlQuery);
     }
-  }, [urlQuery, search.hash, search.id, performLookup]);
+  }, [urlQuery, search, performLookup]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -147,6 +153,28 @@ function VerifyPage() {
     });
 
     performLookup(inputQuery);
+  };
+
+  const handleScanSuccess = (scannedCode: string) => {
+    const clean = scannedCode.trim();
+    if (!clean) return;
+
+    setInputQuery(clean);
+    if (clean.toUpperCase().startsWith("TCL-")) {
+      setSearchMode("id");
+      router.navigate({
+        to: "/verify",
+        search: { id: clean },
+      });
+    } else {
+      setSearchMode("hash");
+      router.navigate({
+        to: "/verify",
+        search: { hash: clean },
+      });
+    }
+
+    performLookup(clean);
   };
 
   const trackMeta = record?.track ? TRACK_DETAILS[record.track] : null;
@@ -240,32 +268,34 @@ function VerifyPage() {
           className="w-full flex flex-col items-center mb-6 sm:mb-8"
         >
           {/* Middle Search Tabs */}
-          <div className="inline-flex items-center justify-center p-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-inner mb-3.5 gap-1">
-            <button
-              type="button"
-              onClick={() => setSearchMode("id")}
-              className={`flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-mono font-medium transition-all ${
-                searchMode === "id"
-                  ? "bg-[#FAF6F0] text-[#541228] font-bold shadow-xs scale-100"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <IdCard className="h-3.5 w-3.5" />
-              <span>Student ID</span>
-            </button>
+          <div className="w-full flex justify-center mb-3.5">
+            <div className="inline-flex items-center justify-center p-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-inner gap-1">
+              <button
+                type="button"
+                onClick={() => setSearchMode("id")}
+                className={`flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2 rounded-full text-xs font-mono font-medium transition-all ${
+                  searchMode === "id"
+                    ? "bg-[#FAF6F0] text-[#541228] font-bold shadow-xs scale-100"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <IdCard className="h-3.5 w-3.5" />
+                <span>Student ID</span>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setSearchMode("hash")}
-              className={`flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-mono font-medium transition-all ${
-                searchMode === "hash"
-                  ? "bg-[#FAF6F0] text-[#541228] font-bold shadow-xs scale-100"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <QrCode className="h-3.5 w-3.5" />
-              <span>QR Hash</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => setSearchMode("hash")}
+                className={`flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2 rounded-full text-xs font-mono font-medium transition-all ${
+                  searchMode === "hash"
+                    ? "bg-[#FAF6F0] text-[#541228] font-bold shadow-xs scale-100"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <QrCode className="h-3.5 w-3.5" />
+                <span>QR Hash</span>
+              </button>
+            </div>
           </div>
 
           {/* Responsive Search Input Bar */}
@@ -280,11 +310,23 @@ function VerifyPage() {
                   placeholder={
                     searchMode === "id"
                       ? "Enter Student ID (e.g. TCL-26Q4-WEB-0001)..."
-                      : "Enter or paste QR verification hash..."
+                      : "Enter or scan QR verification hash..."
                   }
-                  className="w-full bg-transparent pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 outline-none font-mono"
+                  className="w-full bg-transparent pl-10 pr-2 sm:pr-3 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 outline-none font-mono"
                 />
+
+                {/* Instant QR Camera Scanner Shortcut Button */}
+                <button
+                  type="button"
+                  onClick={() => setIsScannerOpen(true)}
+                  title="Scan QR Code with Camera"
+                  aria-label="Scan QR Code with Camera"
+                  className="mr-1.5 p-2 rounded-xl text-muted-foreground hover:text-[#FAF6F0] hover:bg-white/10 transition-all active:scale-95 shrink-0"
+                >
+                  <ScanLine className="h-4 w-4" />
+                </button>
               </div>
+
               <button
                 type="submit"
                 disabled={isLoading || !inputQuery.trim()}
@@ -298,6 +340,18 @@ function VerifyPage() {
                 ) : (
                   <span>Verify</span>
                 )}
+              </button>
+            </div>
+
+            {/* Quick Camera Scan Trigger Pill */}
+            <div className="mt-3 flex items-center justify-center">
+              <button
+                type="button"
+                onClick={() => setIsScannerOpen(true)}
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-[11px] font-mono text-[#FAF6F0]/80 hover:text-[#FAF6F0] transition-all active:scale-95 shadow-sm"
+              >
+                <Camera className="h-3.5 w-3.5 text-[#FAF6F0]" />
+                <span>Scan Credential QR with Camera</span>
               </button>
             </div>
           </form>
@@ -489,6 +543,12 @@ function VerifyPage() {
           <span>Government of India MSME Registered</span>
         </div>
       </footer>
+      {/* QR Scanner Camera Modal */}
+      <QrScannerModal
+        isOpen={isScannerOpen}
+        onClose={() => setIsScannerOpen(false)}
+        onScanSuccess={handleScanSuccess}
+      />
     </div>
   );
 }

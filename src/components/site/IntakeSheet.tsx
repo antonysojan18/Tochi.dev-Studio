@@ -149,7 +149,7 @@ export function IntakeSheet() {
             style={{ height: 260, maxWidth: "100%" }}
           >
             <FlyingButton
-              theme="burgundy"
+              theme="dark"
               size="medium"
               altitude={160}
               hoverTime={3.2}

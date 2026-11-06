@@ -21,9 +21,9 @@ export function DeviceMockup({
 }: {
   title: string;
   index: number;
-  image?: string;
-  video?: string;
-  url?: string;
+  image?: string | undefined;
+  video?: string | undefined;
+  url?: string | undefined;
 }) {
   const isPhone = !image && !video && index === 2;
   const displayUrl = url

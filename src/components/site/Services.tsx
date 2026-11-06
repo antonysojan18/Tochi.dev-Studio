@@ -113,7 +113,7 @@ export function Services() {
                   Aa
                 </span>
                 <span className="font-mono text-[7px] sm:text-[10px] md:text-[11px] text-header-cream/80 truncate max-w-[45px] sm:max-w-none">
-                  {swatches[activeColor].name}
+                  {swatches[activeColor]?.name ?? ""}
                 </span>
               </div>
               <div className="mt-1 flex gap-1">
