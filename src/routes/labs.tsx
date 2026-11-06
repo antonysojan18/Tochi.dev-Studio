@@ -27,8 +27,10 @@ import {
   BookOpen,
   HelpCircle,
   CheckCircle2,
+  Menu,
 } from "lucide-react";
 import { useState, type MouseEvent } from "react";
+import { TiltSurface } from "@/components/site/TiltSurface";
 import {
   Accordion,
   AccordionContent,
@@ -309,6 +311,7 @@ function LabsPage() {
           </div>
         </section>
         <Certification />
+        <VerifySection />
         <Features />
         <FAQ />
       </main>
@@ -329,6 +332,8 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 }
 
 function Nav() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
     <div className="fixed top-2.5 md:top-3.5 left-1/2 z-50 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none w-[calc(100%-1.5rem)] max-w-xl">
       {/* Back to Studio button placed outside and above the header */}
@@ -367,6 +372,7 @@ function Nav() {
           />
         </Link>
 
+        {/* Desktop Navigation Links */}
         <div className="hidden items-center gap-5 text-xs font-medium text-header-ink-muted md:flex">
           <a href="#tracks" className="transition-colors hover:text-header-ink">
             Tracks
@@ -382,20 +388,145 @@ function Nav() {
           </a>
         </div>
 
-        {/* Highlighted Apply button */}
-        <motion.a
-          href={APPLY_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          transition={spring}
-          className="relative inline-flex items-center gap-1.5 rounded-full bg-header-ink px-4 py-1.5 text-xs md:text-sm font-semibold text-header-cream shadow-md transition-all hover:bg-header-ink/90 hover:shadow-lg active:scale-95"
-        >
-          <span>Apply</span>
-          <ArrowUpRight className="h-3.5 w-3.5" />
-        </motion.a>
+        {/* Right buttons: Apply + Three-line mobile toggle */}
+        <div className="flex items-center gap-1.5">
+          <motion.a
+            href={APPLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={spring}
+            className="relative inline-flex items-center gap-1.5 rounded-full bg-header-ink px-3.5 py-1.5 text-xs md:text-sm font-semibold text-header-cream shadow-md transition-all hover:bg-header-ink/90 hover:shadow-lg active:scale-95"
+          >
+            <span>Apply</span>
+            <ArrowUpRight className="h-3.5 w-3.5" />
+          </motion.a>
+
+          {/* Three-line toggle bar (hamburger menu button) */}
+          <button
+            type="button"
+            onClick={() => setMobileOpen((prev) => !prev)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={mobileOpen}
+            className="flex h-7 w-7 items-center justify-center rounded-full border border-header-ink/20 text-header-ink transition-colors hover:bg-header-ink/10 md:hidden active:scale-95"
+          >
+            {mobileOpen ? <X className="h-3.5 w-3.5" /> : <Menu className="h-3.5 w-3.5" />}
+          </button>
+        </div>
       </motion.header>
+
+      {/* Mobile Navigation Menu Dropdown */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.nav
+            initial={{ opacity: 0, y: -10, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.96 }}
+            transition={spring}
+            className="glass-ivory pointer-events-auto mt-1 flex w-full flex-col gap-1 rounded-2xl p-3 shadow-xl md:hidden border border-[#E7DFD3]"
+          >
+            {/* Prominent Verify Link */}
+            <Link
+              to="/verify"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-bold text-[#541228] bg-[#541228]/8 border border-[#541228]/15 transition-all hover:bg-[#541228]/12"
+            >
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-[#541228]" />
+                <span>Verify Credential</span>
+              </div>
+              <span className="font-mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#541228] text-[#FAF6F0] font-semibold">
+                Registry
+              </span>
+            </Link>
+
+            <a
+              href="#tracks"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-header-ink transition-colors hover:bg-header-ink/10"
+            >
+              <div className="flex items-center gap-2">
+                <Code2 className="h-3.5 w-3.5 text-header-ink-muted" />
+                <span>Internship Tracks</span>
+              </div>
+              <span className="font-mono text-[10px] text-header-ink-muted">01</span>
+            </a>
+
+            <a
+              href="#certification"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-header-ink transition-colors hover:bg-header-ink/10"
+            >
+              <div className="flex items-center gap-2">
+                <Award className="h-3.5 w-3.5 text-header-ink-muted" />
+                <span>Certification &amp; MSME</span>
+              </div>
+              <span className="font-mono text-[10px] text-header-ink-muted">02</span>
+            </a>
+
+            <a
+              href="#verify-section"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-header-ink transition-colors hover:bg-header-ink/10"
+            >
+              <div className="flex items-center gap-2">
+                <QrCode className="h-3.5 w-3.5 text-header-ink-muted" />
+                <span>Verify Credential Section</span>
+              </div>
+              <span className="font-mono text-[10px] text-header-ink-muted">03</span>
+            </a>
+
+            <a
+              href="#features"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-header-ink transition-colors hover:bg-header-ink/10"
+            >
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-3.5 w-3.5 text-header-ink-muted" />
+                <span>Internship Features</span>
+              </div>
+              <span className="font-mono text-[10px] text-header-ink-muted">04</span>
+            </a>
+
+            <a
+              href="#faq"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-header-ink transition-colors hover:bg-header-ink/10"
+            >
+              <div className="flex items-center gap-2">
+                <HelpCircle className="h-3.5 w-3.5 text-header-ink-muted" />
+                <span>FAQ</span>
+              </div>
+              <span className="font-mono text-[10px] text-header-ink-muted">05</span>
+            </a>
+
+            <div className="my-1 h-px bg-header-ink/10" />
+
+            <Link
+              to="/"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium text-header-ink-muted transition-colors hover:bg-header-ink/10"
+            >
+              <div className="flex items-center gap-2">
+                <ArrowLeft className="h-3.5 w-3.5" />
+                <span>TOCHI .dev Studio Home</span>
+              </div>
+            </Link>
+
+            <a
+              href={APPLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileOpen(false)}
+              className="mt-1 flex items-center justify-center gap-1.5 rounded-xl bg-header-ink py-2 text-xs font-semibold text-header-cream shadow-sm transition-all hover:bg-header-ink/90 active:scale-95"
+            >
+              <span>Apply for Free Internship</span>
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -598,7 +729,7 @@ function TrackDrawer({ t, onClose }: { t: Track; onClose: () => void }) {
 
 function Certification() {
   return (
-    <section id="certification" className="scroll-mt-28 py-20">
+    <section id="certification" className="scroll-mt-28 py-16 md:py-20">
       <div className="glass grid items-center gap-10 rounded-3xl p-7 md:grid-cols-2 md:p-12">
         <div>
           <Eyebrow>[ CERTIFICATION ]</Eyebrow>
@@ -631,6 +762,72 @@ function Certification() {
           />
         </motion.div>
       </div>
+    </section>
+  );
+}
+
+function VerifySection() {
+  return (
+    <section id="verify-section" className="scroll-mt-28 pb-12 pt-2 md:pb-16 md:pt-4">
+      <TiltSurface className="rounded-2xl md:rounded-3xl shadow-xl">
+        <div className="relative overflow-hidden rounded-2xl md:rounded-3xl border border-[#E7DFD3]/80 bg-gradient-to-br from-[#FAF6F0] via-[#F6EEE2] to-[#EFE2D2] p-5 sm:p-8 md:p-10 text-[#1C181B] shadow-lg">
+          {/* Subtle background glow */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#541228]/10 blur-3xl"
+          />
+
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6 md:gap-8">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] md:text-xs font-mono font-semibold bg-[#541228]/10 text-[#541228] border border-[#541228]/15 mb-3">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                <span>OFFICIAL VERIFICATION REGISTRY</span>
+              </div>
+
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-[#1C181B]">
+                Verify Certificate &amp; Offer Letter
+              </h2>
+
+              <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm md:text-base leading-relaxed text-[#5A5057]">
+                Hold an official TOCHI .Labs credential? Authenticate completion certificates and
+                offer letters in real time via our live MSME-recognized registry. Scan the document
+                QR code or lookup by Student ID.
+              </p>
+
+              <div className="mt-4 flex flex-wrap items-center gap-2 font-mono text-[10px] sm:text-[11px] text-[#665E64]">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/70 px-2.5 py-1 border border-[#E7DFD3]">
+                  <CheckCircle2 className="h-3 w-3 text-emerald-700" /> Real-time Node Lookup
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/70 px-2.5 py-1 border border-[#E7DFD3]">
+                  <QrCode className="h-3 w-3 text-[#541228]" /> QR Code Camera Scanner
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/70 px-2.5 py-1 border border-[#E7DFD3]">
+                  <Award className="h-3 w-3 text-[#541228]" /> MSME Udyam Validated
+                </span>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row md:flex-col gap-2.5 shrink-0 w-full sm:w-auto">
+              <Link
+                to="/verify"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#541228] hover:bg-[#6B1733] px-6 py-3 text-xs md:text-sm font-semibold text-[#FAF6F0] shadow-md transition-all active:scale-95"
+              >
+                <ShieldCheck className="h-4 w-4" />
+                <span>Verify Credential Now</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+
+              <Link
+                to="/verify"
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-white/80 hover:bg-white px-5 py-2.5 text-xs font-mono font-medium text-[#1C181B] border border-[#E7DFD3] transition-all active:scale-95 shadow-xs"
+              >
+                <QrCode className="h-3.5 w-3.5 text-[#541228]" />
+                <span>Launch QR Scanner</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </TiltSurface>
     </section>
   );
 }
